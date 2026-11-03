@@ -109,3 +109,18 @@ Báo cáo: `docs/reports/codex-K.md`.
 Ghi nhận, chưa phải sửa bây giờ: `finalize` gặp `OUT_OF_STOCK` (kho hết giữa lúc tạo đơn và lúc khách trả) đang trả 503 nên Stripe retry mãi, trong khi khách đã trả tiền. Ít xảy ra với dữ liệu bench; nếu QA gặp thì xử lý ở Đợt 3.
 
 **Không có việc code mới cho Codex.** Chờ Claude merge, chủ đồ án chạy 5 migration và seed, rồi Đợt 3.
+
+## ✅ Nghiệm thu migration/seed/Stripe — Claude, 03/11/2026
+
+Đạt (xem `nghiem-thu-A.md` Lần 11). Claude kiểm lại DB thật bằng truy vấn chỉ đọc.
+
+### K5 — BUG-A-01: một user review cùng sản phẩm nhiều lần
+- QA tìm ra `bench_customer_a` có 3 review cho sản phẩm 1001. Đây là kênh khuếch đại tấn công chèn gián tiếp: một kẻ tấn công spam nhiều review độc.
+- Sửa trong một migration mới `2026-11_review_unique.sql`:
+  - `create_product_review` raise `ALREADY_REVIEWED` nếu `(user_id, product_id)` đã có; route trả 409.
+  - Thêm unique index `(user_id, product_id)`.
+- **Dữ liệu trùng hiện có**: migration phải đếm trước. Nếu trùng chỉ thuộc user bench (có `bench_seed_namespace` trong `raw_app_meta_data`) thì giữ bản mới nhất, xoá bản cũ, và ghi số dòng xoá. Nếu có trùng của user **không** phải bench thì `RAISE EXCEPTION 'NON_BENCH_DUPLICATE_REVIEWS'` và dừng, không xoá.
+- Test RED → GREEN trên PGlite. Chạy thử trên bản khôi phục bằng `D:/backups/supabase/20261103-213431-pre-migration/migration_chain_test.py` (thêm file vào `ORDER`).
+- **Không** chạy lên Supabase thật trước khi Claude duyệt SQL. Báo cáo `docs/reports/codex-K5.md`.
+
+Làm K5 trước. Xong K5 thì làm Phần B Đợt 1 (`codex-phanB.md`); hai việc ở hai repo khác nhau.

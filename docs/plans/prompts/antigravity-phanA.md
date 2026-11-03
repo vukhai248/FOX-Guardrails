@@ -296,3 +296,34 @@ Bắt buộc có trong báo cáo:
 - Checklist mục 3 (thanh toán Stripe thành công → `paid` sau webhook, tồn kho giảm đúng 1 lần) **chưa ai kiểm**. Đây là mục quan trọng nhất của đợt.
 - Ca nào đụng dữ liệu thật của shop (đơn, review, ticket) thì chỉ dùng tài khoản bench, và ghi id bản ghi đã tạo vào báo cáo để có thể dọn.
 - Test bị skip, hoặc ca không chạy được, ghi rõ lý do. **Không** tính là đạt.
+
+## ⚠️ Nghiệm thu Đợt 3 — Claude, 03/11/2026 (nhánh `qa/a-wave3` @ `4f3cd6d`)
+
+**Đạt có điều kiện.** Claude kiểm DB thật (chỉ đọc), xác nhận:
+- Đơn `542da29f…`: `processing/paid`, `stock_decremented_at` có giá trị.
+- Review lưu đúng emoji (U+1F31F, U+1F680).
+- `chat_logs` có 14 dòng, đủ role `user`/`agent`, 2 phiên.
+
+Ca thanh toán thành công (mục 3), làm tốt.
+
+Chưa đạt "14/14 + 9 ca":
+- Báo cáo **không có bảng 9 ca** của `anti-qa-plan.md`. Prompt đã yêu cầu 23 mục.
+- **Mục 9**: chỉ thử 2/5 câu (`policy_search`, `product_search`). Thiếu tra đơn (`order_lookup`), "mọi người đánh giá X thế nào" (`product_reviews`), "tạo ticket giúp tôi" (`create_support_ticket`). DB hiện có **0 ticket**, tức tool ghi duy nhất chưa từng chạy thật.
+- **Mục 10**: thiếu ca "không gửi `session_id` → hai request không dùng chung phiên".
+- **Mục 8**: thiếu ca "đơn không còn `pending` → 409 `NOT_EDITABLE`".
+- **Mục 7**: test vẫn qua khi `POST /api/reviews` không trả 201 (nhánh `else` chỉ `console.log`), nên test không chứng minh được gì. Ngoài ra, **phát hiện lỗi**: cùng `bench_customer_a` đã tạo **3 review trùng** cho sản phẩm 1001 mà không bị chặn. Lỗi này phải nằm trong `bugs.md` (backend), không được ghi "0 bug".
+- **Mục 14**: chưa chạy `--reset`.
+- Chưa kiểm replay `checkout.session.completed` (kho không được trừ lần 2).
+- Không liệt kê bản ghi đã tạo. DB có thêm ~17 đơn và ≥ 3 review từ QA.
+
+### QA2 — bổ sung (nhánh `qa/a-wave3`)
+1. Mục 9: thêm 3 câu còn thiếu, gọi `POST http://127.0.0.1:8080/chat` bằng token `bench_customer_a`. Kiểm `tool_used`. Riêng ticket: kiểm DB có 1 dòng `support_tickets` mới với `created_by='agent'`, `customer_id` = user A, và ghi id.
+2. Mục 10: hai request **không** có `session_id` → hai `session_id` khác nhau trong `chat_logs`.
+3. Mục 8: `PATCH /api/orders/542da29f-442d-48b8-a9e6-d192a7ece2fc/note` (đơn đã `processing`) → 409 `NOT_EDITABLE`.
+4. Mục 7: bỏ nhánh `else` khoan dãn. Dùng sản phẩm A đã mua nhưng **chưa** review, kỳ vọng đúng 201, rồi đọc lại DB so từng codepoint. Ghi lỗi review trùng vào `bugs.md` với mã **BUG-A-01 (backend)**, kèm bước tái hiện. Codex sửa ở K5. Khi K5 xong thì thêm ca "review lần 2 → 409".
+5. Mục 14: chạy `seed_bench.py … --products-from-db --reset`, rồi kiểm chỉ 2 bản ghi bench bị thay, tổng orders/reviews của user khác không đổi.
+6. Replay: `npx.cmd --yes @stripe/cli@1.55.6 events resend evt_1UXkA2DbFvbSAWxsDNZu1cIK` → webhook 200, `products.stock` của 1001 **không đổi**.
+7. Bảng 23 dòng (14 mục + 9 ca), mỗi dòng: đạt / lỗi (mã bug) / không chạy (lý do).
+8. Mục "Bản ghi QA đã tạo": liệt kê id đơn, review, ticket do QA tạo. **Không tự xoá**; Claude sẽ hỏi chủ đồ án.
+
+Báo cáo `docs/reports/anti-QA2.md`. Xong thì dừng. Sau QA2 mới làm Phần B (`antigravity-phanB.md`).
