@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+build/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+!src/frontend/.env.local.example
+
+# Runtime artifacts (nhật ký quyết định, cache)
+var/
+
+# Dữ liệu tải về (không commit; xem data/README.md)
+data/raw/
+data/processed/
+eval/reports/*.json
+eval/reports/*.md
+
+# Notebook outputs ngoài ý muốn
+.ipynb_checkpoints/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Thư mục làm việc riêng của agent (không commit)
+hermess/
+
+# Cache model Hugging Face / pip đặt trên ổ D (HF_HOME, PIP_CACHE_DIR)
+.cache/
+
+# Bản build slide (file nặng, tạo lại được)
+docs/presentations/output/
+docs/presentations/.build*/

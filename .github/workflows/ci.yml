@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python:
+    name: Lint + test (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      # Chỉ cài nhóm nhẹ; test cần model gắn @pytest.mark.model và bị bỏ qua ở đây.
+      - run: pip install -e ".[core,dev]"
+      - run: ruff check src tests
+      - run: pytest -q -m "not model"

@@ -1,0 +1,18 @@
+# Cấu hình mặc định FOX-Guard. Các gói B2–B7 điền dần; mỗi khoá mới phải có chú thích một dòng.
+config_version: "0.1.0"
+
+normalize:            # B2
+  max_chars: 20000
+  decode_max_depth: 2
+
+classifier:           # B4: ngưỡng chỉ được chốt trên tập dev của Phần C, không chỉnh theo test
+  primary: meta-llama/Llama-Prompt-Guard-2-86M
+  secondary: protectai/deberta-v3-base-prompt-injection-v2
+  theta_low: null
+  theta_high: null
+
+links:                # B5.4
+  allowlist: []
+
+audit:                # B6.5
+  sqlite_path: var/fox_guard.sqlite

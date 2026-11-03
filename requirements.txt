@@ -1,0 +1,46 @@
+# Phụ thuộc Python của FOX-Guard. Nguồn chuẩn là pyproject.toml (các nhóm core/ml/pii/dash/dev);
+# file này liệt kê lại để cài nhanh và ghi phiên bản đã kiểm trên env conda `DL` (Python 3.13, 03/11/2026).
+#
+# Cài (env DL đã có sẵn tất cả, chỉ cần gắn package ở chế độ editable):
+#   C:/Users/Admin/anaconda3/envs/DL/python.exe -m pip install -e ".[core,ml,pii,dash,dev]"
+# hoặc từ file này:
+#   pip install -r requirements.txt
+#
+# Ổ C: gần đầy. Trước khi cài/tải model đặt:
+#   PIP_CACHE_DIR=D:/create/DATN/.cache/pip   HF_HOME=D:/create/DATN/FOX-Guardrails/.cache/hf
+# Lưu ý: env DL dùng chung với rag-service của web. Cài thêm gì phải chạy lại pytest của rag-service.
+
+# --- base ---
+pydantic>=2.7            # DL: 2.13.4
+pyyaml>=6.0              # DL: 6.0.3
+regex>=2024.0            # DL: 2026.6.28
+typer>=0.12              # DL: 0.26.8
+
+# --- core: sidecar + judge client ---
+fastapi>=0.115           # DL: 0.139.2
+uvicorn>=0.30            # DL: 0.49.0
+httpx>=0.27              # DL: 0.28.1
+idna>=3.7                # DL: 3.18
+
+# --- ml: classifier ---
+transformers>=4.45       # DL: 5.13.0
+torch>=2.3               # DL: 2.12.0+cu132 (đã có, KHÔNG cài lại)
+tokenizers>=0.20         # DL: 0.22.2
+sentencepiece>=0.2       # DL: 0.2.2
+protobuf>=5              # DL: 6.33.6
+onnxruntime>=1.18        # DL: 1.20.1
+
+# --- pii ---
+presidio-analyzer>=2.2.355   # DL: 2.2.366 (kéo theo spacy 3.8.18)
+presidio-anonymizer>=2.2.355 # DL: 2.2.366
+phonenumbers>=8.13           # DL: 9.0.42
+
+# --- dash ---
+streamlit>=1.38          # DL: 1.58.0
+pandas>=2.2              # DL: 3.0.3
+plotly>=5.24             # DL: 7.1.0
+
+# --- dev ---
+pytest>=8.0              # DL: 8.4.2
+pytest-benchmark>=4.0    # DL: 5.3.1
+ruff>=0.6                # DL: 0.16.9
