@@ -1,6 +1,8 @@
-"""FOX-Guard: guardrails 3 trạm (input / context / output) cho ứng dụng LLM.
+"""FOX-Guard SDK: input / context / output, chưa chặn gì cho tới Đợt 4."""
 
-B1 sẽ export `Guard`, `Decision`, `GuardContext` từ đây.
-"""
+from .guard import Guard
+from .types import Decision, Finding, GuardContext
 
 __version__ = "0.1.0"
+
+__all__ = ["Guard", "Decision", "Finding", "GuardContext", "__version__"]
