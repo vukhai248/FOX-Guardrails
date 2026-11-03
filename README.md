@@ -4,6 +4,8 @@ Hệ thống **AI Guardrails** phát hiện **Prompt Injection** và ngăn ngừ
 
 Guardrails giám sát **3 điểm chạm** của một ứng dụng hỏi đáp RAG — đầu vào người dùng, ngữ cảnh truy xuất (tài liệu, email, kết quả công cụ) và đầu ra của mô hình — kết hợp **luật phát hiện + mô hình phân loại + bộ nhận diện PII** để đánh giá rủi ro, từ đó **cho phép / che thông tin / chặn / chuyển người kiểm duyệt**. Mọi quyết định được lưu kèm **bằng chứng và lý do**; bản ghi giám sát được **che PII trước khi lưu trữ**.
 
+> 📌 **Sổ dự án (tiến độ, kiến trúc, công nghệ, việc đang làm): [`docs/DU-AN.md`](docs/DU-AN.md)** — đọc file này trước.
+>
 > 📄 Ghi chú đề tài nguyên văn: [`docs/de-tai.md`](docs/de-tai.md)
 
 ---

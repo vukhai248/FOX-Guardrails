@@ -67,3 +67,7 @@ Mỗi đợt: agent viết code + test → báo cáo → **dừng**. Claude nghi
 4. **Code nằm ở đâu**: bảng file → làm gì (link `file:dòng`).
 5. **Giới hạn và cách né**: lớp này không chặn được gì, vì sao cần lớp khác.
 6. **3–5 câu hội đồng có thể hỏi** + hướng trả lời.
+
+## 6. Sổ dự án
+
+`docs/DU-AN.md` là file theo dõi duy nhất. **Chỉ Claude** cập nhật, sau mỗi lần nghiệm thu: bảng tiến độ §2, bảng lớp §6.2, đã bàn giao §6.3, nhật ký §9, việc mở §11. Agent không sửa file này; thấy sai thì ghi `docs/reports/requests.md`.
