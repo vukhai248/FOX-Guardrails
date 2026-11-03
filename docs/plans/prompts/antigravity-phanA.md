@@ -282,3 +282,17 @@ Báo cáo: `docs/reports/anti-J.md`, có output thật của từng lệnh. Xong
 - J3: lọc tuyệt đối `(user_id ?? 'anonymous', session_id)`, có test A5.6.
 
 **Không có việc mới cho Anti.** Chờ Claude merge, chủ đồ án chạy 5 migration và seed, rồi Đợt 3 (QA toàn web).
+
+## ▶ Bắt đầu Đợt 3 — Claude, 03/11/2026
+
+Điều kiện đã đủ: hai nhánh đã merge vào `main` của repo web (`D:/create/DATN/Agenttic-RAG-for-e-commerce`, nhánh `main`); Supabase đã chạy **6** migration (0 → 5); seed đã tạo 3 tài khoản trong `.env.bench` (đọc bằng code, **không in mật khẩu**); Stripe test đã có listener local.
+
+Chuẩn bị (làm trên `main`; tạo nhánh `qa/a-wave3` để commit bugs và báo cáo):
+1. Bật đủ 3 tiến trình theo `docs/RUN.md`: rag-service (cổng 8080), Next.js (3000), Stripe CLI listener (đủ 3 event). Kiểm `GET http://127.0.0.1:8080/health` ra `healthy` trước khi test.
+2. Thẻ test Stripe: `4242 4242 4242 4242`, ngày hết hạn bất kỳ trong tương lai, CVC bất kỳ. Đây là số test công khai của Stripe; không dùng thẻ thật.
+3. Không tạo tài khoản mới. Dùng 3 tài khoản bench. Ca cần user thứ hai thì dùng `bench_customer_b`.
+
+Bắt buộc có trong báo cáo:
+- Checklist mục 3 (thanh toán Stripe thành công → `paid` sau webhook, tồn kho giảm đúng 1 lần) **chưa ai kiểm**. Đây là mục quan trọng nhất của đợt.
+- Ca nào đụng dữ liệu thật của shop (đơn, review, ticket) thì chỉ dùng tài khoản bench, và ghi id bản ghi đã tạo vào báo cáo để có thể dọn.
+- Test bị skip, hoặc ca không chạy được, ghi rõ lý do. **Không** tính là đạt.
