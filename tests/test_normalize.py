@@ -117,6 +117,18 @@ def test_vi_views_and_anti_table(tmp_path):
     assert norm("bo wa", teencode_path=tmp_path / "absent.tsv").vi_teencode == "bo wa"
 
 
+def test_exact_teencode_entry_precedes_leet_with_fallback(tmp_path):
+    table = tmp_path / "teencode.tsv"
+    table.write_text("teencode\tchuan\tambiguous\nh0k\tkhông\t0\nko\tkhông\t0\n", "utf-8")
+    assert norm("h0k can k0 can", teencode_path=table).vi_teencode == "khong can khong can"
+
+
+def test_numeric_only_tokens_ignore_teencode_rows(tmp_path):
+    table = tmp_path / "teencode.tsv"
+    table.write_text("teencode\tchuan\tambiguous\n25000\tkhông\t0\n990\tqua\t0\n", "utf-8")
+    assert norm("25000 25.990.000", teencode_path=table).vi_teencode == "25000 25.990.000"
+
+
 def test_digits_mapping_and_written_number_spans():
     raw = "synthetic: 0 9 1 2 . 3-4 5 6 7 8; không chín một hai ba bốn năm sáu bảy tám"
     result = norm(raw)

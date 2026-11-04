@@ -54,8 +54,11 @@ def vietnamese_views(nfkc: str, teencode_path=None) -> tuple[str, str]:
 
     def replace(match):
         token = match.group()
-        if any(ch.isalpha() for ch in token):
-            token = token.translate(_LEET)
+        if not any(ch.isalpha() for ch in token):
+            return token
+        if token in table:
+            return table[token]
+        token = token.translate(_LEET)
         return table.get(token, token)
 
     return joined, _TOKEN.sub(replace, joined)
