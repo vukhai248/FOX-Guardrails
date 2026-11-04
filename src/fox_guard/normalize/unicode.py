@@ -121,10 +121,11 @@ def skeleton(text: str) -> str:
 
 
 def mixed_script_signals(clean: str) -> list[Finding]:
-    """Flag Latin/Greek/Cyrillic mixing inside one word, ignoring neutral marks."""
+    """Inspect NFKC word scripts while retaining the original clean word span."""
     signals = []
     for match in _WORDS.finditer(clean):
-        scripts = [name for name, pattern in _SCRIPTS.items() if pattern.search(match.group())]
+        word = unicodedata.normalize("NFKC", match.group())
+        scripts = [name for name, pattern in _SCRIPTS.items() if pattern.search(word)]
         if len(scripts) > 1:
             signals.append(finding("unicode:mixed_script", "medium", "Mixed scripts: " + ", ".join(scripts),
                                    "T3.4", match.span()))

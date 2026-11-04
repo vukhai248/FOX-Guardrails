@@ -89,6 +89,25 @@ def test_nfkc_and_script_mix():
     assert norm("Привет мир").signals == []
 
 
+@pytest.mark.parametrize(("word", "normalized"), [
+    ("\U0001d422\u043e", "i\u043e"),
+    ("\ufb03\u043e", "ffi\u043e"),
+])
+def test_script_mix_after_nfkc_keeps_clean_coordinates(word, normalized):
+    result = norm("ok " + word + " end", decode_max_depth=0)
+    assert result.nfkc == "ok " + normalized + " end"
+    signals = [f for f in result.signals if f.detector == "unicode:mixed_script"]
+    assert len(signals) == 1
+    assert signals[0].severity == "medium"
+    assert signals[0].span == (3, 3 + len(word))
+    assert result.clean[slice(*signals[0].span)] == word
+
+
+@pytest.mark.parametrize("text", ["\U0001d422\U0001d428", "\ufb03 cafe", "Tiếng Việt", "Привет мир"])
+def test_nfkc_compatibility_letters_do_not_create_benign_script_mix(text):
+    assert norm(text).signals == []
+
+
 def test_vi_views_and_anti_table(tmp_path):
     table = tmp_path / "teencode.tsv"
     table.write_text("teencode\tchuan\tambiguous\nko\tkhông\t0\nwa\tqua\t0\nck\tchuyển khoản\t1\n", "utf-8")
