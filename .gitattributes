@@ -10,3 +10,7 @@
 *.jpg binary
 *.pdf binary
 *.xlsx binary
+
+# Preserve upstream bytes and the documented SHA-256 on Windows checkouts.
+src/fox_guard/data/confusables.txt -text
+src/fox_guard/data/LICENSE-UNICODE.txt -text

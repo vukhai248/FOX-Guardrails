@@ -62,6 +62,7 @@ fox_guard = ["data/*", "detectors/rules/packs/*.yaml", "policy/*.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 markers = [
   "model: cần tải model Hugging Face (bỏ qua trên CI bằng -m 'not model')",
   "slow: chạy lâu (benchmark độ trễ)",
