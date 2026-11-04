@@ -121,12 +121,18 @@ def skeleton(text: str) -> str:
 
 
 def mixed_script_signals(clean: str) -> list[Finding]:
-    """Inspect NFKC word scripts while retaining the original clean word span."""
+    """Segment NFKC words with source intervals for their original clean clusters."""
+    projected = []
+    sources = []
+    for cluster in regex.finditer(r"\X", clean):
+        value = unicodedata.normalize("NFKC", cluster.group())
+        projected.append(value)
+        sources.extend([cluster.span()] * len(value))
     signals = []
-    for match in _WORDS.finditer(clean):
-        word = unicodedata.normalize("NFKC", match.group())
-        scripts = [name for name, pattern in _SCRIPTS.items() if pattern.search(word)]
+    for match in _WORDS.finditer("".join(projected)):
+        scripts = [name for name, pattern in _SCRIPTS.items() if pattern.search(match.group())]
         if len(scripts) > 1:
+            span = sources[match.start()][0], sources[match.end() - 1][1]
             signals.append(finding("unicode:mixed_script", "medium", "Mixed scripts: " + ", ".join(scripts),
-                                   "T3.4", match.span()))
+                                   "T3.4", span))
     return signals
