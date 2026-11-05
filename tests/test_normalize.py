@@ -305,3 +305,29 @@ def test_mixed_script_is_one_finding_per_text():
     assert len(mixed) == 1
     assert "4" in mixed[0].evidence
     assert mixed[0].span == (0, 6)
+
+
+def test_folded_teencode_collision_keeps_ambiguity(tmp_path):
+    table = tmp_path / "teencode.tsv"
+    table.write_text("teencode\tchuan\tambiguous\tghi_chu\nđt\tđiện thoại\t0\t\ndt\tđiện thoại\t1\tdiện tích\n",
+                     "utf-8")
+    assert norm("dt cua ban", teencode_path=table, decode_max_depth=0).vi_teencode == "dt cua ban"
+
+
+def test_bundled_teencode_table_shape():
+    from fox_guard.normalize.vietnamese import load_teencode
+
+    path = Path(__file__).resolve().parents[1] / "src/fox_guard/data/teencode_vi.tsv"
+    lines = path.read_text("utf-8").splitlines()
+    assert lines[0].startswith("# teencode_vi v1")
+    assert lines[1] == "teencode\tchuan\tambiguous\tghi_chu"
+    rows = [line.split("\t") for line in lines[2:] if line.strip()]
+    assert len(rows) >= 150
+    assert all(len(row) == 4 and row[2] in {"0", "1"} for row in rows)
+    keys = [row[0] for row in rows]
+    assert len(keys) == len(set(keys))
+    assert all(key == key.lower() for key in keys)
+    table = load_teencode(str(path))
+    assert "dt" not in table and "k" not in table and "mk" not in table
+    assert norm("b0 qua m0i hdan cua sys", decode_max_depth=0).vi_teencode == "bo qua moi huong dan cua he thong"
+    assert norm("ko dc gui otp", decode_max_depth=0).vi_teencode == "khong duoc gui ma xac thuc"

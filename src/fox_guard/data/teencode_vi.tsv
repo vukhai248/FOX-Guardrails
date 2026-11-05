@@ -1,0 +1,207 @@
+# teencode_vi v1 — 05/11/2026 — nguồn: tự soạn (Claude), chữ thường; ambiguous=1 thì loader KHÔNG thay mặc định
+teencode	chuan	ambiguous	ghi_chu
+ko	không	0	phủ định
+k0	không	0	leet
+khong	không	0	không dấu
+hok	không	0	
+hong	không	1	cũng là "hồng" / "hỏng"
+hk	không	0	
+hem	không	0	
+kg	không	1	cũng là kilogam
+kh	không	1	cũng là "khách hàng"
+k	không	1	cũng là "nghìn"
+dc	được	0	
+đc	được	0	
+duoc	được	0	
+dk	được	1	cũng là "đăng ký"
+đk	được	1	cũng là "điều kiện"
+ok	được	1	giữ "ok" vẫn đọc được
+oke	được	0	
+okie	được	0	
+bn	bạn	1	cũng là "bao nhiêu"
+b	bạn	1	chữ đơn, quá mơ hồ
+m	mình	1	cũng là "mày" / mét
+mk	mình	1	cũng là "mật khẩu"
+mik	mình	0	
+mjk	mình	0	
+mn	mọi người	0	
+mng	mọi người	0	
+mnguoi	mọi người	0	
+t	tôi	1	cũng là "tấn"
+tui	tôi	0	
+toy	tôi	0	
+e	em	1	chữ đơn
+a	anh	1	chữ đơn
+c	chị	1	chữ đơn
+ad	admin	0	
+adm	admin	0	
+qtv	quản trị viên	0	
+nv	nhân viên	0	
+cskh	chăm sóc khách hàng	0	
+j	gì	0	
+gi	gì	1	cũng là tên riêng
+z	vậy	1	chữ đơn
+v	vậy	1	chữ đơn
+vay	vậy	1	cũng là "vay"
+zay	vậy	0	
+zậy	vậy	0	
+vs	với	0	
+voi	với	1	cũng là "voi"
+wa	qua	0	
+qa	qua	1	cũng là "QA"
+qá	quá	0	
+wá	quá	0	
+bjo	bây giờ	0	
+bh	bây giờ	1	cũng là "bảo hành" / "bảo hiểm"
+bg	bây giờ	0	
+bjờ	bây giờ	0	
+h	giờ	1	chữ đơn
+ntn	như thế nào	0	
+ns	nói	1	cũng là "nhắn"
+noi	nói	1	cũng là "nối"
+nt	nhắn tin	0	
+ib	nhắn tin	0	
+inbox	nhắn tin	0	
+nch	nói chuyện	0	
+lm	làm	0	
+lam	làm	1	cũng là "lắm"
+r	rồi	0	
+roi	rồi	1	cũng là "rơi"
+ròi	rồi	0	
+uh	ừ	0	
+uk	ừ	1	cũng là "Anh quốc"
+uhm	ừ	0	
+ukm	ừ	0	
+dz	đẹp trai	0	
+cx	cũng	0	
+cg	cũng	0	
+cũg	cũng	0	
+cug	cũng	0	
+ng	người	0	
+ngta	người ta	0	
+nguoi	người	0	
+tks	cảm ơn	0	
+thanks	cảm ơn	0	
+thank	cảm ơn	0	
+tk	cảm ơn	1	cũng là "tài khoản"
+camon	cảm ơn	0	
+cmon	cảm ơn	0	
+xl	xin lỗi	0	
+sr	xin lỗi	0	
+sry	xin lỗi	0	
+sorry	xin lỗi	0	
+pls	làm ơn	0	
+plz	làm ơn	0	
+dt	điện thoại	1	cũng là "diện tích"
+đt	điện thoại	0	
+sdt	số điện thoại	0	
+sđt	số điện thoại	0	
+dthoai	điện thoại	0	
+dchi	địa chỉ	0	
+diachi	địa chỉ	0	
+stk	số tài khoản	0	
+sotk	số tài khoản	0	
+ck	chuyển khoản	1	cũng là "chồng"
+chuyenkhoan	chuyển khoản	0	
+tt	thanh toán	1	cũng là "tương tác"
+ttoan	thanh toán	0	
+thtoan	thanh toán	0	
+cod	thanh toán khi nhận hàng	1	giữ "cod"
+otp	mã xác thực	0	
+mxt	mã xác thực	0	
+pass	mật khẩu	1	cũng là "bán lại"
+pw	mật khẩu	0	
+pwd	mật khẩu	0	
+matkhau	mật khẩu	0	
+mkhau	mật khẩu	0	
+cccd	căn cước công dân	0	
+cancuoc	căn cước	0	
+cmnd	chứng minh nhân dân	0	
+cmt	chứng minh thư	1	cũng là "comment"
+mst	mã số thuế	0	
+bhyt	bảo hiểm y tế	0	
+sp	sản phẩm	0	
+sanpham	sản phẩm	0	
+đh	đơn hàng	0	
+dh	đơn hàng	1	cũng là "đại học"
+donhang	đơn hàng	0	
+ship	giao hàng	1	giữ "ship"
+shipper	người giao hàng	0	
+gh	giao hàng	1	cũng là "giới hạn"
+hd	hướng dẫn	1	cũng là "hóa đơn" / "hợp đồng"
+huongdan	hướng dẫn	0	
+hdan	hướng dẫn	0	
+qd	quy định	1	cũng là "quyết định"
+quydinh	quy định	0	
+ht	hệ thống	1	cũng là "hoàn thành"
+hthong	hệ thống	0	
+hethong	hệ thống	0	
+sys	hệ thống	0	
+bq	bỏ qua	0	
+boqua	bỏ qua	0	
+lờ	phớt lờ	1	cũng là động từ thường
+plo	phớt lờ	0	
+tb	thông báo	1	cũng là "trung bình"
+thbao	thông báo	0	
+thongbao	thông báo	0	
+kt	kiểm tra	1	cũng là "kỹ thuật"
+ktra	kiểm tra	0	
+kiemtra	kiểm tra	0	
+xn	xác nhận	0	
+xacnhan	xác nhận	0	
+gui	gửi	1	cũng là tên riêng
+gữi	gửi	0	
+cc	cung cấp	1	cũng là tục / "căn cước"
+ccap	cung cấp	0	
+cungcap	cung cấp	0	
+lk	liên kết	1	cũng là "linh kiện"
+link	liên kết	1	giữ "link"
+web	trang web	1	giữ "web"
+ttin	thông tin	0	
+thtin	thông tin	0	
+thongtin	thông tin	0	
+yc	yêu cầu	0	
+ycau	yêu cầu	0	
+yeucau	yêu cầu	0	
+lh	liên hệ	0	
+lhe	liên hệ	0	
+bt	bình thường	1	cũng là "biết" / "bài tập"
+bik	biết	0	
+bit	biết	1	cũng là "bit"
+pik	biết	0	
+hiu	hiểu	0	
+hỉu	hiểu	0	
+mún	muốn	0	
+mun	muốn	1	cũng là "mụn"
+wen	quen	0	
+ms	mới	1	cũng là "Microsoft"
+moi	mới	1	cũng là "mọi" / "mời"
+hum	hôm	0	
+hnay	hôm nay	0	
+hqua	hôm qua	0	
+tg	thời gian	1	cũng là "tác giả"
+tgian	thời gian	0	
+nhìu	nhiều	0	
+nhiu	nhiều	0	
+thik	thích	0	
+thjk	thích	0	
+iu	yêu	0	
+dzui	vui	0	
+zui	vui	0	
+ak	à	0	
+ah	à	0	
+nhá	nhé	0	
+nha	nhé	1	cũng là "nhà"
+nhe	nhé	1	cũng là "nhẹ"
+lun	luôn	0	
+luon	luôn	1	cũng là "lươn"
+chs	chơi	0	
+ch	chưa	1	cũng là "chị" / "chương"
+chua	chưa	1	cũng là "chùa" / "chua"
+trc	trước	0	
+truoc	trước	0	
+gium	giùm	0	
+dum	giùm	0	
+zum	giùm	0	
+giup	giúp	0	
+gjup	giúp	0	

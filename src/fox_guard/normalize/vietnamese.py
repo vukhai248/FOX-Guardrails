@@ -45,12 +45,17 @@ def load_teencode(path: str) -> dict[str, str]:
         if not required.issubset(rows.fieldnames or []):
             raise ValueError("teencode TSV requires teencode, chuan, ambiguous columns")
         mapping = {}
+        ambiguous = set()
         for row in rows:
+            # Keys are looked up without diacritics, so "đt" and "dt" collide; ambiguity wins.
+            key = no_diacritics(row["teencode"].lower())
             if row["ambiguous"].strip() == "0":
-                mapping[no_diacritics(row["teencode"].lower())] = no_diacritics(row["chuan"].lower())
-            elif row["ambiguous"].strip() != "1":
+                mapping.setdefault(key, no_diacritics(row["chuan"].lower()))
+            elif row["ambiguous"].strip() == "1":
+                ambiguous.add(key)
+            else:
                 raise ValueError("teencode ambiguous must be 0 or 1")
-        return mapping
+        return {key: value for key, value in mapping.items() if key not in ambiguous}
 
 
 def vietnamese_views(nfkc: str, teencode_path=None) -> tuple[str, str]:
