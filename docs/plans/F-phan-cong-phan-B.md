@@ -57,6 +57,6 @@ Mỗi đợt: agent viết code + test → báo cáo → **dừng**. Claude nghi
 5. **Giới hạn và cách né**: lớp này không chặn được gì, vì sao cần lớp khác.
 6. **3–5 câu hội đồng có thể hỏi** + hướng trả lời.
 
-## 6. Sổ dự án
+## 6. Kế hoạch chính
 
-`docs/DU-AN.md` là file theo dõi duy nhất. **Chỉ Claude** cập nhật, sau mỗi lần nghiệm thu: bảng tiến độ §2, bảng lớp §6.2, đã bàn giao §6.3, nhật ký §9, việc mở §11. Agent không sửa file này; thấy sai thì ghi `docs/reports/requests.md`.
+`docs/DU-AN.md` là **kế hoạch chính và file theo dõi duy nhất** của đồ án. **Chỉ Claude** cập nhật, sau mỗi lần nghiệm thu: "Bảng theo dõi nhanh" ở đầu file, trạng thái tính năng (Phần 3), trạng thái lớp (Phần 4), bảng tick (Phần 9.2), cập nhật thực tế triển khai (Phần 10), quyết định (Phần 11), lỗi và việc mở (Phần 12). Agent không sửa file này; thấy sai thì ghi `docs/reports/requests.md`.

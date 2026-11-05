@@ -1,6 +1,6 @@
 # docs/plans — đọc theo thứ tự
 
-> Toàn cảnh và tiến độ nằm ở [`../DU-AN.md`](../DU-AN.md). Các file dưới đây là đặc tả chi tiết.
+> **Kế hoạch chính và bảng tick tiến độ:** [`../DU-AN.md`](../DU-AN.md). Các file dưới đây là đặc tả gốc cho agent đọc khi code.
 
 1. [`00-tong-quan.md`](00-tong-quan.md): phạm vi, kiến trúc, sổ quyết định, chia việc, lịch 4 tuần. **Đọc trước.**
 2. [`01-tan-cong-va-phong-thu.md`](01-tan-cong-va-phong-thu.md): các vụ tấn công 2022–2026, mã kỹ thuật T*, mục tiêu O*, PII P*, bản đồ phòng thủ.
