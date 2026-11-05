@@ -69,7 +69,7 @@ def normalize(text: str, *, max_chars: int = 20000, decode_max_depth: int = 2,
             child = _views(value, value, teencode_path)
             root.decoded.append(child)
             root.signals.extend(signal.model_copy(update={"span": None}) for signal in child.signals)
-            if codec != "rot13":
+            if codec != "rot13" and not codec.endswith("-plain"):
                 encoded_codecs.add(codec)
             queue.append((child.nfkc, depth + 1))
             if child.hidden_tags:

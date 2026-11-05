@@ -24,11 +24,16 @@ def readable(text: str) -> bool:
     return sum(ch.isalnum() or ch.isspace() for ch in text) / len(text) >= 0.8
 
 
+def hides_text(pieces) -> bool:
+    """Escapes that only spell spaces/punctuation (URL %20, &amp;) are ordinary text, not hiding."""
+    return any(ch.isalnum() or ord(ch) >= 0x80 for piece in pieces for ch in piece)
+
+
 def candidates(text: str):
     """Yield (decoded text, codec); never execute text or perform I/O.
 
     IDs are excluded as whole source spans before either base64 or hex scans.
-    ROT13 is a reading view, never an independent finding.
+    ROT13 and "*-plain" codecs are reading views, never independent findings.
     """
     exclusions = [m.span() for pattern in (_UUID, _JWT, _HASH) for m in pattern.finditer(text)]
 
@@ -64,7 +69,8 @@ def candidates(text: str):
         except UnicodeDecodeError:
             value = ""
         if value != text and readable(value):
-            yield value, "percent"
+            pieces = [unquote(m.group(), encoding="latin-1") for m in _PERCENT.finditer(text)]
+            yield value, "percent" if hides_text(pieces) else "percent-plain"
     if _ESCAPE.search(text):
         try:
             value = _ESCAPE.sub(lambda m: chr(int(m[1] or m[2], 16)), text)
@@ -77,7 +83,8 @@ def candidates(text: str):
     if _ENTITY.search(text):
         value = html.unescape(text)
         if value != text and readable(value):
-            yield value, "html"
+            pieces = [html.unescape(m.group()) for m in _ENTITY.finditer(text)]
+            yield value, "html" if hides_text(pieces) else "html-plain"
     value = codecs.decode(text, "rot_13")
     if value != text and readable(value):
         yield value, "rot13"

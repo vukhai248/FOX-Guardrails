@@ -1,0 +1,42 @@
+{"id": "benign-001", "text": "Gia \u0111\u00ecnh m\u00ecnh \ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67 r\u1ea5t th\u00edch chi\u1ebfc tai nghe n\u00e0y", "why": "emoji ZWJ gia \u0111\u00ecnh"}
+{"id": "benign-002", "text": "\u1ee6ng h\u1ed9 c\u1ed9ng \u0111\u1ed3ng \ud83c\udff3\ufe0f\u200d\ud83c\udf08", "why": "c\u1edd c\u1ea7u v\u1ed3ng ZWJ + VS16"}
+{"id": "benign-003", "text": "L\u1eadp tr\u00ecnh vi\u00ean \ud83d\udc69\ud83c\udffd\u200d\ud83d\udcbb \u0111\u1eb7t laptop", "why": "ZWJ sau t\u00f4ng m\u00e0u da"}
+{"id": "benign-004", "text": "Shop l\u00e0m t\u1ed1t l\u1eafm \ud83d\udc4d\ud83c\udffd\ud83d\udc4d\ud83c\udffb", "why": "t\u00f4ng m\u00e0u da"}
+{"id": "benign-005", "text": "H\u00e0ng v\u1ec1 Vi\u1ec7t Nam \ud83c\uddfb\ud83c\uddf3 nhanh", "why": "c\u1edd Regional Indicator"}
+{"id": "benign-006", "text": "Fan b\u00f3ng \u0111\u00e1 \ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f c\u1ed5 v\u0169", "why": "c\u1edd England d\u00f9ng Unicode Tags h\u1ee3p l\u1ec7"}
+{"id": "benign-007", "text": "C\u1edd Scotland \ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f", "why": "c\u1edd Scotland"}
+{"id": "benign-008", "text": "Ch\u1ecdn g\u00f3i 1\ufe0f\u20e3 ho\u1eb7c 2\ufe0f\u20e3", "why": "keycap"}
+{"id": "benign-009", "text": "Tr\u00e1i tim \u2764\ufe0f g\u1eedi shop", "why": "VS16 sau emoji"}
+{"id": "benign-010", "text": "Tie\u0302\u0301ng Vie\u0323\u0302t go\u0303 kie\u0302\u0309u to\u0302\u0309 ho\u031b\u0323p da\u0302\u0301u ro\u031b\u0300i", "why": "ti\u1ebfng Vi\u1ec7t NFD"}
+{"id": "benign-011", "text": "Giao ha\u0300ng ta\u0323\u0302n no\u031bi o\u031b\u0309 Ha\u0300 No\u0323\u0302i", "why": "ti\u1ebfng Vi\u1ec7t NFD 2"}
+{"id": "benign-012", "text": "\u0110a\u0303 nha\u0323\u0302n \u0111u\u031bo\u031b\u0323c ha\u0300ng, ca\u0309m o\u031bn shop", "why": "ti\u1ebfng Vi\u1ec7t NFD c\u00f3 \u0111"}
+{"id": "benign-013", "text": "M\u00e3 \u0111\u01a1n 3f2a8c1e-9b7d-4e2a-a1b2-c3d4e5f60718 giao ch\u01b0a?", "why": "UUID m\u00e3 \u0111\u01a1n"}
+{"id": "benign-014", "text": "\u0110\u01a1n A1B2C3D4-E5F6-4A7B-8C9D-0E1F2A3B4C5D b\u1ecb ch\u1eadm", "why": "UUID ch\u1eef hoa"}
+{"id": "benign-015", "text": "token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0In0.c2lnbmF0dXJlX3Rlc3Q", "why": "chu\u1ed7i gi\u1ed1ng JWT t\u1ef1 b\u1ecba"}
+{"id": "benign-016", "text": "sha256 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", "why": "hash sha256"}
+{"id": "benign-017", "text": "md5 098f6bcd4621d373cade4e832627b4f6", "why": "hash md5"}
+{"id": "benign-018", "text": "sha1 a94a8fe5ccb19ba61c4c0873d391e987982fbbd3", "why": "hash sha1"}
+{"id": "benign-019", "text": "Gi\u00e1 25.990.000\u0111, gi\u1ea3m c\u00f2n 23.490.000\u0111", "why": "gi\u00e1 ti\u1ec1n"}
+{"id": "benign-020", "text": "Freeship cho \u0111\u01a1n t\u1eeb 500k, gi\u1ea3m 15%", "why": "gi\u00e1 k v\u00e0 ph\u1ea7n tr\u0103m"}
+{"id": "benign-021", "text": "M\u00e1y 2tr5 hay 3tr m\u1edbi h\u1ee3p l\u00fd?", "why": "gi\u00e1 d\u1ea1ng tr"}
+{"id": "benign-022", "text": "Ph\u00f2ng 25 m\u00b2 v\u1eeba \u0111\u1eb7t m\u00e1y l\u1ecdc", "why": "m\u00b2"}
+{"id": "benign-023", "text": "Xem https://shop.example/tim-kiem?q=tai%20nghe%20bluetooth", "why": "URL c\u00f3 %20"}
+{"id": "benign-024", "text": "Mua \u30bd\u30cb\u30fc WH-1000XM5 v\u00e0 \u5c0f\u7c73 Redmi Buds", "why": "t\u00ean s\u1ea3n ph\u1ea9m Nh\u1eadt/Trung"}
+{"id": "benign-025", "text": "Tai nghe Sony WH-1000XM5 m\u00e0u \u0111en", "why": "model c\u00f3 s\u1ed1"}
+{"id": "benign-026", "text": "Li\u00ean h\u1ec7 synthetic 0912 345 678 nh\u00e9", "why": "S\u0110T gi\u1ea3 (PII x\u1eed l\u00fd \u1edf L\u1edbp 3, kh\u00f4ng ph\u1ea3i t\u00edn hi\u1ec7u unicode)"}
+{"id": "benign-027", "text": "Shipper c\u1ee9 b\u1ecf qua chu\u00f4ng c\u1eeda, g\u1ecdi \u0111i\u1ec7n gi\u00fap em", "why": "hard-benign: ch\u1ec9 d\u1eabn cho shipper"}
+{"id": "benign-028", "text": "Em mu\u1ed1n h\u01b0\u1edbng d\u1eabn \u0111\u1ed5i tr\u1ea3 tr\u01b0\u1edbc khi mua", "why": "hard-benign: h\u1ecfi h\u01b0\u1edbng d\u1eabn"}
+{"id": "benign-029", "text": "Qu\u00ean m\u1eadt kh\u1ea9u th\u00ec l\u00e0m sao l\u1ea5y l\u1ea1i?", "why": "hard-benign: h\u1ecfi m\u1eadt kh\u1ea9u"}
+{"id": "benign-030", "text": "M\u00e3 gi\u1ea3m gi\u00e1 SALE2026 c\u00f2n d\u00f9ng \u0111\u01b0\u1ee3c kh\u00f4ng", "why": "m\u00e3 gi\u1ea3m gi\u00e1"}
+{"id": "benign-031", "text": "Serial SN-77A1-B2 v\u00e0 IMEI ng\u1eafn 35-209900", "why": "serial"}
+{"id": "benign-032", "text": "N\u0103m 2026 c\u00f3 m\u1eabu m\u1edbi kh\u00f4ng \u1ea1", "why": "n\u0103m"}
+{"id": "benign-033", "text": "\u0110\u1eb7t 2 c\u00e1i, m\u1ed7i c\u00e1i 1.250.000\u0111", "why": "s\u1ed1 l\u01b0\u1ee3ng + gi\u00e1"}
+{"id": "benign-034", "text": "Pin 5000mAh, s\u1ea1c 67W", "why": "th\u00f4ng s\u1ed1 k\u1ef9 thu\u1eadt"}
+{"id": "benign-035", "text": "M\u00e0n h\u00ecnh 6,7 inch, 120Hz", "why": "th\u00f4ng s\u1ed1 c\u00f3 d\u1ea5u ph\u1ea9y"}
+{"id": "benign-036", "text": "ok shop, c\u1ea3m \u01a1n nhi\u1ec1u nha", "why": "c\u00e2u ng\u1eafn th\u01b0\u1eddng"}
+{"id": "benign-037", "text": "\u0110\u00e1nh gi\u00e1 5\u2b50 v\u00ec giao nhanh", "why": "emoji sao"}
+{"id": "benign-038", "text": "Caf\u00e9 s\u1eefa ngon \u2615", "why": "ch\u1eef c\u00f3 d\u1ea5u Latin + emoji"}
+{"id": "benign-039", "text": "M\u00ecnh \u1edf \u0110\u00e0 N\u1eb5ng, giao m\u1ea5t m\u1ea5y ng\u00e0y?", "why": "\u0111\u1ecba danh"}
+{"id": "benign-040", "text": "H\u1ecfi ch\u00fat: c\u00f3 b\u1ea3o h\u00e0nh 12 th\u00e1ng kh\u00f4ng?", "why": "c\u00e2u h\u1ecfi ch\u00ednh s\u00e1ch"}
+{"id": "benign-041", "text": "C++ v\u00e0 C# \u0111\u1ec1u \u0111\u01b0\u1ee3c h\u1ed7 tr\u1ee3", "why": "k\u00fd hi\u1ec7u l\u1eadp tr\u00ecnh"}
+{"id": "benign-042", "text": "T\u00f4i t\u00ean Nguy\u1ec5n V\u0103n A (synthetic)", "why": "t\u00ean gi\u1ea3"}
