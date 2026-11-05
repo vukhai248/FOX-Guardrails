@@ -25,7 +25,7 @@ Nhánh `feat/b-core` từ `main` @ `777fd0d` (đã merge Lớp 1). Theo yêu c�
 | **Red-team held-out (48 + 52)** | Tác tử khác, sau khi chốt luật; **không sửa luật theo bộ này** | **64,6%** | **0%** |
 
 ```text
-pytest -q                → 412 passed, 2 xfailed
+pytest -q                → 411 passed, 2 xfailed
 ruff check src tests scripts → All checks passed!
 pytest -m slow           → B2 2KB p95 ≈ 5–6 ms ; B3 rules 2KB p95 ≈ 13 ms
 eval held-out            → attacks=48 benign=52 recall=64.58% precision=100.00% FPR=0.00%

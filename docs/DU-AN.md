@@ -3,7 +3,7 @@
 
 > **File chính của đồ án.** Đọc file này trước. Ở đây có đủ: kiến trúc, công nghệ, danh sách tính năng, schema dữ liệu, mô hình tấn công, các lớp rào chắn, thực nghiệm, lộ trình và **bảng tick tiến độ**.
 > Các file trong `docs/plans/*` là đặc tả gốc cho agent đọc khi code. File này là bản tổng hợp cho bạn học và quản lý.
-> Cập nhật lần cuối: **05/11/2026**. Người cập nhật: Claude, sau mỗi lần nghiệm thu.
+> Cập nhật lần cuối: **05/11/2026** (sau Lớp 2). Người cập nhật: Claude, sau mỗi lần nghiệm thu.
 
 **Ký hiệu trạng thái dùng trong mọi bảng:**
 ✅ xong và đã nghiệm thu · 🟡 đang làm / xong nhưng chưa nghiệm thu · ⏳ đã lên kế hoạch, chưa làm · ⛔ bị chặn (chờ điều kiện) · ✂️ có thể cắt nếu trễ
@@ -21,17 +21,17 @@
 | Hạng mục | Trạng thái | Tiến độ | Ghi chú |
 | --- | --- | --- | --- |
 | Web testbed (Phần A) | 🟡 | 95% | Đã chạy thật: thanh toán Stripe test, 6 migration, seed. Còn nghiệm thu QA2 và K5 (mục 9.2) |
-| **FOX-Guard Lớp 1 — Chuẩn hoá ký tự** | ✅ | 100% | 191 test qua. Chưa merge vào `main` |
-| FOX-Guard Lớp 2 — Luật phát hiện PI | ⏳ | 0% | Giao sau khi bạn đọc xong tài liệu Lớp 1 |
+| **FOX-Guard Lớp 1 — Chuẩn hoá ký tự** | ✅ | 100% | Đã merge `main`, CI xanh (3.11 + 3.13) |
+| **FOX-Guard Lớp 2 — Luật phát hiện PI** | ✅ | 100% | 21 luật. Held-out độc lập: **bắt 64,6%, chặn nhầm 0%**. Đã merge `main` |
 | FOX-Guard Lớp 3 — PII tiếng Việt + giả danh hoá | ⏳ | 0% | |
 | FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit | ⏳ | 0% | Từ lớp này guard mới bắt đầu **chặn thật** |
 | FOX-Guard Lớp 5 — Classifier + khoanh vùng | ⛔ | 0% | Cần bạn chấp nhận license Prompt Guard 2 + tập dev của Phần C |
 | FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | ⏳ | 0% | |
 | Thực nghiệm (Phần C) | ⏳ | 0% | Chưa giao. Phải có trước Lớp 5 |
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
-| **Toàn đồ án (ước tính)** | 🟡 | **~25%** | Lịch: 03/11 → 07/12/2026 |
+| **Toàn đồ án (ước tính)** | 🟡 | **~32%** | Lịch: 03/11 → 07/12/2026 |
 
-**Việc tiếp theo:** (1) bạn đọc [`hoc/lop-1-chuan-hoa.md`](hoc/lop-1-chuan-hoa.md) (đang ở nhánh `feat/b-core`) và chạy demo; (2) bạn đồng ý merge `feat/b-core` vào `main`; (3) Claude giao Lớp 2.
+**Việc tiếp theo:** (1) bạn đọc [`hoc/lop-1-chuan-hoa.md`](hoc/lop-1-chuan-hoa.md) và [`hoc/lop-2-luat.md`](hoc/lop-2-luat.md), chạy 2 demo; (2) sau đó làm Lớp 3 (PII tiếng Việt).
 
 ---
 
@@ -286,9 +286,9 @@ Mỗi tính năng có mã `FG-xx`. Cột "Lớp" chỉ tới mục mô tả chi 
 | FG-07 | Bản đọc tiếng Việt: không dấu, ghép mảnh, teencode/leet (205 từ) | ● | ● | ● | 1 | ✅ |
 | FG-08 | Bản đọc số: gom chữ số rời, đổi số viết bằng chữ, map vị trí ngược | ● | ● | ● | 1 | ✅ |
 | FG-09 | Giải mã base64/hex/%XX/\uXXXX/HTML/ROT13, sâu ≤ 2, loại trừ UUID/JWT/hash | ● | ● | ● | 1 | ✅ |
-| FG-10 | Gói luật PI VI/EN (ghi đè, giả thẩm quyền, trích prompt, lệnh trong dữ liệu, đòi PII trong dữ liệu, lệnh tool) | ● | ● | | 2 | ⏳ |
-| FG-11 | Luật cấu trúc tất định: token điều khiển, thẻ delimiter giả, HTML comment chứa lệnh, many-shot | ● | ● | | 2 | ⏳ |
-| FG-12 | Báo cáo "luật nào bắt ca nào" xuất CSV | ● | ● | | 2 | ⏳ |
+| FG-10 | Gói luật PI VI/EN (ghi đè, giả thẩm quyền, trích prompt, lệnh trong dữ liệu, đòi PII trong dữ liệu, lệnh tool) | ● | ● | | 2 | ✅ |
+| FG-11 | Luật cấu trúc tất định: token điều khiển, thẻ delimiter giả, HTML comment chứa lệnh, many-shot | ● | ● | | 2 | ✅ |
+| FG-12 | Báo cáo "luật nào bắt ca nào" xuất CSV (`fox-guard rules report`) | ● | ● | | 2 | ✅ |
 | FG-13 | Nhận diện PII VN: CCCD, CMND, SĐT, email, thẻ (Luhn), STK, MST, hộ chiếu, biển số, BHYT, OTP, tên, địa chỉ | ● | ● | ● | 3 | ⏳ |
 | FG-14 | Giả danh hoá `<PHONE_1>` ổn định trong phiên + hoàn nguyên đúng chủ | ● | ● | ● | 3 | ⏳ |
 | FG-15 | Chính sách PII theo trạm + `intent` (chỉ giữ tỉnh/thành khi tra đơn) | ● | ● | ● | 3 | ⏳ |
@@ -397,7 +397,7 @@ Không lớp nào chặn tuyệt đối. Mỗi lớp bù chỗ yếu của lớp
 
 ---
 
-### 4.2 Lớp 2 — Luật phát hiện prompt injection ⏳
+### 4.2 Lớp 2 — Luật phát hiện prompt injection ✅
 
 **Mô tả:** gói luật YAML (`detectors/rules/packs/vi.yaml`, `en.yaml`, `structural.yaml`). Mỗi luật chạy trên **mọi cách đọc** của Lớp 1, nên `bo qua moi huong dan` hay `іgnоrе` đều khớp.
 
@@ -430,13 +430,19 @@ Không lớp nào chặn tuyệt đối. Mỗi lớp bù chỗ yếu của lớp
 
 **Ràng buộc rút từ Lớp 1:** luật chạy trên view `skeleton` phải áp skeleton lên chính pattern. Chuỗi mã hoá chứa ký tự vô hình không được giải mã, nên không trông vào view `decoded` cho ca đó.
 
-**Xong khi:**
-- mỗi luật có ≥ 2 ví dụ dương và ≥ 2 ví dụ âm chạy trong pytest;
-- có bộ câu hard-benign CSKH (ghi chú giao hàng hợp lệ…);
-- xuất được CSV "luật nào bắt ca nào";
-- có tài liệu học `hoc/lop-2-luat.md`.
+**Đã làm (05/11/2026):** 21 luật (VI 10, EN 7, cấu trúc 4), mỗi luật có ≥ 2 ví dụ dương/âm chạy trong pytest. Bản đọc mới `latin` chỉ đổi chữ Cyrillic/Greek giống Latin về Latin, thay cho skeleton (skeleton đổi `m`→`rn`). Luật đòi PII bỏ qua câu phủ định ("shop **không bao giờ** yêu cầu OTP"). Regex quá 50 ms thì báo `rules:timeout`, không bỏ qua im lặng. Trạm lấy theo hàm được gọi, không theo `ctx.station`. Có CLI `fox-guard rules list | report`.
 
-**Giới hạn biết trước:** diễn đạt lại là lọt. Trần đã biết của luật trên tấn công gián tiếp tinh vi là khoảng 35–45% recall, và Lớp 5 sẽ bù.
+**Số đo:**
+
+| Bộ | Người viết | Bắt được | Chặn nhầm |
+| --- | --- | --- | --- |
+| 42 câu tấn công + 64 câu hard-benign + ví dụ luật | Claude | 100% | 0% |
+| Red-team dev 40 + 40 | Tác tử khác, chưa thấy luật (sau đó dùng để sửa luật) | 62,5% (trước khi sửa) | 0% |
+| **Red-team held-out 48 + 52** | Tác tử khác, sau khi luật đã chốt, **không sửa theo** | **64,6%** | **0%** |
+
+Theo nhóm (held-out): cấu trúc 6/6 · ghi đè 5/6 · đòi prompt 4/6 · lệnh tool 4/6 · giả thẩm quyền, lệnh trong dữ liệu, đòi PII, many-shot mỗi nhóm 3/6. Độ trễ 13 ms (p95, 2 KB).
+
+**Giới hạn:** khoảng 1/3 câu diễn đạt tự nhiên bị lọt: lệnh lịch sự chôn trong review dài, giả thẩm quyền kể chuyện, many-shot viết tắt `kh:`/`bot:`. Không nới luật thêm vì sợ chặn nhầm khách thật; Lớp 5 (classifier) bù. Tài liệu học: [`hoc/lop-2-luat.md`](hoc/lop-2-luat.md). Báo cáo: `docs/reports/claude-B3.md`.
 
 ---
 
@@ -564,6 +570,7 @@ Tool ghi `create_support_ticket`: nếu trong lượt có CONTEXT medium/high th
 | Trạm | Thành phần | Mục tiêu p95 thêm vào (CPU, ≤ 2 KB) | Đo được |
 | --- | --- | --- | --- |
 | Mọi trạm | Chuẩn hoá (Lớp 1) | ≤ 50 ms | **6,4 ms** ✅ |
+| Mọi trạm | Luật (Lớp 2) | — | **13 ms** ✅ (20.000 ký tự xấu nhất ~200 ms) |
 | INPUT | chuẩn hoá + luật + classifier + PII | ≤ 400 ms | ⏳ |
 | CONTEXT (mỗi đoạn) | như trên + khoanh vùng | ≤ 400 ms | ⏳ |
 | OUTPUT | PII + solicitation + link | ≤ 300 ms | ⏳ |
@@ -602,7 +609,7 @@ Tool ghi `create_support_ticket`: nếu trong lượt có CONTEXT medium/high th
 | Trường | Kiểu | Ý nghĩa |
 | --- | --- | --- |
 | `decision_id` | str (uuid hex) | Khoá để tra audit, gắn vào `chat_logs.guard_decision_ids` |
-| `action` | `allow` \| `mask` \| `block` \| `review` | Hành động. **Hiện luôn `allow`** cho tới Lớp 4 |
+| `action` | `allow` \| `mask` \| `block` \| `review` | Hành động. **Hiện luôn `allow`** cho tới Lớp 4 (Lớp 1–2 chỉ báo tín hiệu) |
 | `text` | str | Văn bản app dùng tiếp (đã chuẩn hoá / đã che / đã cắt / câu từ chối) |
 | `risk` | `low` \| `medium` \| `high` | Rủi ro gộp (hiện = mức cao nhất trong findings) |
 | `findings` | list[Finding] | Danh sách phát hiện |
@@ -803,7 +810,7 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 
 | Tuần | Kế hoạch | Thực tế | Mốc kiểm | Trạng thái mốc |
 | --- | --- | --- | --- | --- |
-| **T1** 03–09/11 | Web A0–A7; FOX B0–B3; dữ liệu C1 | Web xong sớm (03/11). FOX: B0, B1, B2, 1b xong (Lớp 1) | Web chạy + 1 đơn Stripe có webhook; Lớp 1 tái lập đúng 6 ca evidence Unicode (câu tấn công hiện ra trong bản đọc để Lớp 2 soi) | ✅ ✅ |
+| **T1** 03–09/11 | Web A0–A7; FOX B0–B3; dữ liệu C1 | Web xong sớm (03/11). FOX: B0, B1, B2, 1b, **B3** xong (Lớp 1 + 2), đã push, CI xanh | Web chạy + 1 đơn Stripe có webhook; Lớp 1 tái lập đúng 6 ca evidence Unicode (câu tấn công hiện ra trong bản đọc để Lớp 2 soi) | ✅ ✅ |
 | **T2** 10–16/11 | B4 classifier, B5 PII, B6 policy + audit, B7 sidecar; C1–C2 | — | **Gate:** có bảng P/R/F1/FPR detector-level cho R, M, H. Chưa có thì cắt B8 và judge | ⏳ |
 | **T3** 17–23/11 | B9 cắm web, B10 dashboard, B8 proxy, judge; C3 | — | Demo 5 kịch bản chạy; có số ASR G0 vs G4 | ⏳ |
 | **T4** 24–30/11 | Sửa lỗi, tối ưu; C3 đầy đủ + C4 | — | Báo cáo đủ chương + slide nháp | ⏳ |
@@ -821,9 +828,9 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 | [x] | B1 | Hợp đồng `GuardContext/Finding/Decision`, cấu hình chặt, SDK 3 trạm, `docs/api.md` | — | Codex | `5788f78`, `bc66f50` | — |
 | [x] | B2 | Chuẩn hoá 8 bước, 9 view, confusables 16.0.0 | 1 | Codex | `f662f60` → `c2a0bfb` | — |
 | [x] | B1b | Sửa leet/gộp cảnh báo; teencode 205 dòng; 42 + 39 fixture; sửa báo nhầm URL; không làm mất cảnh báo mạnh trong mã hoá; tài liệu học + demo | 1 | Claude | `7708ca3` → `01f2446` | ✅ `lop-1-chuan-hoa.md` |
-| [ ] | — | Bạn đọc tài liệu học Lớp 1 | 1 | Bạn | | |
-| [ ] | — | Merge `feat/b-core` vào `main` (không xung đột) | — | Claude, khi bạn đồng ý | | |
-| [ ] | B3 | Gói luật VI/EN 8 nhóm + ví dụ dương/âm + hard-benign + CSV | 2 | Codex | | `lop-2-luat.md` |
+| [x] | — | Merge Lớp 1 vào `main`, push, CI xanh 3.11 + 3.13 | — | Claude | `777fd0d` | |
+| [ ] | — | Bạn đọc tài liệu học Lớp 1 + Lớp 2 | 1, 2 | Bạn | | |
+| [x] | B3 | 21 luật VI/EN/cấu trúc, ví dụ dương/âm, 64 hard-benign, 42 tấn công, 2 bộ red-team độc lập (held-out 64,6% / 0%), CLI CSV, timeout không im lặng | 2 | Claude | `1a4d46d` → merge Lớp 2 | ✅ `lop-2-luat.md` |
 | [ ] | B5.1 | Recognizer PII VN + spike NER | 3 | Codex | | `lop-3-pii.md` |
 | [ ] | B5.2 | Vault giả danh hoá ↔ hoàn nguyên + chính sách theo trạm/intent | 3 | Codex | | |
 | [ ] | B5.3 | Chặn bot đòi PII | 4 | Codex | | `lop-4-dau-ra-policy-audit.md` |
@@ -891,7 +898,11 @@ Claude giao việc (prompt chi tiết + chỗ dễ sai)
 | 7 | Mọi giải mã `%XX`/HTML đều là tín hiệu | `%20`, `&amp;` chỉ giải ra dấu cách/dấu câu thì chỉ là view, không báo | URL hợp lệ bị báo nhầm "đã mã hoá" |
 | 8 | Cảnh báo bản giải mã chép lên kết quả gốc | ROT13 và bản "-plain" không chép (chỉ là cách đọc lại cùng chữ); bản giải mã thật chép mỗi loại một lần, **không bao giờ bỏ cảnh báo mạnh hơn** | Hết trùng, nhưng không để mất cảnh báo medium giấu trong base64 |
 | 9 | So skeleton với chữ thường | Skeleton đổi `m`→`rn`: luật/allowlist phải so skeleton với skeleton | Chuẩn UTS #39 cố ý như vậy |
-| 10 | Dữ liệu test do Antigravity soạn độc lập | Codex/Claude soạn, sinh bằng script `scripts/gen_normalize_fixtures.py`; Claude thêm ca kiểm độc lập khi nghiệm thu | Bỏ Antigravity từ 05/11 |
+| 10 | Dữ liệu test do Antigravity soạn độc lập | Codex/Claude soạn, sinh bằng script; **kiểm độc lập bằng tác tử khác viết bộ red-team** (dev + held-out) | Bỏ Antigravity từ 05/11 |
+| 12 | Luật chạy trên view `skeleton` | Luật chạy trên view mới `latin` (chỉ đổi chữ Cyrillic/Greek giống Latin) | Skeleton đổi `m`→`rn`, không viết pattern được |
+| 13 | Luật lấy trạm từ `ctx.station` | Lấy theo hàm `check_input/context/output` | App ghi nhầm trạm sẽ tắt luật dữ liệu |
+| 14 | Regex quá thời gian thì bỏ qua | Phát finding `rules:timeout` (medium) | Kẻ tấn công có thể cố ý làm chậm regex để lách |
+| 15 | Luật đòi PII bắt mọi "yêu cầu khách gửi OTP" | Bỏ qua khi có từ phủ định đứng trước ("không bao giờ") | Câu cảnh báo của shop bị bắt nhầm |
 | 11 | Phần A dùng `setup.sql` | Supabase thật thiếu 3 bảng; thêm migration 0 với quyền chặt hơn | `setup.sql` xoá toàn bộ bảng, không được chạy |
 
 ---
@@ -920,6 +931,8 @@ Claude giao việc (prompt chi tiết + chỗ dễ sai)
 | Q18 | Bỏ Antigravity khỏi chỉnh sửa; chỉ Codex làm, Claude nghiệm thu | Bạn (05/11) | Nhiều lần đoán tên, báo "PASSED" khi chưa chạy |
 | Q19 | Đợt 1b do Claude tự làm và tự nghiệm thu | Bạn (05/11) | Bù bằng test RED-trước, tự dò ca biên, ghi rõ giới hạn |
 | Q20 | File này (`DU-AN.md`) là kế hoạch chính, `plans/*` là đặc tả chi tiết | Bạn (05/11) | Plan rời rạc khó theo dõi, khó học |
+| Q21 | Đo luật bằng 2 bộ red-team do tác tử khác viết: bộ 1 làm dev (được sửa luật theo), bộ 2 held-out (không sửa theo) | Claude (05/11) | Tránh tự chấm bài; số held-out là số báo cáo |
+| Q22 | Dừng nới luật ở recall 64,6% held-out, giữ FPR 0% | Claude (05/11) | Nới thêm là bắt nhầm khách thật; phần còn lại để classifier (Lớp 5) |
 
 **Câu còn mở:** ngày nộp/bảo vệ chính xác (đang giả định sau 07/12/2026) · license Prompt Guard 2 · ai làm Phần C.
 
@@ -945,6 +958,7 @@ Claude giao việc (prompt chi tiết + chỗ dễ sai)
 | --- | --- | --- |
 | L1-FN-1 | `ig` + dấu sắc rời + `nore` không có tín hiệu (bản không dấu vẫn đọc ra) | Đã biết, ghi trong test `xfail` |
 | L1-FN-2 | Hex dài đúng 64 ký tự không được giải mã | Đã biết, Lớp 5 bù |
+| L2-FN | 17/48 câu held-out lọt luật (lệnh lịch sự chôn trong review, giả thẩm quyền kể chuyện, many-shot `kh:`/`bot:`) | Đã biết, Lớp 5 bù; test giữ mức sàn ≥ 60% |
 | BUG-A-01 | Một user review một sản phẩm nhiều lần | Đã sửa trên nhánh `fix/a-k5`, chưa nghiệm thu, chưa áp dụng DB |
 | A-OPEN-1 | Hết hàng đúng lúc khách trả tiền → webhook 503, Stripe gửi lại mãi | Ghi nhận |
 | OPS-1 | File mật khẩu DB dạng chữ thường `D:/backups/supabase/db-password.txt` | Bạn cần xoá |
@@ -962,8 +976,8 @@ Không đạt 0% ASR. Diễn đạt lại tinh vi và tấn công thích nghi v�
 
 | Lớp | File | Trạng thái |
 | --- | --- | --- |
-| 1 — Chuẩn hoá ký tự | [`hoc/lop-1-chuan-hoa.md`](hoc/lop-1-chuan-hoa.md) (nhánh `feat/b-core`) | ✅ sẵn để đọc |
-| 2 — Luật | `hoc/lop-2-luat.md` | ⏳ |
+| 1 — Chuẩn hoá ký tự | [`hoc/lop-1-chuan-hoa.md`](hoc/lop-1-chuan-hoa.md) | ✅ sẵn để đọc |
+| 2 — Luật | [`hoc/lop-2-luat.md`](hoc/lop-2-luat.md) | ✅ sẵn để đọc |
 | 3 — PII | `hoc/lop-3-pii.md` | ⏳ |
 | 4 — Đầu ra, policy, audit | `hoc/lop-4-dau-ra-policy-audit.md` | ⏳ |
 | 5 — Classifier, khoanh vùng | `hoc/lop-5-classifier-khoanh-vung.md` | ⏳ |
@@ -1009,7 +1023,7 @@ Câu hỏi hội đồng và hướng trả lời (28 câu): [`plans/D-hoc-va-va
 
 | Repo | Đường dẫn | Nhánh |
 | --- | --- | --- |
-| FOX-Guardrails (đồ án) | `D:/create/DATN/FOX-Guardrails` | `main`; code Lớp 1 ở `feat/b-core` (worktree `D:/create/DATN/.worktrees/b-core`), chưa merge |
+| FOX-Guardrails (đồ án) | `D:/create/DATN/FOX-Guardrails` | `main` (đã có Lớp 1 + 2, đã push lên GitHub, CI xanh); nhánh làm việc `feat/b-core` (worktree `D:/create/DATN/.worktrees/b-core`) |
 | Web testbed | `D:/create/DATN/Agenttic-RAG-for-e-commerce` | `main`; `qa/a-wave3` (QA2), `fix/a-k5` (K5) chờ nghiệm thu |
 
 ### 14.2 Lệnh hay dùng
@@ -1019,6 +1033,8 @@ cd D:/create/DATN/.worktrees/b-core
 C:/Users/Admin/anaconda3/envs/DL/python.exe -X utf8 -m pytest -q           # toàn bộ test FOX
 C:/Users/Admin/anaconda3/envs/DL/python.exe -m ruff check src tests scripts # lint
 ./.venv/Scripts/python.exe -X utf8 scripts/demo_lop1.py                     # demo Lớp 1
+./.venv/Scripts/python.exe -X utf8 scripts/demo_lop2.py                     # demo Lớp 2
+C:/Users/Admin/anaconda3/envs/DL/python.exe -X utf8 -m fox_guard.cli rules list # danh sách luật
 ```
 
 Chạy web (3 tiến trình: rag-service `:8080`, Next.js `:3000`, Stripe CLI listener): `Agenttic-RAG-for-e-commerce/docs/RUN.md`. Sao lưu DB: `D:/backups/supabase/20261103-213431-pre-migration/` (có script chạy thử chuỗi migration).

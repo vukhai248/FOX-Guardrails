@@ -122,3 +122,13 @@ Chủ đồ án giao Claude làm thay Codex ở đợt này. Kết quả và chi
   - Skeleton UTS #39 đổi `m`→`rn`, nên luật chạy trên view `skeleton` phải áp skeleton cho cả pattern.
   - Chuỗi mã hoá chứa ký tự vô hình bị bộ lọc "đọc được" loại từ đầu (không giải mã), nên không trông vào view `decoded` cho ca đó.
 - Lớp 1 **đạt**. Lớp 2 chỉ giao sau khi chủ đồ án đọc xong `docs/hoc/lop-1-chuan-hoa.md`.
+
+
+---
+
+## ✅ Lớp 2 (B3) — Claude tự làm, 05/11/2026 (đã merge `main`)
+
+Chi tiết: `docs/reports/claude-B3.md`, tài liệu học `docs/hoc/lop-2-luat.md`. Cho Codex khi nhận các lớp sau:
+- Luật nằm ở `src/fox_guard/detectors/rules/packs/*.yaml`. Thêm luật thì phải có ≥ 2 ví dụ dương và ≥ 2 ví dụ âm. Không thêm view `skeleton` vào luật: dùng `latin`.
+- `tests/fixtures/rules_redteam_heldout.jsonl` là bộ **held-out**. **Tuyệt đối không sửa luật theo bộ này.** Muốn đo lại thì nhờ một tác tử khác viết bộ mới.
+- `Guard._check(text, station)`: trạm lấy theo hàm được gọi. Lớp 3/4 cắm detector mới vào đúng chỗ này.
