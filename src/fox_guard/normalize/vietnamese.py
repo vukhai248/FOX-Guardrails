@@ -72,8 +72,7 @@ def vietnamese_views(nfkc: str, teencode_path=None) -> tuple[str, str]:
         if token in table:
             return table[token]
         start, end = match.span()
-        if (any(a < end and start < b for a, b in protected)
-                or sum(ch.isalpha() for ch in token) * 2 < len(token)):
+        if any(a < end and start < b for a, b in protected):
             return token
         token = token.translate(_LEET)
         return table.get(token, token)

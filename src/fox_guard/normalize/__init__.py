@@ -11,6 +11,8 @@ from .views import NormalizedText
 
 __all__ = ["NormalizedText", "normalize"]
 
+_SEVERITY = {"low": 0, "medium": 1, "high": 2}
+
 
 def _views(raw: str, inspected: str, teencode_path=None) -> NormalizedText:
     base = unicodedata.normalize("NFC", inspected)
@@ -69,13 +71,14 @@ def normalize(text: str, *, max_chars: int = 20000, decode_max_depth: int = 2,
             child = _views(value, value, teencode_path)
             root.decoded.append(child)
             # ROT13 and "-plain" children re-read the same visible text, so their signals would only
-            # duplicate the root's. Real decodings surface each new detector once.
+            # duplicate the root's. Real decodings surface a detector unless root already has it at
+            # the same or a higher severity (never lose a stronger signal found inside an encoding).
             if codec != "rot13" and not codec.endswith("-plain"):
                 encoded_codecs.add(codec)
-                known = {signal.detector for signal in root.signals}
                 for signal in child.signals:
-                    if signal.detector not in known:
-                        known.add(signal.detector)
+                    rank = _SEVERITY[signal.severity]
+                    same = [s for s in root.signals if s.detector == signal.detector]
+                    if all(_SEVERITY[s.severity] < rank for s in same):
                         root.signals.append(signal.model_copy(update={"span": None}))
             queue.append((child.nfkc, depth + 1))
             if child.hidden_tags:

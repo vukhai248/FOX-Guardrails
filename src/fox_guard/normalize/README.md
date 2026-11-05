@@ -22,7 +22,7 @@ có `span=None`; span nội bộ từng node tính trên `clean` của node đó
 trả khoảng nguồn đầy đủ, gồm cả từ cuối khi đổi số viết bằng chữ.
 Chỉ chuỗi ≥6 từ số mới được đổi. Không sửa `clean` bằng các view đọc.
 Bảng `data/teencode_vi.tsv` (205 dòng); `ambiguous=1` không thay, trùng khoá sau bỏ dấu thì mơ hồ thắng.
-Leet bỏ qua giá/số lượng (`25.990.000đ`, `990k`, `2tr5`), UUID, hex ≥16 và token <50% chữ.
+Leet bỏ qua giá/số lượng (`25.990.000đ`, `990k`, `2tr5`), UUID, hex ≥16 và `%XX`.
 Bảng được cache theo path; dùng đường dẫn mới hoặc khởi động lại khi cập nhật.
 
 Giới hạn: không giải mã nén/mã tự chế; skeleton có thể đổi `m` thành `rn`,
