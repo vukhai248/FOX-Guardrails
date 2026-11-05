@@ -15,8 +15,13 @@ pii:                  # B5: giả danh hoá theo phiên, bản đồ chỉ trong
   enabled: true
   vault_ttl_minutes: 60
 
-links:                # B5.4
-  allowlist: []
+links:                # B5.4: host của shop; link/ảnh ngoài danh sách bị gỡ ở trạm output
+  allowlist: [shop.example]
 
-audit:                # B6.5
+policy:               # B6.2: câu mẫu thay cho nội dung bị chặn (mặc định trong config.py)
+  context_hidden_text: "[nội dung này bị ẩn do nghi chứa chỉ dẫn độc hại]"
+
+audit:                # B6.5: SQLite chỉ nhận text đã che; salt băm user_ref lấy từ biến môi trường
+  enabled: true
   sqlite_path: var/fox_guard.sqlite
+  salt_env: FOX_AUDIT_SALT

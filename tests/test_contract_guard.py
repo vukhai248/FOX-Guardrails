@@ -27,18 +27,20 @@ def test_check_stations_allow_clean_text_and_return_measured_decisions(station):
     assert len(decision.decision_id) == 32
 
 
-def test_guard_reports_maximum_signal_risk_without_blocking():
+def test_guard_blocks_high_risk_input_with_refusal():
     tags = "".join(chr(0xE0000 + ord(char)) for char in "SYSTEM")
     context = GuardContext(session_id="synthetic-session", station="input")
-    decision = Guard().check_input("a\u200bb" + tags, context)
-    assert decision.action == "allow"
-    assert decision.text == "ab"
+    guard = Guard()
+    decision = guard.check_input("a\u200bb" + tags, context)
+    # Lớp 4: high risk at INPUT is blocked; the app shows the refusal and never calls the LLM.
+    assert decision.action == "block"
+    assert decision.text == guard.config.policy.refusal_text
     assert decision.risk == "high"
     assert all(isinstance(finding, Finding) for finding in decision.findings)
     assert len(decision.reasons) == len(decision.findings) >= 2
     assert all(reason for reason in decision.reasons)
     assert {finding.detector for finding in decision.findings} >= {"unicode:tags", "unicode:invisible"}
-    assert all(finding.span is None or finding.span[1] <= len(decision.text) for finding in decision.findings)
+    assert all(finding.span is None or finding.span[1] <= len("ab") for finding in decision.findings)
 
 
 def test_guard_applies_configured_normalization_limit(tmp_path):
