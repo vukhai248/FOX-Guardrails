@@ -1,13 +1,13 @@
 # Phân công agent — Giai đoạn 2: FOX-Guard (Phần B)
 
-> Ngày lập: 03/11/2026 · **Sửa 05/11/2026: bỏ Antigravity khỏi Phần B.** Chỉ còn Codex làm và Claude nghiệm thu. Prompt: `prompts/codex-phanB.md`. File `prompts/antigravity-phanB.md` không còn dùng.
+> Ngày lập: 03/11/2026 · **Sửa 05/11/2026 (lần 2): Claude code + mở PR, Codex review chính, bạn merge.** · **Sửa 05/11/2026: bỏ Antigravity khỏi Phần B.** Chỉ còn Codex làm và Claude nghiệm thu. Prompt: `prompts/codex-phanB.md`. File `prompts/antigravity-phanB.md` không còn dùng.
 
 ## 1. Vai trò
 
 | Ai | Vai trò |
 | --- | --- |
-| **Codex** | Làm toàn bộ: code `src/fox_guard/`, test, **mọi dữ liệu kiểm thử** (fixture, bảng teencode, câu hard-benign), ví dụ, dashboard (B10), tích hợp web (B9), tài liệu học cho lớp mình viết |
-| **Claude** | Đầu não: giao việc, đọc diff, chạy lại test, kiểm tài liệu học khớp code, nghiệm thu. Mỗi lần nghiệm thu, Claude tự viết thêm một bộ **ca kiểm độc lập** (`tests/acceptance/`) mà Codex không thấy trước, để Codex không tự chấm bài của mình |
+| **Codex** | **Reviewer chính** (từ 05/11/2026): checkout PR, chạy lại test, dò ca biên bằng input cụ thể, comment lên PR theo `prompts/codex-review.md`. Không push vào nhánh PR, không merge |
+| **Claude** | **Viết code** từng lớp trên nhánh riêng, mở PR lên GitHub, sửa theo review của Codex, cập nhật `docs/DU-AN.md`. Vẫn tự viết bộ kiểm độc lập (red-team do subagent viết) |
 | **Bạn** | Đọc tài liệu học sau mỗi lớp, chấp nhận license Prompt Guard 2, chạy thử demo |
 
 ## 2. Nhánh và quyền sở hữu file

@@ -12,7 +12,7 @@
 - **FOX-Guard là trọng tâm học thuật**, phần được chấm chính. Web e-commerce chỉ là **ứng dụng thử nghiệm** (testbed), cung cấp chỗ cho kẻ tấn công chèn dữ liệu và chỗ để đo.
 - Làm theo **từng lớp bảo mật**. Xong một lớp thì **dừng**: Claude nghiệm thu, bạn đọc tài liệu học `docs/hoc/lop-N-*.md`, rồi mới sang lớp sau.
 - **Đo được, giải thích được.** Mọi con số phải kèm cỡ mẫu. Không tuyên bố chặn 100%.
-- Người làm: **Codex** viết code (đợt 1b do Claude tự làm theo yêu cầu của bạn). **Claude** giao việc, chạy lại test và nghiệm thu. **Bạn** đọc, duyệt, chạy thử, viết báo cáo. Antigravity không còn tham gia chỉnh sửa (từ 05/11/2026).
+- Người làm (từ 05/11/2026): **Claude** viết code, mở PR trên GitHub. **Codex** là reviewer chính: chạy lại test, dò ca biên, comment lên PR (prompt `plans/prompts/codex-review.md`). **Bạn** đọc review và quyết định merge. Antigravity không còn tham gia.
 
 ---
 
@@ -955,6 +955,7 @@ Claude giao việc (prompt chi tiết + chỗ dễ sai)
 | Q22 | Dừng nới luật ở recall 64,6% held-out, giữ FPR 0% | Claude (05/11) | Nới thêm là bắt nhầm khách thật; phần còn lại để classifier (Lớp 5) |
 | Q23 | Không dùng Presidio trong lõi; recognizer VN tự viết | Claude (05/11) | Không có tiếng Việt, cần spaCy vài trăm MB, chậm trên CPU; số/mã VN có checksum |
 | Q24 | Chỉ SĐT/email/địa chỉ được hoàn nguyên, và chỉ cho đúng chủ; CCCD/thẻ/STK luôn che; OTP/mật khẩu xoá | Claude (05/11) | Bot không bao giờ cần in lại giấy tờ hay thẻ cho khách |
+| Q25 | Đổi vai: Claude code + mở PR, Codex review chính, bạn quyết định merge. Lớp 1–3 (đã nằm trên `main`) được mở một PR review bù | Bạn (05/11) | Codex hoạt động lại; cần người review khác người viết code |
 
 **Câu còn mở:** ngày nộp/bảo vệ chính xác (đang giả định sau 07/12/2026) · license Prompt Guard 2 · ai làm Phần C.
 
