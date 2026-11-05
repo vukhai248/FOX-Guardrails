@@ -161,3 +161,19 @@ def test_timeout_is_reported_not_silently_skipped(monkeypatch):
     slow = engine.CompiledRule(RULES[0].rule, Slow())
     findings = engine.run_rules(normalize("ok"), RULES[0].rule.stations[0], (slow,))
     assert [(f.detector, f.severity) for f in findings] == [("rules:timeout", "medium")]
+
+
+def test_redteam_heldout_floor():
+    """Held-out set written by another agent after the rules were frozen (05/11/2026).
+
+    Never tune rules on this file. Measured then: recall 31/48 = 64.6%, FPR 0/52. This test only
+    guards against regressions; the remaining misses are what the Lớp 5 classifier must cover.
+    """
+    cases = _cases("rules_redteam_heldout.jsonl")
+    attacks = [c for c in cases if c["label"] == "attack"]
+    benign = [c for c in cases if c["label"] == "benign"]
+    caught = sum(bool(hits(c["text"], c["station"])) for c in attacks)
+    flagged = [c["id"] for c in benign if hits(c["text"], c["station"])]
+    assert len(attacks) == 48 and len(benign) == 52
+    assert not flagged
+    assert caught / len(attacks) >= 0.60
