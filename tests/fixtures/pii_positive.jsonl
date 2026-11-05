@@ -1,0 +1,125 @@
+{"id": "pii-001", "entity": "VN_PHONE", "value": "0902916926", "text": "liên hệ 0902916926"}
+{"id": "pii-002", "entity": "VN_PHONE", "value": "0907952204", "text": "liên hệ 0907952204"}
+{"id": "pii-003", "entity": "VN_PHONE", "value": "0350717927", "text": "gọi em số 0350717927 trước khi giao"}
+{"id": "pii-004", "entity": "VN_PHONE", "value": "0831748608", "text": "My phone is 0831748608"}
+{"id": "pii-005", "entity": "VN_PHONE", "value": "0560776959", "text": "gọi em số 0560776959 trước khi giao"}
+{"id": "pii-006", "entity": "VN_PHONE", "value": "0861309803", "text": "sdt nguoi nhan: 0861309803"}
+{"id": "pii-007", "entity": "VN_PHONE", "value": "0986460278", "text": "My phone is 0986460278"}
+{"id": "pii-008", "entity": "VN_PHONE", "value": "0708459464", "text": "My phone is 0708459464"}
+{"id": "pii-009", "entity": "VN_PHONE", "value": "0989931160", "text": "gọi em số 0989931160 trước khi giao"}
+{"id": "pii-010", "entity": "VN_PHONE", "value": "0901947526", "text": "liên hệ 0901947526"}
+{"id": "pii-011", "entity": "VN_PHONE", "value": "0911250060", "text": "liên hệ 0911250060"}
+{"id": "pii-012", "entity": "VN_PHONE", "value": "0566951376", "text": "sdt nguoi nhan: 0566951376"}
+{"id": "pii-013", "entity": "VN_PHONE", "value": "0980299427", "text": "liên hệ 0980299427"}
+{"id": "pii-014", "entity": "VN_PHONE", "value": "0706457663", "text": "liên hệ 0706457663"}
+{"id": "pii-015", "entity": "VN_PHONE", "value": "0 3 5 1 0 0 8 2 6 8", "text": "sdt 0 3 5 1 0 0 8 2 6 8"}
+{"id": "pii-016", "entity": "VN_PHONE", "value": "0 5 6 8 8 7 5 0 3 8", "text": "sdt 0 5 6 8 8 7 5 0 3 8"}
+{"id": "pii-017", "entity": "VN_PHONE", "value": "0 7 0 4 2 0 4 9 3 5", "text": "số em 0 7 0 4 2 0 4 9 3 5 nha"}
+{"id": "pii-018", "entity": "VN_PHONE", "value": "091.196.325.0", "text": "số em 091.196.325.0 nha"}
+{"id": "pii-019", "entity": "VN_PHONE", "value": "056.325.554.5", "text": "sdt 056.325.554.5"}
+{"id": "pii-020", "entity": "VN_PHONE", "value": "0 7 0 6 7 1 9 4 2 4", "text": "sdt 0 7 0 6 7 1 9 4 2 4"}
+{"id": "pii-021", "entity": "VN_PHONE", "value": "không năm sáu hai sáu chín một chín sáu tám", "text": "số của em là không năm sáu hai sáu chín một chín sáu tám"}
+{"id": "pii-022", "entity": "VN_PHONE", "value": "không ba năm hai chín bốn bảy bảy bảy bốn", "text": "số của em là không ba năm hai chín bốn bảy bảy bảy bốn"}
+{"id": "pii-023", "entity": "VN_PHONE", "value": "không tám ba hai bốn chín bốn bốn ba bốn", "text": "số của em là không tám ba hai bốn chín bốn bốn ba bốn"}
+{"id": "pii-024", "entity": "VN_PHONE", "value": "không tám sáu ba ba hai chín chín tám ba", "text": "số của em là không tám sáu ba ba hai chín chín tám ba"}
+{"id": "pii-025", "entity": "VN_CCCD", "value": "079141359275", "text": "CCCD của em là 079141359275"}
+{"id": "pii-026", "entity": "VN_CCCD", "value": "001120901417", "text": "CCCD của em là 001120901417"}
+{"id": "pii-027", "entity": "VN_CCCD", "value": "026075992292", "text": "cccd: 026075992292"}
+{"id": "pii-028", "entity": "VN_CCCD", "value": "092263763042", "text": "CCCD của em là 092263763042"}
+{"id": "pii-029", "entity": "VN_CCCD", "value": "075382923387", "text": "cccd: 075382923387"}
+{"id": "pii-030", "entity": "VN_CCCD", "value": "048045580333", "text": "CCCD của em là 048045580333"}
+{"id": "pii-031", "entity": "VN_CCCD", "value": "048273708386", "text": "số định danh 048273708386"}
+{"id": "pii-032", "entity": "VN_CCCD", "value": "031173058063", "text": "số định danh 031173058063"}
+{"id": "pii-033", "entity": "VN_CCCD", "value": "001036367478", "text": "căn cước 001036367478"}
+{"id": "pii-034", "entity": "VN_CCCD", "value": "075328182919", "text": "số định danh 075328182919"}
+{"id": "pii-035", "entity": "VN_CCCD", "value": "079321378398", "text": "căn cước 079321378398"}
+{"id": "pii-036", "entity": "VN_CCCD", "value": "031075730324", "text": "căn cước 031075730324"}
+{"id": "pii-037", "entity": "VN_CCCD", "value": "0480 6623 6272", "text": "cccd 0480 6623 6272"}
+{"id": "pii-038", "entity": "VN_CCCD", "value": "0 0 1 0 8 7 2 9 3 1 2 1", "text": "cccd 0 0 1 0 8 7 2 9 3 1 2 1"}
+{"id": "pii-039", "entity": "VN_CCCD", "value": "0 3 1 0 7 6 7 6 2 9 0 8", "text": "cccd 0 3 1 0 7 6 7 6 2 9 0 8"}
+{"id": "pii-040", "entity": "VN_CCCD", "value": "026.037.191.597", "text": "cccd 026.037.191.597"}
+{"id": "pii-041", "entity": "CREDIT_CARD", "value": "4762263910764897", "text": "thẻ 4762263910764897 hết hạn 12/30"}
+{"id": "pii-042", "entity": "CREDIT_CARD", "value": "5147717753170424", "text": "card 5147717753170424"}
+{"id": "pii-043", "entity": "CREDIT_CARD", "value": "5192793326356786", "text": "thanh toán bằng thẻ 5192793326356786"}
+{"id": "pii-044", "entity": "CREDIT_CARD", "value": "9704522836590102", "text": "thẻ 9704522836590102 hết hạn 12/30"}
+{"id": "pii-045", "entity": "CREDIT_CARD", "value": "3530573957505059", "text": "card 3530573957505059"}
+{"id": "pii-046", "entity": "CREDIT_CARD", "value": "4371179584728278", "text": "thẻ 4371179584728278 hết hạn 12/30"}
+{"id": "pii-047", "entity": "CREDIT_CARD", "value": "3530683291202642", "text": "số thẻ visa 3530683291202642"}
+{"id": "pii-048", "entity": "CREDIT_CARD", "value": "3530042959588208", "text": "số thẻ visa 3530042959588208"}
+{"id": "pii-049", "entity": "CREDIT_CARD", "value": "9704856644103199", "text": "card 9704856644103199"}
+{"id": "pii-050", "entity": "CREDIT_CARD", "value": "3530458829634776", "text": "số thẻ visa 3530458829634776"}
+{"id": "pii-051", "entity": "CREDIT_CARD", "value": "5146 8763 0185 5877", "text": "the 5146 8763 0185 5877"}
+{"id": "pii-052", "entity": "CREDIT_CARD", "value": "5162 3292 3316 9578", "text": "the 5162 3292 3316 9578"}
+{"id": "pii-053", "entity": "CREDIT_CARD", "value": "3530 2028 7544 0385", "text": "the 3530 2028 7544 0385"}
+{"id": "pii-054", "entity": "CREDIT_CARD", "value": "4073 2087 7963 4586", "text": "the 4073 2087 7963 4586"}
+{"id": "pii-055", "entity": "VN_BANK_ACCOUNT", "value": "3231028205862", "text": "ck tới 3231028205862"}
+{"id": "pii-056", "entity": "VN_BANK_ACCOUNT", "value": "777432614240", "text": "ck tới 777432614240"}
+{"id": "pii-057", "entity": "VN_BANK_ACCOUNT", "value": "4371341708954", "text": "ck tới 4371341708954"}
+{"id": "pii-058", "entity": "VN_BANK_ACCOUNT", "value": "7934654354", "text": "STK: 7934654354 chủ tài khoản shop"}
+{"id": "pii-059", "entity": "VN_BANK_ACCOUNT", "value": "1477630689", "text": "stk vietcombank 1477630689"}
+{"id": "pii-060", "entity": "VN_BANK_ACCOUNT", "value": "2165823926", "text": "stk vietcombank 2165823926"}
+{"id": "pii-061", "entity": "VN_BANK_ACCOUNT", "value": "300568507581", "text": "STK: 300568507581 chủ tài khoản shop"}
+{"id": "pii-062", "entity": "VN_BANK_ACCOUNT", "value": "169833072302", "text": "chuyển khoản vào số tài khoản 169833072302"}
+{"id": "pii-063", "entity": "VN_TAX_ID", "value": "0553953572", "text": "mã số thuế công ty: 0553953572"}
+{"id": "pii-064", "entity": "VN_TAX_ID", "value": "0394217863", "text": "MST 0394217863 xuất hoá đơn giúp em"}
+{"id": "pii-065", "entity": "VN_TAX_ID", "value": "0307654796", "text": "mã số thuế công ty: 0307654796"}
+{"id": "pii-066", "entity": "VN_TAX_ID", "value": "0506983587", "text": "MST 0506983587 xuất hoá đơn giúp em"}
+{"id": "pii-067", "entity": "VN_TAX_ID", "value": "0169133299", "text": "MST 0169133299 xuất hoá đơn giúp em"}
+{"id": "pii-068", "entity": "VN_TAX_ID", "value": "0201576315", "text": "MST 0201576315 xuất hoá đơn giúp em"}
+{"id": "pii-069", "entity": "VN_CMND", "value": "453890278", "text": "CMND 453890278"}
+{"id": "pii-070", "entity": "VN_CMND", "value": "671541242", "text": "số chứng minh 671541242"}
+{"id": "pii-071", "entity": "VN_CMND", "value": "902650644", "text": "số chứng minh 902650644"}
+{"id": "pii-072", "entity": "VN_CMND", "value": "365073639", "text": "số chứng minh 365073639"}
+{"id": "pii-073", "entity": "VN_CMND", "value": "254239165", "text": "CMND 254239165"}
+{"id": "pii-074", "entity": "VN_CMND", "value": "348720061", "text": "số chứng minh 348720061"}
+{"id": "pii-075", "entity": "VN_PASSPORT", "value": "N8816289", "text": "passport N8816289"}
+{"id": "pii-076", "entity": "VN_PASSPORT", "value": "C6236839", "text": "hộ chiếu C6236839"}
+{"id": "pii-077", "entity": "VN_PASSPORT", "value": "N2357457", "text": "passport N2357457"}
+{"id": "pii-078", "entity": "VN_PASSPORT", "value": "C8321638", "text": "hộ chiếu C8321638"}
+{"id": "pii-079", "entity": "VN_PASSPORT", "value": "N1994453", "text": "passport N1994453"}
+{"id": "pii-080", "entity": "VN_LICENSE_PLATE", "value": "47K-196.22", "text": "biển số 47K-196.22"}
+{"id": "pii-081", "entity": "VN_LICENSE_PLATE", "value": "98K-273.87", "text": "xe biển 98K-273.87"}
+{"id": "pii-082", "entity": "VN_LICENSE_PLATE", "value": "59K-631.78", "text": "xe biển 59K-631.78"}
+{"id": "pii-083", "entity": "VN_LICENSE_PLATE", "value": "15LD-260.02", "text": "biển số 15LD-260.02"}
+{"id": "pii-084", "entity": "VN_LICENSE_PLATE", "value": "59LD-413.74", "text": "biển số 59LD-413.74"}
+{"id": "pii-085", "entity": "VN_HEALTH_INSURANCE", "value": "HS0127355540702", "text": "bhyt HS0127355540702"}
+{"id": "pii-086", "entity": "VN_HEALTH_INSURANCE", "value": "DN7361152392018", "text": "thẻ BHYT DN7361152392018"}
+{"id": "pii-087", "entity": "VN_HEALTH_INSURANCE", "value": "GD1600872108718", "text": "thẻ BHYT GD1600872108718"}
+{"id": "pii-088", "entity": "VN_HEALTH_INSURANCE", "value": "DN1418795019995", "text": "bhyt DN1418795019995"}
+{"id": "pii-089", "entity": "VN_HEALTH_INSURANCE", "value": "GD1323764446364", "text": "bhyt GD1323764446364"}
+{"id": "pii-090", "entity": "OTP", "value": "171734", "text": "ma otp 171734"}
+{"id": "pii-091", "entity": "OTP", "value": "222523", "text": "otp: 222523"}
+{"id": "pii-092", "entity": "OTP", "value": "2184", "text": "Mã OTP là 2184"}
+{"id": "pii-093", "entity": "OTP", "value": "344431", "text": "otp: 344431"}
+{"id": "pii-094", "entity": "OTP", "value": "961426", "text": "Mã OTP là 961426"}
+{"id": "pii-095", "entity": "OTP", "value": "078082", "text": "otp: 078082"}
+{"id": "pii-096", "entity": "OTP", "value": "363304", "text": "otp: 363304"}
+{"id": "pii-097", "entity": "OTP", "value": "73480096", "text": "mã xác thực 73480096"}
+{"id": "pii-098", "entity": "PASSWORD", "value": "Shop#1885", "text": "password: Shop#1885"}
+{"id": "pii-099", "entity": "PASSWORD", "value": "xyz!3175", "text": "mật khẩu: xyz!3175"}
+{"id": "pii-100", "entity": "PASSWORD", "value": "xyz!9955", "text": "mk là xyz!9955"}
+{"id": "pii-101", "entity": "PASSWORD", "value": "Shop#6199", "text": "mk là Shop#6199"}
+{"id": "pii-102", "entity": "PASSWORD", "value": "Shop#9711", "text": "password: Shop#9711"}
+{"id": "pii-103", "entity": "PASSWORD", "value": "Abc@0470", "text": "password: Abc@0470"}
+{"id": "pii-104", "entity": "EMAIL", "value": "synthetic.455@example.com", "text": "gửi về synthetic.455@example.com giúp"}
+{"id": "pii-105", "entity": "EMAIL", "value": "synthetic.363@example.com", "text": "gửi về synthetic.363@example.com giúp"}
+{"id": "pii-106", "entity": "EMAIL", "value": "synthetic.444@example.com", "text": "gửi về synthetic.444@example.com giúp"}
+{"id": "pii-107", "entity": "EMAIL", "value": "synthetic.198@example.com", "text": "gửi về synthetic.198@example.com giúp"}
+{"id": "pii-108", "entity": "EMAIL", "value": "synthetic.297@example.com", "text": "gửi về synthetic.297@example.com giúp"}
+{"id": "pii-109", "entity": "EMAIL", "value": "synthetic.154@example.com", "text": "email synthetic.154@example.com"}
+{"id": "pii-110", "entity": "EMAIL", "value": "synthetic.637@example.com", "text": "gửi về synthetic.637@example.com giúp"}
+{"id": "pii-111", "entity": "EMAIL", "value": "synthetic.789@example.com", "text": "mail: synthetic.789@example.com"}
+{"id": "pii-112", "entity": "PERSON", "value": "Hoàng Thu Hà", "text": "giao cho chị Hoàng Thu Hà"}
+{"id": "pii-113", "entity": "PERSON", "value": "Nguyễn Văn An", "text": "họ tên: Nguyễn Văn An"}
+{"id": "pii-114", "entity": "PERSON", "value": "Lê Minh Châu", "text": "giao cho chị Lê Minh Châu"}
+{"id": "pii-115", "entity": "PERSON", "value": "Trần Thị Bình", "text": "giao cho chị Trần Thị Bình"}
+{"id": "pii-116", "entity": "PERSON", "value": "Nguyễn Văn An", "text": "Người nhận: Nguyễn Văn An"}
+{"id": "pii-117", "entity": "PERSON", "value": "Phạm Quốc Dũng", "text": "giao cho chị Phạm Quốc Dũng"}
+{"id": "pii-118", "entity": "VN_ADDRESS", "value": "9 Hai Bà Trưng, xã Tân Phú, quận Hoàn Kiếm, Hà Nội", "text": "địa chỉ: 9 Hai Bà Trưng, xã Tân Phú, quận Hoàn Kiếm, Hà Nội"}
+{"id": "pii-119", "entity": "VN_ADDRESS", "value": "120 Lý Thường Kiệt, phường 7, quận 1, TP Hồ Chí Minh", "text": "giao tới 120 Lý Thường Kiệt, phường 7, quận 1, TP Hồ Chí Minh"}
+{"id": "pii-120", "entity": "VN_ADDRESS", "value": "290 Hai Bà Trưng, phường Hàng Bài, TP Huế", "text": "địa chỉ: 290 Hai Bà Trưng, phường Hàng Bài, TP Huế"}
+{"id": "pii-121", "entity": "VN_ADDRESS", "value": "209 Lê Lợi, phường Thạch Thang, TP Huế", "text": "địa chỉ: 209 Lê Lợi, phường Thạch Thang, TP Huế"}
+{"id": "pii-122", "entity": "VN_ADDRESS", "value": "42 Lý Thường Kiệt, phường Bến Nghé, huyện Củ Chi, TP Hồ Chí Minh", "text": "giao tới 42 Lý Thường Kiệt, phường Bến Nghé, huyện Củ Chi, TP Hồ Chí Minh"}
+{"id": "pii-123", "entity": "VN_ADDRESS", "value": "143 Hai Bà Trưng, phường Hàng Bài, TP Huế", "text": "nhà ở 143 Hai Bà Trưng, phường Hàng Bài, TP Huế"}
+{"id": "pii-124", "entity": "VN_ADDRESS", "value": "75 Lê Lợi, phường Bến Nghé, quận Hoàn Kiếm, Hà Nội", "text": "địa chỉ: 75 Lê Lợi, phường Bến Nghé, quận Hoàn Kiếm, Hà Nội"}
+{"id": "pii-125", "entity": "VN_ADDRESS", "value": "187 Trần Hưng Đạo, xã Tân Phú, huyện Củ Chi, TP Hồ Chí Minh", "text": "địa chỉ: 187 Trần Hưng Đạo, xã Tân Phú, huyện Củ Chi, TP Hồ Chí Minh"}

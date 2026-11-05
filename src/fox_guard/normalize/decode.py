@@ -11,7 +11,8 @@ _UUID = re.compile(r"(?i)(?<![\w-])[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}(?
 _JWT = re.compile(r"(?<![\w.-])[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+(?![\w.-])")
 _HASH = re.compile(r"(?i)(?<![\w])[0-9a-f]{64}(?!\w)|(?<!\w)[0-9a-f]{40}(?!\w)|(?<!\w)[0-9a-f]{32}(?!\w)")
 _B64 = re.compile(r"(?<![\w+/=-])[A-Za-z0-9+/_-]{8,}={0,2}(?![\w+/=-])")
-_HEX = re.compile(r"(?i)(?<!\w)(?:0x)?(?:[0-9a-f]{2}){8,}(?!\w)")
+# Hex must contain a letter a–f: an all-digit run is a card/account/order number, not encoded text.
+_HEX = re.compile(r"(?i)(?<!\w)(?:0x)?(?=[0-9]*[a-f])(?:[0-9a-f]{2}){8,}(?!\w)")
 _ESCAPE = re.compile(r"\\u([0-9a-fA-F]{4})|\\U([0-9a-fA-F]{8})")
 _PERCENT = re.compile(r"%[0-9a-fA-F]{2}")
 _ENTITY = re.compile(r"&(?:#[0-9]+|#x[0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]+);")
