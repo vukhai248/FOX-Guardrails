@@ -129,6 +129,7 @@ def write(name, rows, prefix):
             stream.write(json.dumps({"id": f"{prefix}-{i:03d}", **row}, ensure_ascii=False) + "\n")
 
 
-write("pii_positive.jsonl", POS, "pii")
-write("pii_hard_negative.jsonl", [{"text": t} for t in NEG], "pneg")
-print(f"positive={len(POS)} hard_negative={len(NEG)}")
+if __name__ == "__main__":
+    write("pii_positive.jsonl", POS, "pii")
+    write("pii_hard_negative.jsonl", [{"text": t} for t in NEG], "pneg")
+    print(f"positive={len(POS)} hard_negative={len(NEG)}")

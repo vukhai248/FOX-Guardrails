@@ -32,11 +32,11 @@ _PRIORITY = ["PASSWORD", "OTP", "CREDIT_CARD", "VN_CCCD", "VN_HEALTH_INSURANCE",
 
 _CONTEXT = {  # matched on the no-diacritics, lowercase window before the value
     "VN_CCCD": r"cccd|can cuoc|cmnd|chung minh|so dinh danh|dinh danh",
-    "VN_CMND": r"cmnd|chung minh|cmt",
+    "VN_CMND": r"cmnd|chung minh|cmt|id card|id number",
     "VN_BANK_ACCOUNT": r"stk|so tai khoan|tai khoan|so tk|\btk\b|chuyen khoan|\bck\b|ngan hang|"
                        r"vietcombank|vcb|"
                        r"techcombank|tcb|vietinbank|bidv|agribank|mb bank|mbbank|acb|tpbank|vpbank|sacombank|"
-                       r"momo|zalopay",
+                       r"momo|zalopay|bank account|account number|\bbank\b",
     "VN_TAX_ID": r"mst|ma so thue|ma thue|tax",
     "VN_PASSPORT": r"ho chieu|passport",
     "VN_LICENSE_PLATE": r"bien so|bien kiem soat|\bbks\b|xe",
@@ -57,13 +57,18 @@ _TAX13 = regex.compile(_D + r"\d{10}-\d{3}" + _E)
 _PASSPORT = regex.compile(r"(?<![\p{L}\p{N}])[A-Z]\d{7}(?![\p{L}\p{N}])")
 _PLATE = regex.compile(r"(?<![\p{L}\p{N}])(\d{2})[A-Z]{1,2}\d?[- ]?\d{3}\.?\d{2}(?![\p{L}\p{N}])")
 _BHYT = regex.compile(r"(?<![\p{L}\p{N}])([A-Z]{2})\d{13}(?![\p{L}\p{N}])")
-_SECRET = regex.compile(
-    r"(?i)(?P<cue>m[aã]\s*(?:otp|x[aá]c\s*(?:th[uự]c|nh[aậ]n)|pin)|otp|m[aã]\s*b[aả]o\s*m[aậ]t)"
-    r"(?:\s*(?:c[uủ]a\s*(?:em|m[iì]nh|t[oô]i|anh|ch[iị]))?\s*(?:l[aà]|:|=|-)?\s*)(?P<value>\d{4,8})(?!\d)")
+# Secrets are matched on the no-diacritics lowercase text (same length as clean, so spans map 1:1).
+_SECRET_CUE = (r"(?:ma\s*(?:otp|xac\s*(?:thuc|nhan|minh)|pin|bao\s*mat|dang\s*nhap|kich\s*hoat)|otp|"
+               r"verification\s*code|security\s*code|one[- ]time\s*(?:code|password)|otp\s*code)")
+_SECRET = regex.compile(r"\b" + _SECRET_CUE + r"\b[^\d\n]{0,25}?(?P<value>(?<!\d)\d{4,8})(?!\d)")
+# Value first, cue after: "591655 đây ạ, nhân viên bảo đọc mã để xác nhận".
+_SECRET_BEFORE = regex.compile(r"(?<!\d)(?P<value>\d{6})(?!\d)[^\n\d]{0,45}?\b(?:doc ma|doc code|"
+                               r"ma otp|ma xac (?:nhan|thuc|minh)|otp)\b")
 _PASSWORD = regex.compile(
-    r"(?i)(?P<cue>m[aậ]t\s*kh[aẩ]u|\bmk\b|\bpass(?:word)?\b|\bpwd\b)"
-    r"(?:\s*(?:c[uủ]a\s*(?:em|m[iì]nh|t[oô]i|anh|ch[iị]))?\s*(?:l[aà]|:|=)\s*)(?P<value>[^\s,;]{4,64})")
-_UNIT_AFTER = regex.compile(r"^\s?(?:đ|₫|vnd|vnđ|k\b|tr\b|triệu|nghìn|ngàn|%|gb|mah|w\b|cm|mm|kg|g\b)",
+    r"(?:\bmat\s*khau|\bmk\b|\bpass(?:word)?\b|\bpwd\b)(?:\s+\w+){0,3}?\s*(?:\bla\b|\bis\b|:|=)?\s*"
+    r"(?P<value>(?=[^\s,;]*[\d@#$%!&*])[^\s,;]{4,64})")
+# Price / quantity right after a number. Units need a word boundary: "đây", "được" are not "đ".
+_UNIT_AFTER = regex.compile(r"^\s?(?:đ|₫|vnd|vnđ|k|tr|triệu|nghìn|ngàn|%|gb|mah|w|cm|mm|kg|g)(?![\p{L}])",
                             regex.IGNORECASE)
 # UUIDs and hex hashes are IDs, not PII. A hash must contain a letter a–f: an all-digit run of 16+
 # is a card or account number, never "hex" (that bug once let 4242424242424242 into logs).
@@ -76,6 +81,17 @@ _PERSON = regex.compile(
     r"(?:(?i:người\s*nhận|nguoi\s*nhan|họ\s*(?:và\s*)?tên|ho\s*ten|tên\s*(?:khách|người\s*nhận)|ten)\s*[:\-]\s*"
     r"(?P<a>" + _NAME + r"))|(?:(?<![\p{L}])(?:anh|chị|chi|ông|ong|bà|ba|cô|chú|em)\s+(?P<b>\p{Lu}\p{Ll}+"
     r"(?:\s+\p{Lu}\p{Ll}+){1,3}))")
+# A capitalised sequence led by a common Vietnamese surname is very likely a person's name.
+_SURNAME = regex.compile(
+    r"(?<!(?:đường|duong|phố|pho|phường|quận|ngõ|hẻm|tp|trường|cầu|chợ|công\s*viên|tỉnh|thành\s*phố|"
+    r"đ\.)\s)(?<![\p{L}])(?:Nguyễn|Trần|Lê|Phạm|Hoàng|Huỳnh|Phan|Vũ|Võ|Đặng|Bùi|Đỗ|Hồ|Ngô|Dương|Lý|Đinh|"
+    r"Trịnh|Mai|Lâm|Đoàn|Cao|Lương|Trương|Chu|Tạ|Kiều|Nguyen|Tran|Le|Pham|Hoang|Vu|Vo|Dang|Bui|Do|Ngo)"
+    r"(?:\s+\p{Lu}\p{Ll}+){1,3}(?![\p{L}])")
+# Places that look like surname + name ("Hà Nội", "Hồ Chí Minh", "Lê Lợi" street) are not people.
+_NOT_PEOPLE = frozenset(no_diacritics(p).lower() for p in (
+    "Hà Nội", "Hồ Chí Minh", "Hà Giang", "Hà Tĩnh", "Hà Nam", "Hà Đông", "Cao Bằng", "Lâm Đồng", "Lý Sơn",
+    "Lê Lợi", "Trần Hưng Đạo", "Lý Thường Kiệt", "Nguyễn Trãi", "Nguyễn Huệ", "Lê Duẩn", "Hồ Tây",
+    "Phạm Ngũ Lão", "Hoàng Sa", "Trường Sa", "Đồng Nai", "Mai Châu"))
 _ADMIN = (r"(?:phường|phuong|xã|xa|thị\s*trấn|quận|quan|huyện|huyen|thị\s*xã|thành\s*phố|thanh\s*pho|tp\.?|"
           r"tỉnh|tinh|p\.|q\.|ấp|thôn|khu\s*phố|tổ)(?!\p{L})")
 _ADDRESS = regex.compile(
@@ -129,8 +145,11 @@ def cccd_ok(digits: str) -> bool:
     return digits[:3] in CCCD_PROVINCES and digits[3] in "0123"
 
 
-def _context(lowered: str, start: int, entity: str) -> bool:
+def _context(lowered: str, start: int, entity: str, end: int | None = None) -> bool:
+    """Context word in the 30 chars before the value, or the 25 chars after ('… - ACB', '… là MST')."""
     window = lowered[max(0, start - 30):start]
+    if end is not None:
+        window += " | " + lowered[end:end + 25]
     return bool(_CONTEXT_RE[entity].search(window))
 
 
@@ -149,9 +168,12 @@ def _scan(text: str) -> list[PiiMatch]:
     def is_amount(end):
         return bool(_UNIT_AFTER.match(text[end:end + 8]))
 
-    for m in _SECRET.finditer(text):
-        add("OTP", m.start("value"), m.end("value"), True)
-    for m in _PASSWORD.finditer(text):
+    # lowered keeps clean's length (NFC chars map 1:1 after dropping marks), so spans are shared.
+    aligned = len(lowered) == len(text)
+    for pattern in (_SECRET, _SECRET_BEFORE):
+        for m in pattern.finditer(lowered if aligned else text):
+            add("OTP", m.start("value"), m.end("value"), True)
+    for m in _PASSWORD.finditer(lowered if aligned else text):
         add("PASSWORD", m.start("value"), m.end("value"), True)
     for m in _EMAIL.finditer(text):
         add("EMAIL", *m.span(), True)
@@ -164,31 +186,34 @@ def _scan(text: str) -> list[PiiMatch]:
             add("CREDIT_CARD", *m.span(), True)
     for m in _DIGITS[12].finditer(text):
         if cccd_ok(m.group()) and not is_amount(m.end()):
-            add("VN_CCCD", *m.span(), _context(lowered, m.start(), "VN_CCCD"))
+            add("VN_CCCD", *m.span(), _context(lowered, m.start(), "VN_CCCD", m.end()))
     for m in _DIGITS[9].finditer(text):
-        if _context(lowered, m.start(), "VN_CMND") and not is_amount(m.end()):
+        if _context(lowered, m.start(), "VN_CMND", m.end()) and not is_amount(m.end()):
             add("VN_CMND", *m.span(), True)
     for m in _DIGITS[10].finditer(text):
-        if tax_id_ok(m.group()) and _context(lowered, m.start(), "VN_TAX_ID"):
+        if tax_id_ok(m.group()) and _context(lowered, m.start(), "VN_TAX_ID", m.end()):
             add("VN_TAX_ID", *m.span(), True)
     for m in _TAX13.finditer(text):
-        if tax_id_ok(m.group()[:10]) and _context(lowered, m.start(), "VN_TAX_ID"):
+        if tax_id_ok(m.group()[:10]) and _context(lowered, m.start(), "VN_TAX_ID", m.end()):
             add("VN_TAX_ID", *m.span(), True)
     for m in _DIGIT_RUN.finditer(text):
-        if _context(lowered, m.start(), "VN_BANK_ACCOUNT") and not is_amount(m.end()):
+        if _context(lowered, m.start(), "VN_BANK_ACCOUNT", m.end()) and not is_amount(m.end()):
             add("VN_BANK_ACCOUNT", *m.span(), True)
     for m in _PASSPORT.finditer(text):
-        if _context(lowered, m.start(), "VN_PASSPORT"):
+        if _context(lowered, m.start(), "VN_PASSPORT", m.end()):
             add("VN_PASSPORT", *m.span(), True)
     for m in _PLATE.finditer(text):
-        if 11 <= int(m.group(1)) <= 99 and _context(lowered, m.start(), "VN_LICENSE_PLATE"):
+        if 11 <= int(m.group(1)) <= 99 and _context(lowered, m.start(), "VN_LICENSE_PLATE", m.end()):
             add("VN_LICENSE_PLATE", *m.span(), True)
     for m in _BHYT.finditer(text):
-        if m.group(1) in BHYT_PREFIXES or _context(lowered, m.start(), "VN_HEALTH_INSURANCE"):
+        if m.group(1) in BHYT_PREFIXES or _context(lowered, m.start(), "VN_HEALTH_INSURANCE", m.end()):
             add("VN_HEALTH_INSURANCE", *m.span(), True)
     for m in _PERSON.finditer(text):
         group = "a" if m.group("a") else "b"
         add("PERSON", m.start(group), m.end(group), False)
+    for m in _SURNAME.finditer(text):
+        if no_diacritics(m.group()).lower() not in _NOT_PEOPLE:
+            add("PERSON", *m.span(), False)
     for m in _ADDRESS.finditer(text):
         add("VN_ADDRESS", m.start(), m.end(), False)
     return out

@@ -165,3 +165,13 @@ def test_pii_2kb_p95(benchmark):
     p95 = timings[int(0.95 * (len(timings) - 1))] * 1000
     print(f"\nB5 PII 2KB p95={p95:.3f} ms")
     assert p95 < 100
+
+
+# Dev set: sentences by a separate agent that never saw the recognizers; values filled by
+# scripts/fill_pii_slots.py. Recognizers were tuned on it (69.3% -> 98.9%), so it is a regression
+# guard, not a held-out score. The intended miss pr-040 ("mã giao dịch") is a transaction id, not a secret.
+def test_redteam_dev_pii():
+    positives = _cases("pii_redteam_dev_positive.jsonl")
+    caught = [c for c in positives if any(m.entity == c["entity"] for m in detect_pii(normalize(c["text"])))]
+    assert len(caught) >= len(positives) - 1
+    assert all(found(c["text"]) == [] for c in _cases("pii_redteam_dev_negative.jsonl"))
