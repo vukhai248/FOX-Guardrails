@@ -132,3 +132,13 @@ Chi tiết: `docs/reports/claude-B3.md`, tài liệu học `docs/hoc/lop-2-luat.
 - Luật nằm ở `src/fox_guard/detectors/rules/packs/*.yaml`. Thêm luật thì phải có ≥ 2 ví dụ dương và ≥ 2 ví dụ âm. Không thêm view `skeleton` vào luật: dùng `latin`.
 - `tests/fixtures/rules_redteam_heldout.jsonl` là bộ **held-out**. **Tuyệt đối không sửa luật theo bộ này.** Muốn đo lại thì nhờ một tác tử khác viết bộ mới.
 - `Guard._check(text, station)`: trạm lấy theo hàm được gọi. Lớp 3/4 cắm detector mới vào đúng chỗ này.
+
+
+---
+
+## ✅ Lớp 3 (B5.1, B5.2) — Claude tự làm, 05/11/2026 (đã merge `main`)
+
+Chi tiết: `docs/reports/claude-B5.md`, `docs/hoc/lop-3-pii.md`. Cho Codex khi nhận các lớp sau:
+- `src/fox_guard/pii/`: `recognizers.py` (detect_pii), `vault.py` (PiiVault), `policy.py` (3 trạm, `mask_value`, `redact_text`).
+- `tests/fixtures/pii_heldout_*.jsonl` là **held-out**: không sửa recognizer theo bộ này.
+- PII không tăng `risk`. Lớp 4 phải quyết định chặn dựa trên finding **không phải PII** (`kind != "pii"`), cộng với solicitation và link.
