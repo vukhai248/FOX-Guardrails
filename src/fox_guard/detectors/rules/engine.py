@@ -89,7 +89,9 @@ def load_rules(packs_dir: str = str(PACKS)) -> tuple[CompiledRule, ...]:
 
 
 def rule_reasons(rules: tuple[CompiledRule, ...] | None = None) -> dict[str, str]:
-    return {f"rules:{c.rule.id}": c.rule.reason for c in (rules or load_rules())}
+    reasons = {f"rules:{c.rule.id}": c.rule.reason for c in (rules or load_rules())}
+    reasons["rules:timeout"] = "Một số luật chạy quá thời gian nên chưa kiểm hết văn bản; cần xem lại."
+    return reasons
 
 
 def _node_views(node: NormalizedText) -> dict[str, str]:
@@ -117,6 +119,7 @@ def run_rules(normalized: NormalizedText, station: Station,
     nodes = [(child, True) for child in concealed] + [(normalized, False)]
     views = [(node, hidden, _node_views(node)) for node, hidden in nodes]
     findings = []
+    timed_out = []
     for item in rules:
         rule = item.rule
         if station not in rule.stations:
@@ -127,6 +130,8 @@ def run_rules(normalized: NormalizedText, station: Station,
                 try:
                     match = item.compiled.search(texts[view], timeout=_TIMEOUT_S)
                 except TimeoutError:
+                    # Never skip silently: an attacker could craft text that stalls a rule.
+                    timed_out.append(rule.id)
                     match = None
                 if match:
                     break
@@ -140,4 +145,9 @@ def run_rules(normalized: NormalizedText, station: Station,
                 evidence=_mask_evidence(match.group()), technique=rule.technique,
             ))
             break
+    if timed_out:
+        findings.append(Finding(
+            detector="rules:timeout", kind="injection", severity="medium",
+            evidence=f"Rule search timed out: {', '.join(sorted(set(timed_out)))}"[:120],
+        ))
     return findings

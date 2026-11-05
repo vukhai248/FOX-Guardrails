@@ -18,7 +18,7 @@ HTML comment) là `high` tất định. Khớp trên chữ **đã giấu** (Unic
 thì nâng lên `high`. `span` chỉ có khi view khớp có cùng độ dài với `clean`. `evidence` đã che chữ số.
 
 Câu phủ định ("Shop **không bao giờ** yêu cầu khách gửi OTP") không bị bắt nhờ điều kiện ở luật
-đòi PII. Mỗi lần `search` có timeout 50 ms để chống regex chạy quá lâu.
+đòi PII. Mỗi lần `search` có timeout 50 ms; quá thời gian thì phát finding `rules:timeout` (medium), không bỏ qua im lặng.
 
 CLI: `fox-guard rules list`, `fox-guard rules report cases.jsonl --out kq.csv` (luật nào bắt ca nào).
 Dữ liệu kiểm: `scripts/gen_rule_fixtures.py` sinh 64 câu hard-benign + 42 câu tấn công.

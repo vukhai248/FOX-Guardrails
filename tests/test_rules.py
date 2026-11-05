@@ -149,3 +149,15 @@ def test_redteam_dev_set(case):
         assert found, case["group"]
     else:
         assert not found, list(found)
+
+
+def test_timeout_is_reported_not_silently_skipped(monkeypatch):
+    import fox_guard.detectors.rules.engine as engine
+
+    class Slow:
+        def search(self, *args, **kwargs):
+            raise TimeoutError
+
+    slow = engine.CompiledRule(RULES[0].rule, Slow())
+    findings = engine.run_rules(normalize("ok"), RULES[0].rule.stations[0], (slow,))
+    assert [(f.detector, f.severity) for f in findings] == [("rules:timeout", "medium")]
