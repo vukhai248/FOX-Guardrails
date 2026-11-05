@@ -67,7 +67,7 @@ class AuditStore:
             ctx.session_id, self.hash_user(ctx.user_ref), ctx.arm, decision.action, decision.risk,
             json.dumps(decision.reasons, ensure_ascii=False),
             json.dumps([f.model_dump() for f in decision.findings], ensure_ascii=False),
-            text_redacted, decision.latency_ms, int(decision.degraded), config_version,
+            text_redacted, round(decision.latency_ms, 3), int(decision.degraded), config_version,
         )
         with self._lock:
             self._conn.execute("INSERT INTO decisions VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row)

@@ -71,5 +71,38 @@ def rules_report(
     typer.echo(f"{rows} ca → {out}")
 
 
+audit_app = typer.Typer(help="Lớp 4: tra cứu nhật ký quyết định (chỉ chứa text đã che).",
+                        no_args_is_help=True)
+app.add_typer(audit_app, name="audit")
+DbOption = Annotated[Path, typer.Option("--db", help="File SQLite audit.")]
+
+
+@audit_app.command("why")
+def audit_why(decision_id: str, db: DbOption = Path("var/fox_guard.sqlite")) -> None:
+    """In lý do của một quyết định từ bản ghi audit (không cần text gốc)."""
+    from fox_guard.audit.store import AuditStore
+
+    row = AuditStore(db).get(decision_id)
+    if row is None:
+        typer.echo(f"Không tìm thấy quyết định {decision_id}", err=True)
+        raise typer.Exit(1)
+    typer.echo(f"{row['ts']}  trạm={row['station']}  nguồn={row['source']}  "
+               f"hành động={row['action']}  rủi ro={row['risk']}  giảm cấp={bool(row['degraded'])}")
+    for reason in json.loads(row["reasons_json"]):
+        typer.echo(f"  - {reason}")
+    for finding in json.loads(row["findings_json"]):
+        typer.echo(f"    {finding['detector']} [{finding['severity']}] {finding['evidence']}")
+    typer.echo(f"  văn bản (đã che): {row['text_redacted']}")
+
+
+@audit_app.command("export")
+def audit_export(out: Annotated[Path, typer.Argument(help="File JSONL kết quả.")],
+                 db: DbOption = Path("var/fox_guard.sqlite")) -> None:
+    """Xuất toàn bộ quyết định ra JSONL (cho Phần C và dashboard)."""
+    from fox_guard.audit.store import AuditStore
+
+    typer.echo(f"{AuditStore(db).export_jsonl(out)} quyết định → {out}")
+
+
 if __name__ == "__main__":
     app()
