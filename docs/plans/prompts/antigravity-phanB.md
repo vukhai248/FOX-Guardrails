@@ -1,3 +1,5 @@
+> ⛔ **Không còn dùng (05/11/2026).** Antigravity đã được bỏ khỏi Phần B. Việc L1–L3 chuyển cho Codex (`codex-phanB.md`, Đợt 1b). Giữ file để tra cứu.
+
 # Prompt cho Antigravity — Phần B (FOX-Guard), việc nhẹ
 
 > Dán nguyên phần dưới đường kẻ vào Antigravity. Mỗi đợt mới Claude sẽ thêm mục "Đợt N" vào cuối file này.

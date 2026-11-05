@@ -1,42 +1,31 @@
 # Phân công agent — Giai đoạn 2: FOX-Guard (Phần B)
 
-> Ngày lập: 03/11/2026 · Áp dụng cho `B-guardrails.md`. Prompt dán sẵn: `prompts/codex-phanB.md`, `prompts/antigravity-phanB.md`.
+> Ngày lập: 03/11/2026 · **Sửa 05/11/2026: bỏ Antigravity khỏi Phần B.** Chỉ còn Codex làm và Claude nghiệm thu. Prompt: `prompts/codex-phanB.md`. File `prompts/antigravity-phanB.md` không còn dùng.
 
 ## 1. Vai trò
 
 | Ai | Vai trò |
 | --- | --- |
-| **Codex** | Làm chính: toàn bộ code trong `src/fox_guard/`, test, tích hợp web (B9), tài liệu học cho lớp mình viết |
-| **Antigravity (Anti)** | Việc nhẹ: dữ liệu kiểm thử (fixture), bảng teencode, câu hard-benign, ví dụ, dashboard Streamlit (B10) |
-| **Claude** | Đầu não: giao việc, đọc diff, chạy lại test, kiểm tài liệu học có đúng code không, nghiệm thu |
+| **Codex** | Làm toàn bộ: code `src/fox_guard/`, test, **mọi dữ liệu kiểm thử** (fixture, bảng teencode, câu hard-benign), ví dụ, dashboard (B10), tích hợp web (B9), tài liệu học cho lớp mình viết |
+| **Claude** | Đầu não: giao việc, đọc diff, chạy lại test, kiểm tài liệu học khớp code, nghiệm thu. Mỗi lần nghiệm thu, Claude tự viết thêm một bộ **ca kiểm độc lập** (`tests/acceptance/`) mà Codex không thấy trước, để Codex không tự chấm bài của mình |
 | **Bạn** | Đọc tài liệu học sau mỗi lớp, chấp nhận license Prompt Guard 2, chạy thử demo |
 
 ## 2. Nhánh và quyền sở hữu file
 
-- Codex: worktree `D:/create/DATN/.worktrees/b-core`, nhánh `feat/b-core`.
-- Anti: thư mục chính `D:/create/DATN/FOX-Guardrails`, nhánh `feat/b-light`.
-- Claude merge sau mỗi đợt đã nghiệm thu (chỉ khi bạn đồng ý). Không ai push.
-
-| Codex sở hữu | Anti sở hữu |
-| --- | --- |
-| `src/fox_guard/**` (trừ 1 file bên phải) | `src/fox_guard/data/teencode_vi.tsv` |
-| `tests/**` (trừ `tests/fixtures/**`) | `tests/fixtures/**` |
-| `pyproject.toml`, `requirements.txt`, `fox-guard.yaml` | `dashboard/**`, `examples/**` |
-| `docs/api.md`, `docs/hoc/**`, `docs/decisions/**` | `docs/reports/anti-*.md` |
-| `docs/reports/codex-*.md` | |
-
-Cần sửa file của bên kia: ghi vào `docs/reports/requests.md`. Không ai sửa `docs/plans/**` (thấy plan sai thì ghi `requests.md`).
+- Codex: worktree `D:/create/DATN/.worktrees/b-core`, nhánh `feat/b-core`. Sở hữu mọi file trong repo, **trừ** các file của Claude dưới đây.
+- Claude sở hữu: `docs/plans/**`, `docs/DU-AN.md`, `tests/acceptance/**`. Codex không sửa; thấy sai thì ghi `docs/reports/requests.md`.
+- Claude merge `feat/b-core` vào `main` sau mỗi đợt đã nghiệm thu (chỉ khi bạn đồng ý). Không ai push.
 
 ## 3. Lộ trình theo lớp bảo mật — mỗi lớp xong là DỪNG để bạn học
 
-| Đợt | Lớp bảo mật | Codex | Anti | Tài liệu học (Codex viết, Claude kiểm) |
-| --- | --- | --- | --- | --- |
-| 1 | **Lớp 1 — chuẩn hoá ký tự** (chữ tàng hình, Unicode Tags, homoglyph, mã hoá, biến thể tiếng Việt) | B1 hợp đồng + B2 | L1 teencode, L2–L3 fixture chuẩn hoá | `docs/hoc/lop-1-chuan-hoa.md` |
-| 2 | **Lớp 2 — luật phát hiện prompt injection** | B3 | Câu hard-benign CSKH + câu tấn công mẫu | `docs/hoc/lop-2-luat.md` |
-| 3 | **Lớp 3 — PII tiếng Việt + giả danh hoá có hoàn nguyên** | B5.1, B5.2, spike NER | Fixture PII giả + hard-negative số | `docs/hoc/lop-3-pii.md` |
-| 4 | **Lớp 4 — kiểm đầu ra + policy + audit đã che** | B5.3, B5.4, B6.1, B6.2, B6.5, B6.6 | Fixture câu bot đòi PII, link lạ | `docs/hoc/lop-4-dau-ra-policy-audit.md` |
-| 5 | **Lớp 5 — classifier + khoanh vùng ngữ cảnh** | B4, B6.3, B6.4 | Ví dụ SDK | `docs/hoc/lop-5-classifier-khoanh-vung.md` |
-| 6 | **Tích hợp** | B7 sidecar, B9 cắm web, B8 proxy | B10 dashboard | `docs/hoc/lop-6-tich-hop.md` |
+| Đợt | Lớp bảo mật | Codex | Tài liệu học (Codex viết, Claude kiểm) |
+| --- | --- | --- | --- |
+| 1 | **Lớp 1 — chuẩn hoá ký tự** (chữ tàng hình, Unicode Tags, homoglyph, mã hoá, biến thể tiếng Việt) | B1 hợp đồng + B2; **1b**: bảng teencode + 2 bộ fixture chuẩn hoá (trước đây của Anti) | `docs/hoc/lop-1-chuan-hoa.md` |
+| 2 | **Lớp 2 — luật phát hiện prompt injection** | B3 + câu hard-benign CSKH + câu tấn công mẫu | `docs/hoc/lop-2-luat.md` |
+| 3 | **Lớp 3 — PII tiếng Việt + giả danh hoá có hoàn nguyên** | B5.1, B5.2, spike NER + fixture PII giả + hard-negative số | `docs/hoc/lop-3-pii.md` |
+| 4 | **Lớp 4 — kiểm đầu ra + policy + audit đã che** | B5.3, B5.4, B6.1, B6.2, B6.5, B6.6 + fixture câu bot đòi PII, link lạ | `docs/hoc/lop-4-dau-ra-policy-audit.md` |
+| 5 | **Lớp 5 — classifier + khoanh vùng ngữ cảnh** | B4, B6.3, B6.4 + ví dụ SDK | `docs/hoc/lop-5-classifier-khoanh-vung.md` |
+| 6 | **Tích hợp** | B7 sidecar, B9 cắm web, B8 proxy, B10 dashboard | `docs/hoc/lop-6-tich-hop.md` |
 
 Điều kiện trước:
 - Đợt 5 cần **bạn** bấm "Agree" license `meta-llama/Llama-Prompt-Guard-2-86M` trên Hugging Face và tập **dev** của Phần C để chốt ngưỡng. Phần C chưa giao. Claude sẽ giao trước Đợt 5.
