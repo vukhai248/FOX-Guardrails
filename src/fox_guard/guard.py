@@ -1,4 +1,4 @@
-"""SDK entry points: wave 1 normalizes text, chưa chặn gì cho tới Đợt 4."""
+"""SDK entry points: Lớp 1 chuẩn hoá + Lớp 2 luật; chưa chặn gì cho tới Lớp 4 (policy)."""
 
 from pathlib import Path
 from time import perf_counter
@@ -23,9 +23,10 @@ _REASONS = {
 
 
 class Guard:
-    """Three-station SDK; chưa chặn gì cho tới Đợt 4.
+    """Three-station SDK; chưa chặn gì cho tới Lớp 4.
 
-    Classifier, policy, PII masking, restoration, and audit are not active in wave 1.
+    Normalization signals and rule findings are reported; classifier, policy, PII masking,
+    restoration, and audit are not active yet, so action is always "allow".
     """
 
     def __init__(self, config: GuardConfig | None = None) -> None:
@@ -46,10 +47,13 @@ class Guard:
             decode_max_depth=self.config.normalize.decode_max_depth,
         )
 
-    def _check(self, text: str) -> Decision:
+    def _check(self, text: str, station: str) -> Decision:
+        from .detectors.rules import rule_reasons, run_rules
+
         started = perf_counter()
         normalized = self._normalize(text)
-        findings = normalized.signals
+        findings = [*normalized.signals, *run_rules(normalized, station)]
+        reasons = {**_REASONS, **rule_reasons()}
         risk = max((finding.severity for finding in findings), key=_RISK_ORDER.__getitem__, default="low")
         decision = Decision(
             decision_id=uuid4().hex,
@@ -58,7 +62,7 @@ class Guard:
             risk=risk,
             findings=findings,
             reasons=[
-                _REASONS.get(finding.detector, f"Phát hiện tín hiệu bất thường: {finding.detector}.")
+                reasons.get(finding.detector, f"Phát hiện tín hiệu bất thường: {finding.detector}.")
                 for finding in findings
             ],
             latency_ms=0.0,
@@ -67,16 +71,20 @@ class Guard:
         return decision
 
     def check_input(self, text: str, ctx: GuardContext) -> Decision:
-        """Normalize customer input; chưa chặn gì cho tới Đợt 4."""
-        return self._check(text)
+        """Normalize customer input and run station rules; chưa chặn gì cho tới Lớp 4.
+
+        The station comes from the method, never from ctx.station, so a mislabeled context
+        cannot switch off context-only rules.
+        """
+        return self._check(text, "input")
 
     def check_context(self, text: str, ctx: GuardContext) -> Decision:
-        """Normalize an untrusted context segment; chưa chặn gì cho tới Đợt 4."""
-        return self._check(text)
+        """Normalize an untrusted context segment and run station rules; chưa chặn gì cho tới Lớp 4."""
+        return self._check(text, "context")
 
     def check_output(self, text: str, ctx: GuardContext) -> Decision:
-        """Normalize a generated answer; chưa chặn gì cho tới Đợt 4."""
-        return self._check(text)
+        """Normalize a generated answer and run station rules; chưa chặn gì cho tới Lớp 4."""
+        return self._check(text, "output")
 
     def restore(self, text: str, ctx: GuardContext) -> str:
         """Pass text through in wave 1; placeholder restoration is reserved for B5."""

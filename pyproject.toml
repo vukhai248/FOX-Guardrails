@@ -75,3 +75,7 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# Fixture generators are data tables of example sentences; wrapping them hurts readability.
+"scripts/gen_*.py" = ["E501"]
