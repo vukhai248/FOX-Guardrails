@@ -49,7 +49,7 @@ Chi tiết: [`plans/00-tong-quan.md`](plans/00-tong-quan.md) §0–§2, [`de-tai
 | Phần | Nội dung | Trạng thái | Ước % | Ghi chú |
 | --- | --- | --- | --- | --- |
 | **A** | Hoàn thiện web làm testbed | 🟡 QA lần cuối | 90% | Code xong, đã merge `main`, đã chạy 6 migration + seed trên Supabase thật. Còn QA2 (Anti) + K5 (Codex) |
-| **B** | FOX-Guard | 🟡 Đang làm Lớp 1 | 15% | B0 khung repo xong. B1 hợp đồng + B2 chuẩn hoá xong, đạt có điều kiện (nhánh `feat/b-core`, chưa merge). Đang làm 1b |
+| **B** | FOX-Guard | 🟢 Lớp 1 xong | 20% | B0, B1, B2 + 1b xong, nghiệm thu **đạt** (nhánh `feat/b-core` @ `01f2446`, chưa merge `main`). Chờ bạn đọc tài liệu học Lớp 1 rồi sang Lớp 2 |
 | **C** | Dữ liệu + thực nghiệm | ⚪ Chưa giao | 0% | Cần trước Đợt 5 của B (chốt ngưỡng classifier) |
 | **D** | Học + vấn đáp + báo cáo | ⚪ Chưa bắt đầu | 0% | Bắt đầu đọc tài liệu học sau Lớp 1 |
 
@@ -57,8 +57,8 @@ Chi tiết: [`plans/00-tong-quan.md`](plans/00-tong-quan.md) §0–§2, [`de-tai
 
 | Ai | Việc | Prompt | Xong khi |
 | --- | --- | --- | --- |
-| Codex | **Phần B Đợt 1b**: sửa 2 lỗi nhỏ của B2, bảng teencode, 2 bộ fixture chuẩn hoá (việc cũ của Anti) | [`prompts/codex-phanB.md`](plans/prompts/codex-phanB.md) → "Đợt 1b" | `docs/reports/codex-B1b.md` |
-| Bạn | Đọc tài liệu học Lớp 1 (bản nháp đã có, sẽ chỉnh sau 1b) | [`hoc/lop-1-chuan-hoa.md`](hoc/lop-1-chuan-hoa.md) trên nhánh `feat/b-core` | — |
+| Bạn | **Đọc tài liệu học Lớp 1** và chạy thử demo; quyết định merge `feat/b-core` vào `main` | `D:/create/DATN/.worktrees/b-core/docs/hoc/lop-1-chuan-hoa.md` | Đọc xong mới giao Lớp 2 |
+| Claude | Đợt 1b đã tự làm và nghiệm thu (theo yêu cầu 05/11) | `D:/create/DATN/.worktrees/b-core/docs/reports/claude-B1b.md` | Xong |
 | Claude | Nghiệm thu từng gói khi agent báo xong; cập nhật file này | — | — |
 
 ### 2.3 Việc của bạn (chủ đồ án)
@@ -213,7 +213,7 @@ Repo `D:/create/DATN/FOX-Guardrails`. Chỉ **Codex** làm (worktree `.worktrees
 
 | Lớp (Đợt) | Chặn cái gì | Cách làm (ngắn) | Gói | Trạng thái | Tài liệu học |
 | --- | --- | --- | --- | --- | --- |
-| **1** Chuẩn hoá ký tự | Lệnh giấu bằng chữ tàng hình, Unicode Tags, chữ Cyrillic giả Latin, base64/hex, không dấu/teencode tiếng Việt | Tạo nhiều "view" của text (NFC, bỏ ký tự vô hình, NFKC, skeleton confusable, không dấu, teencode, số, giải mã) để luật và classifier đọc; **không sửa bản gốc** | B1, B2 | 🟡 Code xong, đang làm 1b | `hoc/lop-1-chuan-hoa.md` (nháp) |
+| **1** Chuẩn hoá ký tự | Lệnh giấu bằng chữ tàng hình, Unicode Tags, chữ Cyrillic giả Latin, base64/hex, không dấu/teencode tiếng Việt | Tạo nhiều "view" của text (NFC, bỏ ký tự vô hình, NFKC, skeleton confusable, không dấu, teencode, số, giải mã) để luật và classifier đọc; **không sửa bản gốc** | B1, B2, 1b | 🟢 Xong, chờ bạn đọc | `hoc/lop-1-chuan-hoa.md` |
 | **2** Luật PI | "Bỏ qua mọi hướng dẫn", giả admin/[SYSTEM], đòi system prompt, lệnh nhắm vào bot nằm trong review/ghi chú, token điều khiển `<\|im_start\|>` | Gói luật YAML VI/EN chạy trên các view; luật cấu trúc tất định = high, còn lại = medium | B3 | ⚪ | `hoc/lop-2-luat.md` |
 | **3** PII + giả danh hoá | CCCD, SĐT, thẻ, STK, MST, BHYT, OTP, tên, địa chỉ bị gửi sang LLM / hiện ra / ghi log | Presidio + recognizer VN (kiểm Luhn, mã tỉnh…) + NER; thay bằng `<PHONE_1>` trước khi gửi LLM, hoàn nguyên khi hiển thị đúng chủ | B5.1, B5.2 | ⚪ | `hoc/lop-3-pii.md` |
 | **4** Đầu ra + policy + audit | Bot bị dụ đòi OTP/CCCD; link/ảnh lạ, link homoglyph, link chứa PII; quyết định thiếu lý do; log lộ PII | Luật solicitation theo intent; link guard Punycode + allowlist; gộp rủi ro (classifier một mình **không** được chặn); audit SQLite chỉ nhận text đã che | B5.3, B5.4, B6 | ⚪ | `hoc/lop-4-dau-ra-policy-audit.md` |
@@ -227,6 +227,7 @@ Repo `D:/create/DATN/FOX-Guardrails`. Chỉ **Codex** làm (worktree `.worktrees
 | B0 khung repo | Package `fox_guard` (src layout), CLI `fox-guard`, `pyproject.toml` (nhóm core/ml/pii/dash/dev), `fox-guard.yaml`, CI ruff + pytest (3.11, 3.13), `.env.example`, xoá thư mục giữ chỗ v1; thư viện cài vào DL | `e65a746` |
 | B1 hợp đồng | `GuardContext`/`Finding`/`Decision` có kiểm hợp lệ; `fox-guard.yaml` đọc chặt (khoá lạ là lỗi); SDK `Guard` 3 trạm + `restore` + `redact_for_log`. Hiện **chưa chặn, chưa che PII** (luôn `allow`) cho tới Lớp 3–4; `docs/api.md` | `5788f78`, `bc66f50` |
 | B2 chuẩn hoá | 8 bước, các view: NFC, clean, NFKC, skeleton UTS #39, không dấu, teencode/leet, số (có map vị trí), Tags giải mã, decoded. Giải mã base64/hex/%XX/\uXXXX/HTML entity/ROT13 sâu 2 lớp, loại trừ UUID/JWT/hash. Ngoại lệ emoji ZWJ, cờ dùng Tags, keycap, tiếng Việt NFD. `confusables.txt` Unicode 16.0.0 ghim SHA. p95 4,8 ms / 2 KB; 95 test | `f662f60` → `c2a0bfb` |
+| 1b hoàn tất Lớp 1 (Claude) | Sửa leet làm hỏng giá/UUID; gộp cảnh báo trùng; bảng teencode 205 dòng (từ mơ hồ không đổi); 42 câu hợp lệ + 39 câu tấn công sinh bằng script; URL `%20` hết báo nhầm; không bao giờ làm mất cảnh báo mạnh hơn nằm trong chuỗi mã hoá; 2 lỗ đã biết ghi rõ; tài liệu học viết lại + `scripts/demo_lop1.py`. **191 test qua + 2 xfail**, p95 6,4 ms | `7708ca3` → `01f2446` |
 
 Chi tiết: [`plans/B-guardrails.md`](plans/B-guardrails.md) (đặc tả từng gói), [`plans/F-phan-cong-phan-B.md`](plans/F-phan-cong-phan-B.md) (phân công, 12 quy tắc cho agent).
 
@@ -277,6 +278,7 @@ Thứ tự cắt khi trễ: B8 proxy → judge → lặp 3 lần còn 1 → tín
 | 03/11 | Tạo sổ dự án này | — |
 | 03–04/11 | Codex B1 + B2 trên `feat/b-core` (7 commit), kèm bản nháp tài liệu học Lớp 1 | `codex-B1.md` |
 | 05/11 | Claude nghiệm thu B1/B2: đạt có điều kiện (2 lỗi nhỏ). Bỏ Antigravity khỏi Phần B; việc dữ liệu chuyển Codex (Đợt 1b) | `codex-phanB.md` |
+| 05/11 | Bạn giao Claude tự làm Đợt 1b. Xong, tự review thêm ra 2 lỗi và đã sửa; Lớp 1 đạt | `claude-B1b.md` |
 
 ---
 
@@ -303,6 +305,8 @@ Thứ tự cắt khi trễ: B8 proxy → judge → lặp 3 lần còn 1 → tín
 | Q17 | Phần B chia theo 6 lớp bảo mật, mỗi lớp dừng để bạn học | Vừa làm vừa hiểu, tránh đến cuối mới đọc code |
 | Q18 | Stripe webhook local qua Stripe CLI, chưa đăng ký endpoint trên Dashboard | Web chạy localhost |
 | Q19 | Bỏ Antigravity khỏi chỉnh sửa; chỉ Codex làm, Claude nghiệm thu. Claude tự viết ca kiểm độc lập `tests/acceptance/` | Bạn quyết 05/11; ca độc lập để Codex không tự chấm bài mình |
+| Q20 | Đợt 1b do Claude tự làm và tự nghiệm thu; các đợt sau phân lại | Bạn quyết 05/11. Bù cho việc tự chấm: test RED-trước, tự dò ca biên, ghi rõ giới hạn |
+| Q21 | Skeleton UTS #39 đổi `m`→`rn`: luật/allowlist phải so skeleton với skeleton | Phát hiện ở 1b; ràng buộc cho Lớp 2 và Lớp 4 (link guard) |
 
 ---
 

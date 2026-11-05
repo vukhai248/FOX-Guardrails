@@ -109,3 +109,16 @@ Benchmark p95 = 4.8 ms với 2 KB.
 **F4 — Cập nhật `docs/hoc/lop-1-chuan-hoa.md`** nếu output ví dụ thay đổi sau F1 (chạy lại, dán output mới).
 
 Báo cáo `docs/reports/codex-B1b.md` (4 mục, output thật). Xong thì **dừng**. Claude sẽ chạy thêm bộ ca độc lập `tests/acceptance/` trước khi nghiệm thu Lớp 1 và cho bạn đọc tài liệu học. **Chưa làm B3.**
+
+
+---
+
+## ✅ Đợt 1b — Claude tự làm, 05/11/2026 (nhánh `feat/b-core` @ `01f2446`)
+
+Chủ đồ án giao Claude làm thay Codex ở đợt này. Kết quả và chi tiết: `docs/reports/claude-B1b.md` trên nhánh `feat/b-core`. Tóm tắt cho Codex khi nhận lại các đợt sau:
+- F1–F4 xong. pytest **191 passed, 2 xfailed**, ruff sạch.
+- Bảng teencode và 2 bộ fixture đã có, sinh bằng `scripts/gen_normalize_fixtures.py`. Sửa fixture thì sửa script, không sửa tay file `.jsonl`.
+- Ràng buộc mới cho Lớp 2 (B3):
+  - Skeleton UTS #39 đổi `m`→`rn`, nên luật chạy trên view `skeleton` phải áp skeleton cho cả pattern.
+  - Chuỗi mã hoá chứa ký tự vô hình bị bộ lọc "đọc được" loại từ đầu (không giải mã), nên không trông vào view `decoded` cho ca đó.
+- Lớp 1 **đạt**. Lớp 2 chỉ giao sau khi chủ đồ án đọc xong `docs/hoc/lop-1-chuan-hoa.md`.
