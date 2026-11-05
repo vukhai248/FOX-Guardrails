@@ -68,9 +68,15 @@ def normalize(text: str, *, max_chars: int = 20000, decode_max_depth: int = 2,
             budget -= len(value)
             child = _views(value, value, teencode_path)
             root.decoded.append(child)
-            root.signals.extend(signal.model_copy(update={"span": None}) for signal in child.signals)
+            # ROT13 and "-plain" children re-read the same visible text, so their signals would only
+            # duplicate the root's. Real decodings surface each new detector once.
             if codec != "rot13" and not codec.endswith("-plain"):
                 encoded_codecs.add(codec)
+                known = {signal.detector for signal in root.signals}
+                for signal in child.signals:
+                    if signal.detector not in known:
+                        known.add(signal.detector)
+                        root.signals.append(signal.model_copy(update={"span": None}))
             queue.append((child.nfkc, depth + 1))
             if child.hidden_tags:
                 queue.append((child.hidden_tags, depth + 1))
