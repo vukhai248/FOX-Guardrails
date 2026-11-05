@@ -75,7 +75,7 @@ signals: []
 | [normalize/decode.py](../../src/fox_guard/normalize/decode.py:1) | Các bộ giải mã, loại trừ UUID/JWT/hash |
 | [data/teencode_vi.tsv](../../src/fox_guard/data/teencode_vi.tsv:1) | 205 từ viết tắt; từ mơ hồ (`k`, `mk`, `dt`) không đổi |
 | [data/confusables.txt](../../src/fox_guard/data/README.md:1) | Bảng chữ giống nhau Unicode 16.0.0, ghim SHA |
-| [tests/test_normalize.py](../../tests/test_normalize.py:1) | 189 test: 6 ca evidence, 42 câu hợp lệ, 39 câu tấn công |
+| [tests/test_normalize.py](../../tests/test_normalize.py:1) | 191 test qua + 2 lỗ đã biết đánh dấu: 6 ca evidence, 42 câu hợp lệ, 39 câu tấn công |
 | [scripts/gen_normalize_fixtures.py](../../scripts/gen_normalize_fixtures.py:1) | Sinh bộ câu test bằng mã escape (không dán ký tự ẩn bằng tay) |
 
 ## 5. Giới hạn và cách né
