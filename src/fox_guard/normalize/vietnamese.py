@@ -20,6 +20,12 @@ _NUMBER_RUN = regex.compile(
     regex.IGNORECASE,
 )
 _DIGIT_GAP = regex.compile(r"(?<=\d)[\s.\-]+(?=\d)")
+# Leet must not rewrite prices, quantities or identifiers (runs on the no-diacritics view).
+_NO_LEET = regex.compile(
+    r"\d[\d.,]*(?:d|k|tr|trieu|vnd|%)\d*(?!\p{L})"
+    r"|(?<![\p{L}\p{N}])[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}(?![\p{L}\p{N}])"
+    r"|(?<![\p{L}\p{N}])[0-9a-f]{16,}(?![\p{L}\p{N}])"
+)
 
 
 def no_diacritics(text: str) -> str:
@@ -51,6 +57,7 @@ def vietnamese_views(nfkc: str, teencode_path=None) -> tuple[str, str]:
     plain = no_diacritics(nfkc).lower()
     joined = _FRAGMENT.sub(lambda m: m.group().replace(".", "").replace("-", ""), plain)
     table = load_teencode(str(Path(teencode_path) if teencode_path else _DATA / "teencode_vi.tsv"))
+    protected = [m.span() for m in _NO_LEET.finditer(joined)]
 
     def replace(match):
         token = match.group()
@@ -58,6 +65,10 @@ def vietnamese_views(nfkc: str, teencode_path=None) -> tuple[str, str]:
             return token
         if token in table:
             return table[token]
+        start, end = match.span()
+        if (any(a < end and start < b for a, b in protected)
+                or sum(ch.isalpha() for ch in token) * 2 < len(token)):
+            return token
         token = token.translate(_LEET)
         return table.get(token, token)
 

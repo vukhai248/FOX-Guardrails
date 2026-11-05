@@ -128,11 +128,19 @@ def mixed_script_signals(clean: str) -> list[Finding]:
         value = unicodedata.normalize("NFKC", cluster.group())
         projected.append(value)
         sources.extend([cluster.span()] * len(value))
-    signals = []
+    # One finding per text: the first mixed word anchors the span, evidence counts the rest.
+    first_span = None
+    words = 0
+    found = set()
     for match in _WORDS.finditer("".join(projected)):
         scripts = [name for name, pattern in _SCRIPTS.items() if pattern.search(match.group())]
         if len(scripts) > 1:
-            span = sources[match.start()][0], sources[match.end() - 1][1]
-            signals.append(finding("unicode:mixed_script", "medium", "Mixed scripts: " + ", ".join(scripts),
-                                   "T3.4", span))
-    return signals
+            words += 1
+            found.update(scripts)
+            if first_span is None:
+                first_span = sources[match.start()][0], sources[match.end() - 1][1]
+    if not words:
+        return []
+    names = ", ".join(name for name in _SCRIPTS if name in found)
+    return [finding("unicode:mixed_script", "medium", f"Mixed scripts in {words} word(s): {names}",
+                    "T3.4", first_span)]

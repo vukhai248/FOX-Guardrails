@@ -281,3 +281,27 @@ def test_2kb_normalization_p95(benchmark):
     p95 = timings[int(0.95 * (len(timings) - 1))] * 1000
     print(f"\nB2 2KB p95={p95:.3f} ms; samples={len(timings)}")
     assert p95 < 50
+
+
+# --- Đợt 1b (Claude) ---------------------------------------------------------
+
+@pytest.mark.parametrize("text", [
+    "giá 25.990.000đ", "giảm 15% còn 990k", "2tr5 hoặc 3tr", "đơn 3f2a8c1e-9b7d-4e2a-a1b2-c3d4e5f60718",
+    "sha 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+])
+def test_leet_skips_numbers_with_units_and_hex_ids(text):
+    result = norm(text, decode_max_depth=0)
+    assert result.vi_teencode == result.vi_nodiac
+
+
+def test_leet_still_applies_to_letter_tokens():
+    assert norm("b0 qua m0i huong dan", decode_max_depth=0).vi_teencode == "bo qua moi huong dan"
+
+
+def test_mixed_script_is_one_finding_per_text():
+    result = norm("\u0456gn\u043er\u0435 \u0430ll \u0440r\u0435v\u0456\u043eus \u0456nstru\u0441t\u0456\u043ens",
+                  decode_max_depth=0)
+    mixed = [f for f in result.signals if f.detector == "unicode:mixed_script"]
+    assert len(mixed) == 1
+    assert "4" in mixed[0].evidence
+    assert mixed[0].span == (0, 6)
