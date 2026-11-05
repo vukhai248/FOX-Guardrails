@@ -175,3 +175,17 @@ def test_redteam_dev_pii():
     caught = [c for c in positives if any(m.entity == c["entity"] for m in detect_pii(normalize(c["text"])))]
     assert len(caught) >= len(positives) - 1
     assert all(found(c["text"]) == [] for c in _cases("pii_redteam_dev_negative.jsonl"))
+
+
+def test_heldout_pii_floor():
+    """Held-out set written by another agent after the recognizers were frozen (05/11/2026).
+
+    Never tune recognizers on these files. Measured then: recall 72/80 = 90.0%, false positives 2/40
+    (store names "Nguyễn Kim", "Hoàng Hà" read as people; only masked, never blocked).
+    """
+    positives = _cases("pii_heldout_positive.jsonl")
+    caught = sum(any(m.entity == c["entity"] for m in detect_pii(normalize(c["text"]))) for c in positives)
+    flagged = sum(bool(found(c["text"])) for c in _cases("pii_heldout_negative.jsonl"))
+    assert len(positives) == 80
+    assert caught / len(positives) >= 0.85
+    assert flagged <= 2
