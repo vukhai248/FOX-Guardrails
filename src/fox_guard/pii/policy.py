@@ -111,7 +111,10 @@ def restore_placeholders(text: str, ctx: GuardContext, vault: PiiVault) -> PiiRe
                                     span=match.span(), evidence=match.group()[:120]))
             return match.group()
         if entry.entity in RESTORABLE and entry.owner is not None and entry.owner == ctx.user_ref:
-            return entry.value
+            # A phone typed as "0 9 1 2 . 3 4 5 …" comes back in its plain form; spelled-out numbers
+            # ("không chín một …") stay as written.
+            plain = regex.sub(r"[\s.\-]", "", entry.value)
+            return plain if entry.entity == "VN_PHONE" and plain.isdigit() else entry.value
         return mask_value(entry.entity, entry.value)
 
     restored = PLACEHOLDER.sub(replace, text)
