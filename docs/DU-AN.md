@@ -1,7 +1,7 @@
 # Sổ dự án FOX-Guardrails — một file duy nhất
 
 > **Đề tài:** AI Guardrails phát hiện Prompt Injection và ngăn ngừa rò rỉ PII trong ứng dụng LLM.
-> **Cập nhật lần cuối:** 03/11/2026 · Người cập nhật: Claude (sau mỗi lần nghiệm thu).
+> **Cập nhật lần cuối:** 05/11/2026 · Người cập nhật: Claude (sau mỗi lần nghiệm thu).
 > **Cách dùng:** đọc file này trước tiên. Mọi file khác là **chi tiết** của một mục ở đây (cột "Chi tiết" chỉ tới). Muốn biết "đang ở đâu, đã có gì, làm bằng gì, việc tiếp là gì" thì chỉ cần file này.
 
 ---
@@ -49,7 +49,7 @@ Chi tiết: [`plans/00-tong-quan.md`](plans/00-tong-quan.md) §0–§2, [`de-tai
 | Phần | Nội dung | Trạng thái | Ước % | Ghi chú |
 | --- | --- | --- | --- | --- |
 | **A** | Hoàn thiện web làm testbed | 🟡 QA lần cuối | 90% | Code xong, đã merge `main`, đã chạy 6 migration + seed trên Supabase thật. Còn QA2 (Anti) + K5 (Codex) |
-| **B** | FOX-Guard | 🟡 Bắt đầu | 5% | B0 khung repo xong (`e65a746`). Đợt 1 (B1 + B2) đã giao, chưa bắt đầu |
+| **B** | FOX-Guard | 🟡 Đang làm Lớp 1 | 15% | B0 khung repo xong. B1 hợp đồng + B2 chuẩn hoá xong, đạt có điều kiện (nhánh `feat/b-core`, chưa merge). Đang làm 1b |
 | **C** | Dữ liệu + thực nghiệm | ⚪ Chưa giao | 0% | Cần trước Đợt 5 của B (chốt ngưỡng classifier) |
 | **D** | Học + vấn đáp + báo cáo | ⚪ Chưa bắt đầu | 0% | Bắt đầu đọc tài liệu học sau Lớp 1 |
 
@@ -57,8 +57,8 @@ Chi tiết: [`plans/00-tong-quan.md`](plans/00-tong-quan.md) §0–§2, [`de-tai
 
 | Ai | Việc | Prompt | Xong khi |
 | --- | --- | --- | --- |
-| Antigravity | **QA2**: bổ sung các ca QA còn thiếu (3 câu chat, 409, `--reset`, replay webhook, bảng 23 mục, danh sách bản ghi QA) | [`prompts/antigravity-phanA.md`](plans/prompts/antigravity-phanA.md) → "Nghiệm thu Đợt 3" | `docs/reports/anti-QA2.md` |
-| Codex | **K5**: sửa BUG-A-01 (một user review một sản phẩm nhiều lần), rồi **Phần B Đợt 1** | [`prompts/codex-phanA.md`](plans/prompts/codex-phanA.md) K5 → [`prompts/codex-phanB.md`](plans/prompts/codex-phanB.md) | `codex-K5.md`, rồi `codex-B1.md` |
+| Codex | **Phần B Đợt 1b**: sửa 2 lỗi nhỏ của B2, bảng teencode, 2 bộ fixture chuẩn hoá (việc cũ của Anti) | [`prompts/codex-phanB.md`](plans/prompts/codex-phanB.md) → "Đợt 1b" | `docs/reports/codex-B1b.md` |
+| Bạn | Đọc tài liệu học Lớp 1 (bản nháp đã có, sẽ chỉnh sau 1b) | [`hoc/lop-1-chuan-hoa.md`](hoc/lop-1-chuan-hoa.md) trên nhánh `feat/b-core` | — |
 | Claude | Nghiệm thu từng gói khi agent báo xong; cập nhật file này | — | — |
 
 ### 2.3 Việc của bạn (chủ đồ án)
@@ -200,7 +200,7 @@ Chi tiết: [`plans/A-hoan-thien-web.md`](plans/A-hoan-thien-web.md), [`plans/E-
 
 ## 6. Phần B — FOX-Guard: thiết kế và tiến độ từng lớp
 
-Repo `D:/create/DATN/FOX-Guardrails`. Codex làm code lõi (worktree `.worktrees/b-core`, nhánh `feat/b-core`), Antigravity làm dữ liệu kiểm thử + dashboard (nhánh `feat/b-light`). Sau mỗi lớp: **dừng**, Claude nghiệm thu, bạn đọc tài liệu học rồi mới sang lớp sau.
+Repo `D:/create/DATN/FOX-Guardrails`. Chỉ **Codex** làm (worktree `.worktrees/b-core`, nhánh `feat/b-core`): code, dữ liệu kiểm thử, dashboard. **Claude** nghiệm thu và tự viết bộ ca kiểm độc lập `tests/acceptance/`. Antigravity đã bỏ khỏi Phần B từ 05/11/2026. Sau mỗi lớp: **dừng**, Claude nghiệm thu, bạn đọc tài liệu học rồi mới sang lớp sau.
 
 ### 6.1 Hợp đồng (B1) — thứ các phần khác dựa vào
 
@@ -213,7 +213,7 @@ Repo `D:/create/DATN/FOX-Guardrails`. Codex làm code lõi (worktree `.worktrees
 
 | Lớp (Đợt) | Chặn cái gì | Cách làm (ngắn) | Gói | Trạng thái | Tài liệu học |
 | --- | --- | --- | --- | --- | --- |
-| **1** Chuẩn hoá ký tự | Lệnh giấu bằng chữ tàng hình, Unicode Tags, chữ Cyrillic giả Latin, base64/hex, không dấu/teencode tiếng Việt | Tạo nhiều "view" của text (NFC, bỏ ký tự vô hình, NFKC, skeleton confusable, không dấu, teencode, số, giải mã) để luật và classifier đọc; **không sửa bản gốc** | B1, B2 | 🔵 Đã giao | `hoc/lop-1-chuan-hoa.md` |
+| **1** Chuẩn hoá ký tự | Lệnh giấu bằng chữ tàng hình, Unicode Tags, chữ Cyrillic giả Latin, base64/hex, không dấu/teencode tiếng Việt | Tạo nhiều "view" của text (NFC, bỏ ký tự vô hình, NFKC, skeleton confusable, không dấu, teencode, số, giải mã) để luật và classifier đọc; **không sửa bản gốc** | B1, B2 | 🟡 Code xong, đang làm 1b | `hoc/lop-1-chuan-hoa.md` (nháp) |
 | **2** Luật PI | "Bỏ qua mọi hướng dẫn", giả admin/[SYSTEM], đòi system prompt, lệnh nhắm vào bot nằm trong review/ghi chú, token điều khiển `<\|im_start\|>` | Gói luật YAML VI/EN chạy trên các view; luật cấu trúc tất định = high, còn lại = medium | B3 | ⚪ | `hoc/lop-2-luat.md` |
 | **3** PII + giả danh hoá | CCCD, SĐT, thẻ, STK, MST, BHYT, OTP, tên, địa chỉ bị gửi sang LLM / hiện ra / ghi log | Presidio + recognizer VN (kiểm Luhn, mã tỉnh…) + NER; thay bằng `<PHONE_1>` trước khi gửi LLM, hoàn nguyên khi hiển thị đúng chủ | B5.1, B5.2 | ⚪ | `hoc/lop-3-pii.md` |
 | **4** Đầu ra + policy + audit | Bot bị dụ đòi OTP/CCCD; link/ảnh lạ, link homoglyph, link chứa PII; quyết định thiếu lý do; log lộ PII | Luật solicitation theo intent; link guard Punycode + allowlist; gộp rủi ro (classifier một mình **không** được chặn); audit SQLite chỉ nhận text đã che | B5.3, B5.4, B6 | ⚪ | `hoc/lop-4-dau-ra-policy-audit.md` |
@@ -225,6 +225,8 @@ Repo `D:/create/DATN/FOX-Guardrails`. Codex làm code lõi (worktree `.worktrees
 | Mốc | Nội dung | Commit |
 | --- | --- | --- |
 | B0 khung repo | Package `fox_guard` (src layout), CLI `fox-guard`, `pyproject.toml` (nhóm core/ml/pii/dash/dev), `fox-guard.yaml`, CI ruff + pytest (3.11, 3.13), `.env.example`, xoá thư mục giữ chỗ v1; thư viện cài vào DL | `e65a746` |
+| B1 hợp đồng | `GuardContext`/`Finding`/`Decision` có kiểm hợp lệ; `fox-guard.yaml` đọc chặt (khoá lạ là lỗi); SDK `Guard` 3 trạm + `restore` + `redact_for_log`. Hiện **chưa chặn, chưa che PII** (luôn `allow`) cho tới Lớp 3–4; `docs/api.md` | `5788f78`, `bc66f50` |
+| B2 chuẩn hoá | 8 bước, các view: NFC, clean, NFKC, skeleton UTS #39, không dấu, teencode/leet, số (có map vị trí), Tags giải mã, decoded. Giải mã base64/hex/%XX/\uXXXX/HTML entity/ROT13 sâu 2 lớp, loại trừ UUID/JWT/hash. Ngoại lệ emoji ZWJ, cờ dùng Tags, keycap, tiếng Việt NFD. `confusables.txt` Unicode 16.0.0 ghim SHA. p95 4,8 ms / 2 KB; 95 test | `f662f60` → `c2a0bfb` |
 
 Chi tiết: [`plans/B-guardrails.md`](plans/B-guardrails.md) (đặc tả từng gói), [`plans/F-phan-cong-phan-B.md`](plans/F-phan-cong-phan-B.md) (phân công, 12 quy tắc cho agent).
 
@@ -273,6 +275,8 @@ Thứ tự cắt khi trễ: B8 proxy → judge → lặp 3 lần còn 1 → tín
 | 03/11 | Anti QA Đợt 3: thanh toán thẻ test thành công; phát hiện BUG-A-01; giao QA2 + K5 | Lần 12 |
 | 03/11 | B0: dựng khung FOX-Guard, cài thư viện, giao Đợt 1 Phần B (`e65a746`) | `F-phan-cong-phan-B.md` |
 | 03/11 | Tạo sổ dự án này | — |
+| 03–04/11 | Codex B1 + B2 trên `feat/b-core` (7 commit), kèm bản nháp tài liệu học Lớp 1 | `codex-B1.md` |
+| 05/11 | Claude nghiệm thu B1/B2: đạt có điều kiện (2 lỗi nhỏ). Bỏ Antigravity khỏi Phần B; việc dữ liệu chuyển Codex (Đợt 1b) | `codex-phanB.md` |
 
 ---
 
@@ -298,6 +302,7 @@ Thứ tự cắt khi trễ: B8 proxy → judge → lặp 3 lần còn 1 → tín
 | Q16 | Dùng env conda DL Python 3.13 cho cả web và FOX | Bạn yêu cầu; package vẫn hỗ trợ ≥ 3.11 |
 | Q17 | Phần B chia theo 6 lớp bảo mật, mỗi lớp dừng để bạn học | Vừa làm vừa hiểu, tránh đến cuối mới đọc code |
 | Q18 | Stripe webhook local qua Stripe CLI, chưa đăng ký endpoint trên Dashboard | Web chạy localhost |
+| Q19 | Bỏ Antigravity khỏi chỉnh sửa; chỉ Codex làm, Claude nghiệm thu. Claude tự viết ca kiểm độc lập `tests/acceptance/` | Bạn quyết 05/11; ca độc lập để Codex không tự chấm bài mình |
 
 ---
 
@@ -335,7 +340,7 @@ Thứ tự cắt khi trễ: B8 proxy → judge → lặp 3 lần còn 1 → tín
 | Mục | Giá trị |
 | --- | --- |
 | Repo web | `D:/create/DATN/Agenttic-RAG-for-e-commerce` — nhánh `main` (QA đang ở `qa/a-wave3`) |
-| Repo FOX | `D:/create/DATN/FOX-Guardrails` — nhánh `main`; Codex dùng `D:/create/DATN/.worktrees/b-core` |
+| Repo FOX | `D:/create/DATN/FOX-Guardrails` — nhánh `main`; Codex làm ở `D:/create/DATN/.worktrees/b-core` (nhánh `feat/b-core`, chưa merge vào `main`) |
 | Python | `C:/Users/Admin/anaconda3/envs/DL/python.exe` (3.13). Đặt `PYTHONUTF8=1` khi chạy rag-service trên Windows |
 | Biến cache | `PIP_CACHE_DIR=D:/create/DATN/.cache/pip`, `HF_HOME=D:/create/DATN/FOX-Guardrails/.cache/hf` |
 | Chạy web | 3 tiến trình theo `Agenttic-RAG-for-e-commerce/docs/RUN.md`: rag-service `127.0.0.1:8080`, Next.js `:3000`, Stripe CLI listener (3 event Checkout). Phải bật lại sau khi khởi động máy |
@@ -365,7 +370,7 @@ Phần A cũng có lớp bảo mật đáng học (dùng cho chương "Thiết k
 | Tấn công & phòng thủ, mã T*/O*/P* | `docs/plans/01-tan-cong-va-phong-thu.md` |
 | Đặc tả Phần A / B / C | `docs/plans/A-…`, `B-guardrails.md`, `C-…` |
 | Học, vấn đáp, demo | `docs/plans/D-hoc-va-van-dap.md`, `docs/hoc/` |
-| Phân công agent A / B | `docs/plans/E-phan-cong-agent.md`, `F-phan-cong-phan-B.md` |
+| Phân công agent A / B | `docs/plans/E-phan-cong-agent.md`, `F-phan-cong-phan-B.md` (Phần B: chỉ Codex + Claude) |
 | Prompt giao việc (kèm lịch sử nghiệm thu từng agent) | `docs/plans/prompts/*.md` |
 | Nghiệm thu Phần A theo lần | `Agenttic-RAG-for-e-commerce/docs/reports/nghiem-thu-A.md` |
 | Báo cáo từng gói của agent | `Agenttic-RAG-for-e-commerce/docs/reports/*.md`, `FOX-Guardrails/docs/reports/*.md` |
