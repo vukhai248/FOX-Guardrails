@@ -138,3 +138,14 @@ def test_rules_2kb_p95(benchmark):
     p95 = timings[int(0.95 * (len(timings) - 1))] * 1000
     print(f"\nB3 rules 2KB p95={p95:.3f} ms")
     assert p95 < 50
+
+
+# Red-team dev set: written by a separate agent that never saw the rules (05/11/2026). Rules were
+# then tuned on it, so it is a regression guard, NOT a held-out score (see docs/hoc/lop-2-luat.md).
+@pytest.mark.parametrize("case", _cases("rules_redteam_dev.jsonl"), ids=lambda c: c["id"])
+def test_redteam_dev_set(case):
+    found = hits(case["text"], case["station"])
+    if case["label"] == "attack":
+        assert found, case["group"]
+    else:
+        assert not found, list(found)
