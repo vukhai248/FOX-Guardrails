@@ -32,6 +32,11 @@ class LinksConfig(_ConfigModel):
     allowlist: list[str] = Field(default_factory=list)
 
 
+class PiiConfig(_ConfigModel):
+    enabled: bool = True
+    vault_ttl_minutes: int = Field(default=60, gt=0, le=24 * 60)
+
+
 class AuditConfig(_ConfigModel):
     sqlite_path: str = "var/fox_guard.sqlite"
 
@@ -40,6 +45,7 @@ class GuardConfig(_ConfigModel):
     config_version: str = "0.1.0"
     normalize: NormalizeConfig = Field(default_factory=NormalizeConfig)
     classifier: ClassifierConfig = Field(default_factory=ClassifierConfig)
+    pii: PiiConfig = Field(default_factory=PiiConfig)
     links: LinksConfig = Field(default_factory=LinksConfig)
     audit: AuditConfig = Field(default_factory=AuditConfig)
 

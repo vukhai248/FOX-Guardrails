@@ -11,6 +11,10 @@ classifier:           # B4: ngưỡng chỉ được chốt trên tập dev củ
   theta_low: null
   theta_high: null
 
+pii:                  # B5: giả danh hoá theo phiên, bản đồ chỉ trong bộ nhớ
+  enabled: true
+  vault_ttl_minutes: 60
+
 links:                # B5.4
   allowlist: []
 
