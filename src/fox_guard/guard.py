@@ -21,9 +21,11 @@ _FALLBACK = re.compile(
     r"|(?i:(?:m[aậ]t\s*kh[aẩ]u|\bmk\b|pass(?:word)?|pwd|otp|pin)\s*(?:l[aà]|:|=|is)?\s*)\S+")
 # With or without a scheme ("shop.example/x?otp=…", review round 4). Over-matching only shortens
 # what audit keeps, so a generic 2+ letter TLD is fine here (unlike the link guard).
+# Userinfo ("alice:pass@host") is matched as part of the URL so it is never kept (review round 5).
 _URL_TAIL = regex.compile(
-    r"((?:(?:https?|ftp):)?//[^\s/?#<>\"']+|(?<![\w@.-])(?:[\p{L}\p{N}-]+\.)+\p{L}{2,}(?::\d+)?)"
-    r"(?:[/?#][^\s<>\"']*)?", regex.IGNORECASE)
+    r"(?:(?:[a-z][a-z0-9+.-]*:)?[/\\]{2,}|(?:https?|ftp):[/\\]*)[^\s<>\"']+"
+    r"|(?<![\w@.:-])(?:[^\s/@<>\"':]+:[^\s/@<>\"']+@)?(?:[\p{L}\p{N}-]+\.)+\p{L}{2,}(?::\d+)?"
+    r"(?:[/?#\\][^\s<>\"']*)?", regex.IGNORECASE)
 _PERCENT_RUN = re.compile(r"(?:%[0-9A-Fa-f]{2})+")
 
 
@@ -34,8 +36,16 @@ def _fallback_mask(text: str) -> str:
 
 def _strip_url_tails(text: str) -> str:
     """Audit keeps a URL's host only: paths/queries can hide encoded PII (%35%37…, review B2)."""
+    from .detectors.url import parse_url
+
     def keep_host(m):
-        return m.group(0) if m.group(0) == m.group(1) else m.group(1) + "/[đã lược]"
+        parsed = parse_url(m.group(0))
+        if not parsed.userinfo and not parsed.rest.strip("/\\"):
+            return m.group(0)                      # "https://shop.example", "TP.HCM"
+        if not parsed.host or parsed.malformed:
+            return "[đã lược]"
+        prefix = f"{parsed.scheme}://" if parsed.scheme else ""
+        return f"{prefix}{parsed.host}/[đã lược]"  # host as the browser sees it, nothing else
 
     # Any %XX left outside a URL can still decode to a secret: audit never needs it.
     return _PERCENT_RUN.sub("[đã lược]", _URL_TAIL.sub(keep_host, text))

@@ -249,3 +249,49 @@ def test_d6_warnings_with_negation_inside_the_request_are_allowed():
                  "Shop sẽ không bao giờ gửi tin nhắn yêu cầu bạn nhập OTP",
                  "Nhân viên shop không bao giờ gọi điện yêu cầu bạn đọc mã OTP"):
         assert guard().check_output(text, ctx("output")).action == "allow", text
+
+
+# --- PR #2, review round 5 @ 1c44bc6 (E1–E5) plus variants from our own sweep ---
+
+def test_e1_host_is_read_like_a_browser():
+    for text in ("![ảnh](https:///evil.example/pixel.png)", r"![a](https:\\evil.example/p.png)",
+                 "![a](https:evil.example/p)", r"[a](/\evil.example/x)", "[a](https://evil%2Eexample/x)",
+                 "[a](https://shop.example@evil.example/)", "[a](<ht\ttps://evil.example>)"):
+        assert "evil" not in _links(text).lower(), text
+    for text in ("[a](https://shop.example/sp/1)", "[a](/sp/1)", "[a](https://shop.example/?page=2&sort=price)"):
+        assert _links(text) == text, text
+
+
+def test_e2_encoded_email_in_query_of_allowed_host_is_exfil():
+    for text in ("https://shop.example/?email=alice%40mail.example",
+                 "https://shop.example/?e=alice%2540mail.example", "https://shop.example/u/alice@mail.example"):
+        decision = guard().check_output(text, ctx("output"))
+        assert decision.action == "block" and "alice" not in decision.text, text
+
+
+def test_e3_audit_never_keeps_url_userinfo(tmp_path):
+    db = tmp_path / "a.sqlite"
+    g = Guard(GuardConfig.model_validate({"audit": {"enabled": True, "sqlite_path": str(db)}}))
+    g.check_input("vào https://alice:ShopSecret741!@shop.example/p và alice:Pw!92@shop.example/q",
+                  ctx("input"))
+    g.audit.export_jsonl(tmp_path / "o.jsonl")
+    g.audit.close()
+    assert b"ShopSecret741" not in db.read_bytes() and b"Pw!92" not in db.read_bytes()
+    assert "ShopSecret741" not in (tmp_path / "o.jsonl").read_text(encoding="utf-8")
+
+
+def test_e4_request_with_markdown_list_is_solicitation():
+    for text in ("Vui lòng gửi qua chat:\n- Mã OTP\n- Mật khẩu",
+                 "Để xác minh đơn hàng của anh/chị, bên em cần anh/chị cung cấp các thông tin sau:\n"
+                 "1. Họ tên\n2. Địa chỉ\n3. Số CCCD",
+                 "Please send us the following:\n* Card number\n* CVV",
+                 "Anh chị vui lòng nhắn:\n  • **Mã OTP**"):
+        assert guard().check_output(text, ctx("output")).action == "block", text
+
+
+def test_e5_warning_or_shipping_lists_are_allowed():
+    for text in ("Shop không bao giờ yêu cầu bạn gửi:\n- Mã OTP\n- Mật khẩu",
+                 "Lưu ý, tuyệt đối không cung cấp các thông tin sau cho bất kỳ ai:\n- Mã OTP\n- Mật khẩu",
+                 "Để đặt hàng, bạn cung cấp:\n- Họ tên\n- SĐT người nhận\n- Địa chỉ giao hàng",
+                 "Thông số:\n- Pin 5000mAh\n- Màn 6.7 inch"):
+        assert guard().check_output(text, ctx("output")).action == "allow", text

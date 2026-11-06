@@ -1,7 +1,6 @@
 """Lớp 4 output detectors: the bot asking for secrets (solicitation) and links/images (link guard)."""
 
 from dataclasses import dataclass, field
-from urllib.parse import unquote, urlsplit
 
 import regex
 
@@ -10,6 +9,7 @@ from fox_guard.normalize.unicode import skeleton
 from fox_guard.types import Finding
 
 from .rules.engine import latin_view
+from .url import parse_url, unquote_all
 
 # ---------------------------------------------------------------- solicitation (B5.3, P4 / O3)
 # Things a shop's customer service never needs from the customer in chat. Phone, address and tax id
@@ -85,6 +85,33 @@ def _negated(view: str, start: int, end: int) -> bool:
     return False
 
 
+# A lead-in ending with ":" and the list or lines under it form one request (review round 5):
+# "Vui lòng gửi qua chat:\n- Mã OTP\n- Mật khẩu". Markers and line breaks become " / ", which
+# neither ends the clause nor blocks _SOLICIT; a lead-in can be long, so items are pulled next to it.
+_LIST_BLOCK = regex.compile(r"(?m):[ \t]*\n((?:[ \t]*(?:[-*•+>]|\d{1,2}[.)])?[ \t]*[^\n]*(?:\n|$)){1,15})")
+_LIST_MARK = regex.compile(r"(?m)^[ \t]*(?:[-*•+>]|\d{1,2}[.)])?[ \t]*")
+_LEAD_ASK = regex.compile(r"\b" + _ASK + r"\b")
+
+
+def _join_lists(view: str) -> str:
+    def join(m):
+        items = [line.strip(" *_") for line in _LIST_MARK.sub("", m.group(1)).split("\n") if line.strip()]
+        return ": " + " / ".join(items) + "\n"
+
+    joined = _LIST_BLOCK.sub(join, view)
+    # Long lead-ins: also place the last request verb of each lead-in right before its items.
+    out = []
+    for line in joined.split("\n"):
+        lead, colon, items = line.partition(": ")
+        asks = list(_LEAD_ASK.finditer(lead)) if colon else []
+        if asks and len(lead) - asks[-1].end() > 30:
+            ask = asks[-1]
+            negation = "khong " if _negated(lead, ask.start(), ask.end()) else ""
+            line = f"{line}\n{negation}{ask.group()}: {items}"
+        out.append(line)
+    return "\n".join(out)
+
+
 def find_solicitation(normalized: NormalizedText) -> list[Finding]:
     """One high finding if the answer asks the customer for an ID, OTP, password, card or account.
 
@@ -93,7 +120,7 @@ def find_solicitation(normalized: NormalizedText) -> list[Finding]:
     """
     for view in (normalized.vi_nodiac, normalized.vi_teencode, latin_view(normalized.nfkc)):
         # Our own placeholders (<CCCD_1>) name an entity; they are not a request for it.
-        view = _PLACEHOLDER_VIEW.sub(" ", view)
+        view = _join_lists(_PLACEHOLDER_VIEW.sub(" ", view))
         for match in _SOLICIT.finditer(view, timeout=0.05, overlapped=True):
             if not _negated(view, match.start(), match.end()):
                 return [Finding(detector="solicitation", kind="solicitation", severity="high",
@@ -128,53 +155,20 @@ _BARE = regex.compile(
 _SPACED_DOT = regex.compile(r"(?<=[\p{L}\p{N}])\s*(?:\.|\[\.\]|\(\.\)|\s+dot\s+|\s+cham\s+)\s*"
                             r"(?=(?:com|vn|net|org|example)\b)", regex.IGNORECASE)
 REMOVED_LINK = "[liên kết ngoài đã bị gỡ]"
+_ANGLE_DEST = regex.compile(r"(\]\(\s*<|^[ \t]*\[[^\]\n]{1,80}\]:[ \t]*<)([^>\n]*)>", regex.M)
 
 
 MALFORMED = "\x00malformed"
 
 
-def _absolute(url: str) -> str:
-    if "://" in url:
-        return url
-    return "http:" + url if url.startswith("//") else "http://" + url
-
-
 def host_of(url: str) -> str:
-    target = _absolute(url)
-    try:
-        host = (urlsplit(target).hostname or "").rstrip(".").lower()
-    except ValueError:
-        return MALFORMED
-    try:
-        return host.encode("idna").decode("ascii")
-    except UnicodeError:
-        return host
-
-
-def _non_ascii_host(url: str) -> bool:
-    """An internationalized host ("straße.example", "ｓｈｏｐ.example", "xn--…").
-
-    Python's idna codec is IDNA2003 (ß → ss) while browsers use UTS #46 (ß kept), so the two can
-    name different hosts (review round 4). The shop's allowlist is ASCII: such hosts never match it."""
-    try:
-        raw = urlsplit(_absolute(url)).hostname or ""
-    except ValueError:
-        return True
-    return not raw.isascii() or "xn--" in raw
+    """The host a browser would contact (see detectors/url.py), MALFORMED if it cannot be read."""
+    parsed = parse_url(url)
+    return MALFORMED if parsed.malformed else parsed.host
 
 
 def _allowed(host: str, allowlist: list[str]) -> bool:
     return any(host == a or host.endswith("." + a) for a in allowlist)
-
-
-def _unquote_all(text: str) -> str:
-    """Decode %XX until stable (bounded): "%2535" hides "%35" hides "5"."""
-    for _ in range(4):
-        decoded = unquote(text)
-        if decoded == text:
-            break
-        text = decoded
-    return text
 
 
 def _lookalike(host: str, allowlist: list[str]) -> bool:
@@ -194,15 +188,17 @@ def _has_pii(url: str) -> bool:
     from fox_guard.pii.recognizers import detect_pii
     from fox_guard.pii.vault import PLACEHOLDER
 
-    whole = _unquote_all(url)
-    if PLACEHOLDER.search(whole):
+    if PLACEHOLDER.search(unquote_all(url)):
         return True  # restored later into the real value: treat as PII now
-    try:
-        parts = urlsplit(_absolute(whole))
-    except ValueError:
-        return False
-    tail = " ".join((parts.hostname or "", parts.path, parts.query, parts.fragment)).replace("+", " ")
-    text = regex.sub(r"[&=/?#.]", " ", tail).strip()
+    parsed = parse_url(url)
+    if parsed.userinfo:
+        return True  # "user:pass@host" carries a credential to whoever the host is (review round 5)
+    # Host labels split on dots ("0912345678.shop.example"). In path/query/fragment only URL
+    # separators split values: "." and "@" stay, so "alice%40mail.example" is still an email.
+    host_text = parsed.host.replace(".", " ")
+    rest = unquote_all(parsed.rest.replace("+", " "))
+    rest_text = regex.sub(r"[&=/?#;\\]", " ", rest)
+    text = f"{host_text} {rest_text}".strip()
     return bool(text) and bool(detect_pii(normalize(text, decode_max_depth=0)))
 
 
@@ -222,22 +218,26 @@ def guard_links(text: str, allowlist: list[str]) -> LinkResult:
     def judge(url: str) -> bool:
         """True if the URL may stay; records findings otherwise."""
         nonlocal exfil
-        host = host_of(url)
-        if host == MALFORMED:
+        parsed = parse_url(url)
+        host = parsed.host
+        pii = _has_pii(url)
+        if parsed.malformed and not pii:
+            # Includes "https:///evil.example"-style URLs whose host Python and browsers disagree on.
             findings.append(Finding(detector="link:external", kind="link", severity="medium",
                                     evidence="malformed URL removed", technique="T2.12"))
             return False
-        scheme = url.split(":", 1)[0].lower() if regex.match(r"[a-z][a-z0-9+.-]*:", url, regex.I) else ""
-        if scheme and scheme not in ("http", "https") and not host:
-            # javascript:, data:, vbscript:… run or embed content without any host to allowlist.
+        if parsed.scheme and parsed.scheme not in ("http", "https"):
+            # javascript:, data:, vbscript:, ftp:… run or embed content outside the allowlist rules.
             findings.append(Finding(detector="link:external", kind="link", severity="medium",
-                                    evidence=f"{scheme}: URL removed"[:120], technique="T2.12"))
+                                    evidence=f"{parsed.scheme}: URL removed"[:120], technique="T2.12"))
             return False
-        if not host:
+        if not host and not pii:
+            return True  # same-site relative link ("/sp/1")
+        # Internationalized hosts never match the ASCII allowlist: Python (IDNA2003) and browsers
+        # (UTS #46) can encode them to different hosts (review round 4).
+        if _allowed(host, allow) and not parsed.non_ascii and not pii:
             return True
-        if _allowed(host, allow) and not _non_ascii_host(url) and not _has_pii(url):
-            return True
-        if _has_pii(url):
+        if pii:
             exfil = True
             findings.append(Finding(detector="link:exfil", kind="link", severity="high",
                                     evidence=f"PII in query of {host}"[:120], technique="T2.12"))
@@ -263,6 +263,9 @@ def guard_links(text: str, allowlist: list[str]) -> LinkResult:
 
     # "evil-shop . example", "evil-shop[.]example" are written to slip past link filters.
     text = _SPACED_DOT.sub(".", text)
+    # Browsers drop tab/CR inside a URL: "<ht\ttps://evil.example>" opens https://evil.example.
+    # CommonMark accepts them only in an angle-bracket destination, so remove them there.
+    text = _ANGLE_DEST.sub(lambda m: m.group(1) + regex.sub(r"[\t\r]", "", m.group(2)) + ">", text)
     text = _IMAGE.sub(drop_image, text)
     text = _INLINE.sub(inline, text)
     text = _REFDEF.sub(refdef, text)
