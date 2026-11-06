@@ -924,6 +924,9 @@ Claude giao việc (prompt chi tiết + chỗ dễ sai)
 | 17 | Có PII thì tính vào `risk` | PII chỉ cho `action="mask"`, không tăng `risk`; riêng placeholder lạ là medium | Khách gõ số thẻ của mình không phải tấn công; không được chặn |
 | 18 | Hex/hash ≥ 16 ký tự bị loại trừ | Hex phải có chữ a–f (ở cả Lớp 1 và Lớp 3) | Số thẻ viết liền từng lọt vào log và bị báo "đã mã hoá" |
 | 11 | Phần A dùng `setup.sql` | Supabase thật thiếu 3 bảng; thêm migration 0 với quyền chặt hơn | `setup.sql` xoá toàn bộ bảng, không được chạy |
+| 19 | Link guard của FOX-Guard là lớp chặn link duy nhất | **Hai lớp.** Lớp chặn cuối là renderer của web (`markdown-to-jsx` với HTML thô tắt, `checkUrlSafety()` trong `web_ui/src/components/chat-widget.tsx`). FOX-Guard là lớp thứ hai: gỡ link, phát hiện PII trong URL, ghi audit. Một chỗ lệch cú pháp chỉ là P1 khi qua được **cả hai lớp** | 7 lượt review liên tiếp tìm ra lệch cú pháp Markdown/URL. Bộ kiểm S1 (`tests/systematic/`) so trực tiếp với renderer thật và đo đúng điều kiện này |
+| 20 | Kiểm bằng ca test viết tay theo từng review | Thêm bộ kiểm hệ thống S1–S5 có đáp án chuẩn: renderer thật, WHATWG URL, giải mã lặp cho audit, quan hệ biến đổi, bộ câu hợp lệ cố định. Lỗi mới được thêm vào bộ sinh trước rồi mới sửa | Vá theo từng câu không hội tụ; lần chạy đầu tìm ra 83 ca trong 7 nhóm (`docs/reports/systematic-run-1.md`) |
+| 21 | Bộ bắt "bot đòi bí mật" xử lý mọi cách nói phủ định | Phần phủ định **đóng băng**: không thêm danh sách từ mới; câu diễn đạt mới chuyển sang Lớp 5 | Danh sách từ lớn dần theo từng câu tìm được mà vẫn lọt (backlog N1) |
 
 ---
 

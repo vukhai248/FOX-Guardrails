@@ -22,9 +22,12 @@ _SECRET_ITEMS = (
     r"ngay het han(?: the)?|so tai khoan|ma bao mat|"
     r"one[- ]time (?:code|password)|password|card number|security code|id card|passport number|bank account)"
 )
-_ASK = (  # "can" = cần, but not the "căn" of "căn cước" (no-diacritics views merge the two)
-    r"(?:vui long|lam on|xin|hay|can(?!\s+cuoc)|phai|bat buoc|de nghi|yeu cau|"
-    r"cho (?:em|minh|shop|ben em) xin|"
+# "can" = cần, but not the "căn" of "căn cước" (no-diacritics views merge the two). No bare "hay":
+# without diacritics it is also "hay" = "or" ("mã OTP, mật khẩu hay số thẻ"), and "hãy gửi…" is
+# already caught by its verb (systematic run 1, S4d/S5).
+_ASK = (
+    r"(?:vui long|lam on|xin|can(?!\s+cuoc)|phai|bat buoc|de nghi|yeu cau|"
+    r"cho (?:em|minh|shop|ben em|chung toi)(?: xin)?|"
     r"gui|cung cap|nhap|doc|chup|nhan tin|please|provide|send|enter|share|tell us|give us|confirm)"
 )
 _NEGATION = regex.compile(r"\b(?:khong|chang|dung|chua|never|not|dont|don't|no one|nobody)\b")
@@ -90,31 +93,35 @@ def _negated(view: str, start: int, end: int) -> bool:
     return False
 
 
-# A lead-in ending with ":" and the list or lines under it form one request (review round 5):
-# "Vui lòng gửi qua chat:\n- Mã OTP\n- Mật khẩu". Markers and line breaks become " / ", which
-# neither ends the clause nor blocks _SOLICIT; a lead-in can be long, so items are pulled next to it.
+# A lead-in ending with ":" and the list under it form one request (review round 5):
+# "Vui lòng gửi qua chat:\n- Mã OTP\n- Mật khẩu". See _join_lists for what is joined.
 _LIST_BLOCK = regex.compile(r"(?m):[ \t]*\n((?:[ \t]*(?:[-*•+>]|\d{1,2}[.)])?[ \t]*[^\n]*(?:\n|$)){1,15})")
 _LIST_MARK = regex.compile(r"(?m)^[ \t]*(?:[-*•+>]|\d{1,2}[.)])?[ \t]*")
 _LEAD_ASK = regex.compile(r"\b" + _ASK + r"\b")
 
 
-def _join_lists(view: str) -> str:
-    def join(m):
-        items = [line.strip(" *_") for line in _LIST_MARK.sub("", m.group(1)).split("\n") if line.strip()]
-        return ": " + " / ".join(items) + "\n"
+_SECRET_ITEM_LINE = regex.compile(r"^" + _SECRET_ITEMS + r"\b")
 
-    joined = _LIST_BLOCK.sub(join, view)
-    # Long lead-ins: also place the last request verb of each lead-in right before its items.
-    out = []
-    for line in joined.split("\n"):
-        lead, colon, items = line.partition(": ")
-        asks = list(_LEAD_ASK.finditer(lead)) if colon else []
-        if asks and len(lead) - asks[-1].end() > 30:
+
+def _join_lists(view: str) -> str:
+    """Original text plus one synthetic line per "request lead-in + list of secret names".
+
+    Only a lead-in with a request verb counts, and only list items that ARE a secret name (at most
+    six words: "Mã OTP", "Số CCCD"). A full sentence item ("Mã OTP sẽ được gửi về máy bạn") is not
+    a requested item, and lines are never glued together otherwise (systematic run 1, S5)."""
+    extra = []
+    for m in _LIST_BLOCK.finditer(view):
+        lead = view[view.rfind("\n", 0, m.start()) + 1:m.start()]
+        asks = list(_LEAD_ASK.finditer(lead))
+        if not asks:
+            continue
+        lines = [line.strip(" *_") for line in _LIST_MARK.sub("", m.group(1)).split("\n")]
+        items = [line for line in lines if line and len(line.split()) <= 6 and _SECRET_ITEM_LINE.match(line)]
+        if items:
             ask = asks[-1]
             negation = "khong " if _negated(lead, ask.start(), ask.end()) else ""
-            line = f"{line}\n{negation}{ask.group()}: {items}"
-        out.append(line)
-    return "\n".join(out)
+            extra.append(f"{negation}{ask.group()} {' / '.join(items)}")
+    return "\n".join([view, *extra])
 
 
 def find_solicitation(normalized: NormalizedText) -> list[Finding]:
@@ -163,10 +170,17 @@ _BARE = regex.compile(
     r"(?:/(?:[^\s<>()\[\]\"']|\([^\s<>()\[\]\"']*\)|<[A-Z_]+_\d{1,4}>)*)?(?![\w-])",
     regex.IGNORECASE,
 )
-_SPACED_DOT = regex.compile(r"(?<=[\p{L}\p{N}])\s*(?:\.|\[\.\]|\(\.\)|\s+dot\s+|\s+cham\s+)\s*"
-                            r"(?=(?:com|vn|net|org|example)\b)", regex.IGNORECASE)
+# Obfuscated dots in a domain: "evil-shop[.]example", "evil (.) com", "evil dot com", "evil . example".
+# A plain "." needs spaces on BOTH sides, a lowercase TLD and a label with a letter before it, so a
+# sentence end before "Vn Post" / "Net giá" or "5 . com bo" is never glued (systematic run 1, S5).
+_SPACED_DOT = regex.compile(r"(?<=[a-z][a-z0-9-]*)(?:\s*(?:\[\.\]|\(\.\))\s*|\s+(?:\.|dot|cham)\s+)"
+                            r"(?=(?:com|vn|net|org|example)\b)")
 REMOVED_LINK = "[liên kết ngoài đã bị gỡ]"
-_ANGLE_DEST = regex.compile(r"(\]\(\s*<|^[ \t]*\[[^\]\n]{1,80}\]:[ \t]*<)([^>\n]*)>", regex.M)
+# Browsers drop tab/CR inside a URL and markdown-to-jsx accepts them in a destination:
+# "![](ht\ttps://evil.example)" loads https://evil.example (systematic run 1, S1).
+_DEST_WITH_TABS = regex.compile(r"(\]\(|^[ \t]*\[[^\]\n]{1,80}\]:[ \t]*(?:\n[ \t]*)?)([^()\n]*)", regex.M)
+# Autolink with any scheme: "<alice:pw1@shop.example>" becomes a link with scheme "alice:".
+_AUTOLINK = regex.compile(r"<([a-zA-Z][a-zA-Z0-9+.-]{1,31}:[^\s<>]*)>")
 
 
 MALFORMED = "\x00malformed"
@@ -281,9 +295,8 @@ def guard_links(text: str, allowlist: list[str]) -> LinkResult:
 
     # "evil-shop . example", "evil-shop[.]example" are written to slip past link filters.
     text = _SPACED_DOT.sub(".", text)
-    # Browsers drop tab/CR inside a URL: "<ht\ttps://evil.example>" opens https://evil.example.
-    # CommonMark accepts them only in an angle-bracket destination, so remove them there.
-    text = _ANGLE_DEST.sub(lambda m: m.group(1) + regex.sub(r"[\t\r]", "", m.group(2)) + ">", text)
+    text = _DEST_WITH_TABS.sub(lambda m: m.group(1) + regex.sub(r"[\t\r]", "", m.group(2)), text)
+    text = _AUTOLINK.sub(lambda m: m.group() if judge(m.group(1)) else REMOVED_LINK, text)
     text = _IMAGE.sub(drop_image, text)
     text = _INLINE.sub(inline, text)
     text = _REFDEF.sub(refdef, text)

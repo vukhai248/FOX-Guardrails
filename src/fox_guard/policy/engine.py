@@ -54,7 +54,10 @@ def decide(station: str, findings: list[Finding], text: str, pii_changed: bool, 
             return Verdict("block", texts.solicitation, risk)
         if "link:exfil" in detectors:
             return Verdict("block", texts.output_safe, risk)
-        if risk == "high" and not link_edited:
+        # A removed link excuses only link findings (look-alike hosts are high but already removed).
+        # Any other high finding still blocks, with or without a link (systematic run 1, S4c).
+        if any(f.severity == "high" and not f.detector.startswith("link:") and
+               (f.kind != "pii" or f.detector == "pii:unknown_placeholder") for f in findings):
             return Verdict("block", texts.output_safe, risk)
         if link_edited:
             # External/look-alike links were removed in place; the rest of the answer is still useful.

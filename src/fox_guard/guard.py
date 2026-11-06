@@ -26,13 +26,12 @@ _URL_TAIL = regex.compile(
     r"(?:(?:[a-z][a-z0-9+.-]*:)?[/\\]{2,}|(?:https?|ftp):[/\\]*)[^\s<>\"']+"
     r"|(?<![\w@.:-])(?:[^\s/@<>\"':]+:[^\s/@<>\"']+@)?(?:[\p{L}\p{N}-]+\.)+\p{L}{2,}(?::\d+)?"
     r"(?:[/?#\\][^\s<>\"']*)?", regex.IGNORECASE)
-_PERCENT_RUN = re.compile(r"(?:%[0-9A-Fa-f]{2})+")
 
 
 def _drop_encoded(text: str) -> str:
     """Audit keeps nothing a decoder could read back: base64/hex, entities, \\u escapes, %XX
     ("OTP: &#53;&#55;…" decodes to the OTP, review round 7)."""
-    from .normalize.decode import encoded_spans
+    from .normalize.decode import _PERCENT_RUN, encoded_spans
 
     out, cursor = [], 0
     for start, end in encoded_spans(text):
@@ -50,6 +49,7 @@ def _fallback_mask(text: str) -> str:
 def _strip_url_tails(text: str) -> str:
     """Audit keeps a URL's host only: paths/queries can hide encoded PII (%35%37…, review B2)."""
     from .detectors.url import parse_url
+    from .normalize.decode import _PERCENT_RUN
 
     def keep_host(m):
         parsed = parse_url(m.group(0))

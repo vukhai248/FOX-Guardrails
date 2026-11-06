@@ -132,22 +132,27 @@ def run_rules(normalized: NormalizedText, station: Station,
             continue
         # What this rule actually matched in plain text (review round 7: a substring test let
         # "xignore all previous instructions", which the rule rejects, hide an encoded copy).
-        plain_hits = set()
+        # Plain views are scanned once; the node loop below reuses these matches.
+        plain_matches = {}
         for view in rule.views:
             try:
-                plain_hits.update(_fold_ws(m.group())
-                                  for m in item.compiled.finditer(views[0][2][view], timeout=_TIMEOUT_S))
+                plain_matches[view] = list(item.compiled.finditer(views[0][2][view], timeout=_TIMEOUT_S))
             except TimeoutError:
+                # Never skip silently: an attacker could craft text that stalls a rule.
                 timed_out.append(rule.id)
+                plain_matches[view] = []
+        plain_hits = {_fold_ws(m.group()) for found in plain_matches.values() for m in found}
         finding = None
         for node, hidden, texts in views:
             for view in rule.views:
-                try:
-                    matches = list(item.compiled.finditer(texts[view], timeout=_TIMEOUT_S))
-                except TimeoutError:
-                    # Never skip silently: an attacker could craft text that stalls a rule.
-                    timed_out.append(rule.id)
-                    matches = []
+                if not hidden:
+                    matches = plain_matches[view]
+                else:
+                    try:
+                        matches = list(item.compiled.finditer(texts[view], timeout=_TIMEOUT_S))
+                    except TimeoutError:
+                        timed_out.append(rule.id)
+                        matches = []
                 if hidden:
                     # Review round 6: a plain hit must not hide a second instruction that only
                     # decoding reveals. Concealed = a match whose text the plain views do not contain.

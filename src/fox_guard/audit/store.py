@@ -53,6 +53,13 @@ class AuditStore:
         self._conn.executescript(_SCHEMA)
 
     @classmethod
+    def open_existing(cls, path: str | Path) -> "AuditStore":
+        """For read-only tools (CLI): a mistyped path must fail, not create an empty database."""
+        if not Path(path).is_file():
+            raise FileNotFoundError(f"Không có file audit: {path}")
+        return cls(path)
+
+    @classmethod
     def from_env(cls, path: str | Path, salt_env: str) -> "AuditStore":
         return cls(path, os.environ.get(salt_env))
 

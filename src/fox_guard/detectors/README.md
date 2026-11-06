@@ -35,5 +35,6 @@ Lớp 2 có README riêng ở `rules/README.md`.
 
 ## Giới hạn
 
-- Solicitation dựa trên mẫu từ vựng; câu diễn đạt lạ có thể lọt.
+- Solicitation dựa trên mẫu từ vựng; câu diễn đạt lạ có thể lọt. Phần phủ định đã **đóng băng** (không thêm danh sách từ); câu mới là việc của Lớp 5.
+- Link guard là **lớp thứ hai**. Lớp chặn cuối là renderer của web (`checkUrlSafety` trong `chat-widget.tsx`). Bộ kiểm `tests/systematic/` (S1) so với chính renderer đó.
 - Link guard không kiểm nội dung trang đích.

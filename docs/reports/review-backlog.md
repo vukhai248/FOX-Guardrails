@@ -55,6 +55,10 @@ Từ lượt này áp dụng tiêu chí mới trong `docs/plans/prompts/codex-re
 | 3 Audit giữ `&#53;&#55;…` | P1, bí mật giải mã được trong log | Audit xoá mọi đoạn mà bộ giải mã đọc được: base64/hex, entity, `\u`, `%XX` |
 | 4 "gửi mã dùng để không bị hủy đơn (OTP)" | **P2, hoãn (N1)** | Phạm vi phủ định, để Lớp 5 |
 
+## Chuyển sang kiểm hệ thống (07/11/2026)
+
+Từ đây, lỗi được tìm bằng bộ S1–S5 (`tests/systematic/`, báo cáo ở `docs/reports/systematic-run-1.md`), không còn review đoán từng ca. Lần chạy đầu tìm ra 83 ca trong 7 nhóm, gồm 2 nhóm P1: policy miễn `block` khi có link, và số trong evidence. Cả 7 nhóm đã sửa; S1–S5 hiện về 0. Ba mục trong lượt tự review đã xong ở bản sửa này: `_SPACED_DOT`, ghép danh sách, policy. Mục link tương đối kèm base64 vẫn là L3: link đó trỏ về chính shop, và web cũng cho hiển thị.
+
 ## Việc hoãn
 
 Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (OpenCode, PR #3) phát hiện. **Không sửa bằng cách thêm đúng các câu này vào regex**, vì làm vậy là tune trên held-out. Khi làm thì viết câu dev mới cùng loại, rồi đo lại held-out đúng một lần.

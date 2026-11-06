@@ -176,8 +176,9 @@ def safe_evidence(evidence: str) -> str:
 
     normalized = normalize(evidence, decode_max_depth=0)
     masked = redact_text(normalized.clean, detect_pii(normalized))
-    # Belt and braces: any remaining run of 7+ digits is a number nobody needs in evidence.
-    return regex.sub(r"\d(?:[\s.\-]?\d){6,}", "[đã che]", masked)[:120]
+    # Belt and braces: evidence never needs a number. 3+ digits covers OTPs that no detector can
+    # label, e.g. a host "572431.shop.example" quoted by the link guard (systematic run 1, S3).
+    return regex.sub(r"\d(?:[\s.\-]?\d){2,}", "[đã che]", masked)[:120]
 
 
 __all__ = ["RESTORABLE", "PiiResult", "apply_context", "apply_input", "apply_output", "mask_value",

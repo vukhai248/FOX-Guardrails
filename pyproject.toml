@@ -66,6 +66,7 @@ pythonpath = ["src"]
 markers = [
   "model: cần tải model Hugging Face (bỏ qua trên CI bằng -m 'not model')",
   "slow: chạy lâu (benchmark độ trễ)",
+  "oracle: so với renderer thật của web (Node + web_ui/node_modules); tự bỏ qua nếu không có",
 ]
 
 [tool.ruff]

@@ -77,12 +77,22 @@ app.add_typer(audit_app, name="audit")
 DbOption = Annotated[Path, typer.Option("--db", help="File SQLite audit.")]
 
 
+def _open(db: Path):
+    """Open an existing audit DB; a wrong --db path is an error, never a new empty database."""
+    from fox_guard.audit.store import AuditStore
+
+    try:
+        return AuditStore.open_existing(db)
+    except FileNotFoundError as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(1) from error
+
+
 @audit_app.command("why")
 def audit_why(decision_id: str, db: DbOption = Path("var/fox_guard.sqlite")) -> None:
     """In lý do của một quyết định từ bản ghi audit (không cần text gốc)."""
-    from fox_guard.audit.store import AuditStore
 
-    row = AuditStore(db).get(decision_id)
+    row = _open(db).get(decision_id)
     if row is None:
         typer.echo(f"Không tìm thấy quyết định {decision_id}", err=True)
         raise typer.Exit(1)
@@ -99,9 +109,8 @@ def audit_why(decision_id: str, db: DbOption = Path("var/fox_guard.sqlite")) -> 
 def audit_export(out: Annotated[Path, typer.Argument(help="File JSONL kết quả.")],
                  db: DbOption = Path("var/fox_guard.sqlite")) -> None:
     """Xuất toàn bộ quyết định ra JSONL (cho Phần C và dashboard)."""
-    from fox_guard.audit.store import AuditStore
 
-    typer.echo(f"{AuditStore(db).export_jsonl(out)} quyết định → {out}")
+    typer.echo(f"{_open(db).export_jsonl(out)} quyết định → {out}")
 
 
 if __name__ == "__main__":
