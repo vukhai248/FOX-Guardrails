@@ -108,15 +108,17 @@ def run_rules(normalized: NormalizedText, station: Station,
               rules: tuple[CompiledRule, ...] | None = None) -> list[Finding]:
     """One finding per matching rule.
 
-    Hidden text (decoded Unicode Tags) and decoded views are searched first: a match there
-    means the instruction was deliberately concealed, so severity is raised to high.
+    The plain text is searched first. When a rule matches nothing there but matches hidden text
+    (decoded Unicode Tags) or a decoded view, the instruction was concealed: severity becomes high.
     Spans are given only when the matched view is index-aligned with clean.
     """
     rules = rules if rules is not None else load_rules()
     concealed = [child for child in normalized.decoded]
     if normalized.hidden_tags:
         concealed.insert(0, normalize(normalized.hidden_tags, decode_max_depth=0))
-    nodes = [(child, True) for child in concealed] + [(normalized, False)]
+    # Plain text first: a hidden view raises severity only when it reveals a match the plain text
+    # lacks. An unrelated "%20" elsewhere must not turn a medium hit into high (round 3, item 7).
+    nodes = [(normalized, False)] + [(child, True) for child in concealed]
     views = [(node, hidden, _node_views(node)) for node, hidden in nodes]
     findings = []
     timed_out = []
