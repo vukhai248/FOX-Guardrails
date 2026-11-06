@@ -99,6 +99,10 @@ def _node_views(node: NormalizedText) -> dict[str, str]:
             "vi_teencode": node.vi_teencode, "latin": latin_view(node.nfkc)}
 
 
+def _fold_ws(text: str) -> str:
+    return " ".join(text.casefold().split())
+
+
 def _mask_evidence(text: str) -> str:
     # Rules never need digits as evidence; masking them keeps accidental PII out of audit.
     return regex.sub(r"\d", "*", " ".join(text.split()))[:120]
@@ -126,30 +130,43 @@ def run_rules(normalized: NormalizedText, station: Station,
         rule = item.rule
         if station not in rule.stations:
             continue
+        plain_texts = [_fold_ws(text) for text in views[0][2].values()]
+        finding = None
         for node, hidden, texts in views:
-            match, view = None, None
             for view in rule.views:
                 try:
-                    match = item.compiled.search(texts[view], timeout=_TIMEOUT_S)
+                    matches = list(item.compiled.finditer(texts[view], timeout=_TIMEOUT_S))
                 except TimeoutError:
                     # Never skip silently: an attacker could craft text that stalls a rule.
                     timed_out.append(rule.id)
-                    match = None
-                if match:
+                    matches = []
+                if hidden:
+                    # Review round 6: a plain hit must not hide a second instruction that only
+                    # decoding reveals. Concealed = a match whose text the plain views do not contain.
+                    matches = [m for m in matches
+                               if not any(_fold_ws(m.group()) in plain for plain in plain_texts)]
+                if matches:
                     break
-            if not match:
+            if not matches:
                 continue
+            match = matches[0]
+            if finding is not None:
+                finding = finding.model_copy(update={"severity": "high"})  # plain hit + concealed one
+                break
             # Views derived from nfkc shift positions when NFKC expands a character ("ﬃ" → "ffi"),
             # so equal length alone is not enough (review A8).
             aligned = (not hidden and len(texts[view]) == len(node.clean)
                        and (view == "clean" or node.nfkc == node.clean))
-            findings.append(Finding(
+            finding = Finding(
                 detector=f"rules:{rule.id}", kind="injection",
                 severity="high" if hidden else rule.severity,
                 span=match.span() if aligned else None,
                 evidence=_mask_evidence(match.group()), technique=rule.technique,
-            ))
-            break
+            )
+            if hidden:
+                break
+        if finding is not None:
+            findings.append(finding)
     if timed_out:
         findings.append(Finding(
             detector="rules:timeout", kind="injection", severity="medium",

@@ -35,6 +35,15 @@ Gốc chung của mục 1 và 3: Python `urlsplit` hiểu URL khác trình duy�
 | 3 Mật khẩu trong `user:pass@host` | Audit chỉ giữ `scheme://host` từ bộ tách mới; link có userinfo bị coi là mang PII. Đã kiểm cả SQLite và JSONL |
 | 4 Lời dẫn + danh sách Markdown | Lời dẫn kết thúc bằng `:` được ghép với danh sách bên dưới; câu cảnh báo phủ định vẫn `allow` |
 
+## Đã chốt lượt review 6 (PR #2 @ `8c8b98b`)
+
+| Mục | Sửa |
+| --- | --- |
+| 1 Audit giải mã host sau bước che (lỗi do lượt 5 gây ra) | Đổi thứ tự: thu gọn URL trước, che PII sau. Dãy số trong host được thay bằng `***` |
+| 2 Đích Markdown có ngoặc `a(b)` | Đọc đích theo CommonMark (ngoặc cân bằng, `<…>`). Link tới shop chỉ được giữ khi phần sau host gồm toàn ký tự an toàn: không `%`, `@`, `(`, `\`, dấu nháy. Cả nhóm lỗi "PII mã hoá trong link của shop" bị chặn từ gốc |
+| 3 "đừng gửi email **mà** gửi OTP" | "mà" + động từ yêu cầu mở vế mới; sửa luôn lỗi `finditer(endpos)` làm lookahead không nhìn thấy phía sau |
+| 4 Bản rõ che lấp chỉ dẫn mã hoá | Bản giải mã được xét thêm sau bản rõ; lần khớp chỉ có trong bản giải mã thì nâng lên `high` |
+
 ## Việc hoãn
 
 Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (OpenCode, PR #3) phát hiện. **Không sửa bằng cách thêm đúng các câu này vào regex**, vì làm vậy là tune trên held-out. Khi làm thì viết câu dev mới cùng loại, rồi đo lại held-out đúng một lần.
@@ -50,6 +59,7 @@ Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (Op
 | R6 | Cờ giả: `hidden_tags` chỉ giải phần ẩn, câu ghép ẩn + hiện chưa được luật thấy trọn | Review 3 mục 6 | Thấp | Đã có tín hiệu `unicode:tags`. Muốn chặn hẳn thì luật chạy trên `hidden_tags + clean` |
 | L1 | Link guard đọc Markdown bằng regex, không dùng parser CommonMark thật. Ví dụ HTML entity trong `href` (`ht&#9;tps:`) và `[a](ht\ttps://…)` không có ngoặc nhọn (CommonMark không coi là link) | Lượt 5, tự dò | TB | Cách chắc nhất: web hiển thị câu trả lời của bot với ảnh ngoài tắt và HTML thô tắt |
 | L2 | "ASP.NET" bị gỡ như một link | Lượt 1 | Thấp | Chặn nhầm đã chấp nhận |
+| L3 | Base64 trong query của link tới chính shop (`?t=MDkx…` là số điện thoại) không bị gỡ | Lượt 6, tự dò | Thấp | Dữ liệu chỉ tới máy chủ của shop. Muốn chặn thì chỉ cho query theo danh sách khoá (`q`, `page`, `sort`) |
 | R0 | Tính độc lập O1: phiên chính của OpenCode đã đọc code trước, giao cho subagent mới viết | PR #3 báo cáo | Thấp | Lần sau giao O1 cho một phiên chỉ có prompt O1 |
 
 ## Số đo Lớp 4 trên held-out (đo 1 lần, 06/11/2026, commit `387bb8a`)

@@ -32,7 +32,10 @@ _SOLICIT = regex.compile(r"\b" + _ASK + r"\b[^\n.?!;]{0,50}?\b" + _SECRET_ITEMS 
 # "nhưng"/"những" collide: only unambiguous conjunctions count, and "nhung" only when a subject or a
 # request follows it ("…không cần địa chỉ nhưng bạn hãy gửi OTP", review B3).
 _CLAUSE_END = regex.compile(
-    r"[,.;!?\n]|\b(?:tuy nhien|nhung ma|but|however|yet|though)\b"
+    r"[,.;!?\n]|\b(?:tuy nhien|nhung ma|thay vao do|but|however|yet|though|instead|rather)\b"
+    # "mà" opens a new clause when a request follows ("đừng gửi email mà gửi OTP"); "mã" is followed
+    # by what it names ("mã OTP"), never by a request verb (review round 6).
+    r"|\bma(?=\s+(?:hay\s+|vui long\s+)?(?:gui|cung cap|nhap|doc|chup|nhan tin|dua|cho (?:em|minh|shop)))"
     r"|\bnhung(?=\s+(?:ban|anh|chi|em|minh|quy khach|khach|shop|hay|vui long|lan nay|bay gio|gio)\b)")
 _PLACEHOLDER_VIEW = regex.compile(r"<[\p{L}_ ]+_\d{1,4}>")
 
@@ -73,7 +76,8 @@ def _negated(view: str, start: int, end: int) -> bool:
         return True
     if _IMPERATIVE.match(view, start):
         return False
-    clause_start = max((m.end() for m in _CLAUSE_END.finditer(view, 0, start)), default=0)
+    # Search the whole view: an endpos would hide the lookahead after "ma"/"nhung" from the regex.
+    clause_start = max((m.end() for m in _CLAUSE_END.finditer(view) if m.end() <= start), default=0)
     for neg in _NEGATION.finditer(view, clause_start, start):
         if _PURPOSE_BEFORE.search(view, clause_start, neg.start()):
             continue
@@ -138,18 +142,24 @@ review work party date trade racing download stream cam rest icu buzz monster la
 bond homes email group center best men page website digital agency global media network zone club
 example invalid test ru cn tk ml ga cf gq vn us uk de fr jp kr sg th id ph my au ca in br es it nl eu
 """.split(), key=len, reverse=True)
-_IMAGE = regex.compile(r"!\[[^\]\n]{0,200}\]\(\s*<?([^)\s>]+)>?(?:\s+[\"'][^\"']*[\"'])?\s*\)")
-_INLINE = regex.compile(r"\[([^\]\n]{0,200})\]\(\s*<?([^)\s>]+)>?(?:\s+[\"'][^\"']*[\"'])?\s*\)")
+# Destination as CommonMark reads it: "<…>" or a run with balanced parentheses, so
+# "(https://shop.example/a(b)?email=…)" is judged whole, not cut at "(" (review round 6).
+_DEST = r"(?|<([^>\n]*)>|((?:[^()\s]|\((?:[^()\s])*\))+))(?:\s+[\"'][^\"']*[\"'])?\s*\)"
+_IMAGE = regex.compile(r"!\[[^\]\n]{0,200}\]\(\s*" + _DEST)
+_INLINE = regex.compile(r"\[([^\]\n]{0,200})\]\(\s*" + _DEST)
+# A link to the shop stays only if every character after the host is plain: no %XX, "@", "(",
+# "\" or quotes, so nothing encoded or oddly delimited can carry PII past the checks.
+_SAFE_REST = regex.compile(r"^(?:/[A-Za-z0-9._~\-/]*)?(?:\?[A-Za-z0-9._~\-=&+,]*)?(?:#[A-Za-z0-9._~\-]*)?$")
 # CommonMark allows the destination on the next line ("[x]:\n  //evil.example/pixel", review round 4).
 _REFDEF = regex.compile(r"(?m)^[ \t]*\[[^\]\n]{1,80}\]:[ \t]*(?:\n[ \t]*)?<?(\S+?)>?(?:[ \t]+[\"'(].*)?$")
 _BARE = regex.compile(
     # A placeholder (<PHONE_1>) inside a URL belongs to the URL: it is restored into a real value later.
-    r"(?<![\w@/.-])(?:(?:https?|ftp)://|www\.)(?:[^\s<>()\[\]\"']|<[A-Z_]+_\d{1,4}>)+"
+    r"(?<![\w@/.-])(?:(?:https?|ftp)://|www\.)(?:[^\s<>()\[\]\"']|\([^\s<>()\[\]\"']*\)|<[A-Z_]+_\d{1,4}>)+"
     # Scheme-relative "//host/x" anywhere in the text: browsers resolve it against the page.
     r"|(?<![\w:/.-])//(?:[\p{L}\p{N}-]+\.)+[\p{L}\p{N}-]+(?::\d+)?"
-    r"(?:[/?#](?:[^\s<>()\[\]\"']|<[A-Z_]+_\d{1,4}>)*)?"
+    r"(?:[/?#](?:[^\s<>()\[\]\"']|\([^\s<>()\[\]\"']*\)|<[A-Z_]+_\d{1,4}>)*)?"
     r"|(?<![\w@/.-])(?:[\p{L}\p{N}-]+\.)+(?:" + "|".join(_TLDS) + r")"
-    r"(?:/(?:[^\s<>()\[\]\"']|<[A-Z_]+_\d{1,4}>)*)?(?![\w-])",
+    r"(?:/(?:[^\s<>()\[\]\"']|\([^\s<>()\[\]\"']*\)|<[A-Z_]+_\d{1,4}>)*)?(?![\w-])",
     regex.IGNORECASE,
 )
 _SPACED_DOT = regex.compile(r"(?<=[\p{L}\p{N}])\s*(?:\.|\[\.\]|\(\.\)|\s+dot\s+|\s+cham\s+)\s*"
@@ -236,7 +246,11 @@ def guard_links(text: str, allowlist: list[str]) -> LinkResult:
         # Internationalized hosts never match the ASCII allowlist: Python (IDNA2003) and browsers
         # (UTS #46) can encode them to different hosts (review round 4).
         if _allowed(host, allow) and not parsed.non_ascii and not pii:
-            return True
+            if _SAFE_REST.match(parsed.rest):
+                return True
+            findings.append(Finding(detector="link:external", kind="link", severity="medium",
+                                    evidence=f"unusual URL to {host} removed"[:120], technique="T2.12"))
+            return False
         if pii:
             exfil = True
             findings.append(Finding(detector="link:exfil", kind="link", severity="high",
@@ -259,7 +273,10 @@ def guard_links(text: str, allowlist: list[str]) -> LinkResult:
         return m.group() if judge(m.group(1)) else REMOVED_LINK
 
     def bare(m):
-        return m.group() if judge(m.group()) else REMOVED_LINK
+        # Autolinkers drop trailing punctuation ("…/sp/1, rất tiện"): judge the URL without it.
+        url = m.group().rstrip(".,;:!?'\"")
+        trail = m.group()[len(url):]
+        return m.group() if judge(url) else REMOVED_LINK + trail
 
     # "evil-shop . example", "evil-shop[.]example" are written to slip past link filters.
     text = _SPACED_DOT.sub(".", text)

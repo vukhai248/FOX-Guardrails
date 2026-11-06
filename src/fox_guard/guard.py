@@ -40,12 +40,16 @@ def _strip_url_tails(text: str) -> str:
 
     def keep_host(m):
         parsed = parse_url(m.group(0))
-        if not parsed.userinfo and not parsed.rest.strip("/\\"):
+        plain = "%" not in m.group(0) and not regex.search(r"\d{3,}", parsed.host)
+        if plain and not parsed.userinfo and not parsed.rest.strip("/\\"):
             return m.group(0)                      # "https://shop.example", "TP.HCM"
         if not parsed.host or parsed.malformed:
             return "[đã lược]"
         prefix = f"{parsed.scheme}://" if parsed.scheme else ""
-        return f"{prefix}{parsed.host}/[đã lược]"  # host as the browser sees it, nothing else
+        # Host as the browser sees it, nothing else. Digit runs in it can be a phone that was
+        # percent-encoded and only became visible by decoding the host (review round 6).
+        host = regex.sub(r"\d{3,}", "***", parsed.host)
+        return f"{prefix}{host}/[đã lược]"
 
     # Any %XX left outside a URL can still decode to a secret: audit never needs it.
     return _PERCENT_RUN.sub("[đã lược]", _URL_TAIL.sub(keep_host, text))
@@ -183,7 +187,10 @@ class Guard:
         from .pii.recognizers import detect_pii
 
         try:
-            redacted = _strip_url_tails(redact_text(normalized.clean, detect_pii(normalized)))
+            # URLs are reduced (and their hosts decoded) first, then the PII pass runs on the result,
+            # so nothing decoded later can skip masking (review round 6).
+            reduced = self._normalize(_strip_url_tails(normalized.clean))
+            redacted = _PERCENT_RUN.sub("[đã lược]", redact_text(reduced.clean, detect_pii(reduced)))
         except Exception:
             # Without a working PII engine the text cannot be proven clean: store nothing (review B4).
             redacted = "[không lưu: lỗi khi che PII]"
