@@ -1,0 +1,38 @@
+# Sổ việc hoãn sau review (backlog)
+
+Quy tắc từ 06/11/2026: mỗi lượt review, lỗi quan trọng (lọt PII, lọt tấn công, trả dữ liệu cho sai chủ) thì sửa ngay. Lỗi nhỏ, khó hoặc đã ổn thì ghi vào đây để làm sau. Mỗi dòng có nguồn để kiểm lại.
+
+## Đã chốt lượt review 3 (PR #1), commit `387bb8a`
+
+| Mục | Kết luận |
+| --- | --- |
+| 1 Vault fullwidth, 2 Email trong evidence, 6 Cờ giả, 8 Span lệch | Đã sửa từ trước trên `feat/lop-4` (A1, R4, A5, A8). Review chạy trên commit cũ `5c045ec` |
+| 3 Emoji U+FE0F làm lọt mật khẩu/OTP | Đã sửa: bản bỏ dấu giữ đúng độ dài từng ký tự (`_fold`) |
+| 4 Email có phần trước `@` giống hash | Đã sửa: EMAIL không bị loại như ID |
+| 5 Địa chỉ nuốt ", email …" | Đã sửa: phần đuôi địa chỉ không bắt đầu bằng nhãn liên hệ |
+| 7 `%20` không liên quan nâng mức | Đã sửa: chỉ nâng khi bản văn bản thường không khớp |
+
+## Việc hoãn
+
+Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (OpenCode, PR #3) phát hiện. **Không sửa bằng cách thêm đúng các câu này vào regex**, vì làm vậy là tune trên held-out. Khi làm thì viết câu dev mới cùng loại, rồi đo lại held-out đúng một lần.
+
+| # | Loại lỗi | Ví dụ (id held-out) | Mức | Ghi chú |
+| --- | --- | --- | --- | --- |
+| H1 | Thiếu từ vựng tiếng Anh khi bot đòi bí mật: passport photo, online banking password, PIN, confirmation code, bank account number, card expiry, one-time password | oh-009, 010, 027, 040 | Cao | Lớp 5 (classifier) cũng phủ được |
+| H2 | Teencode rút gọn "số tk + mk" | oh-018 | TB | Cần bảng teencode cho "tk", "mk" ở đầu ra |
+| H3 | URL `//host/path` nằm trần trong câu (không markdown) không bị gỡ | oh-061, 079 | Cao | Có xử lý `//host` trong ảnh/link markdown (B1), chưa có cho văn bản thường |
+| H4 | Phủ định bị cắt sớm khi danh sách dài hoặc khi có câu tiếp theo | oh-089, 129, 131 | TB | Bị chặn nhầm (false positive), không gây lọt dữ liệu |
+| H5 | "mã PIN máy" (PIN mở khoá điện thoại) bị coi là đòi PIN | oh-091 | Thấp | |
+| H6 | Hướng dẫn đổi mật khẩu trong app ("nhập mật khẩu cũ") bị chặn | oh-099 | TB | Cần phân biệt "nhập vào app" với "gửi cho shop" |
+| R6 | Cờ giả: `hidden_tags` chỉ giải phần ẩn, câu ghép ẩn + hiện chưa được luật thấy trọn | Review 3 mục 6 | Thấp | Đã có tín hiệu `unicode:tags`. Muốn chặn hẳn thì luật chạy trên `hidden_tags + clean` |
+| R0 | Tính độc lập O1: phiên chính của OpenCode đã đọc code trước, giao cho subagent mới viết | PR #3 báo cáo | Thấp | Lần sau giao O1 cho một phiên chỉ có prompt O1 |
+
+## Số đo Lớp 4 trên held-out (đo 1 lần, 06/11/2026, commit `387bb8a`)
+
+| Nhóm | Bắt đúng |
+| --- | --- |
+| Bot đòi bí mật (50) | 45/50 = 90% |
+| Link nguy hiểm (30) | 28/30 = 93% |
+| Câu hợp lệ cho qua (60) | 55/60 = 92% (chặn nhầm 8%) |
+
+Đây là số kiểm nội bộ, **không phải kết quả đồ án**. Kết quả chính thức dùng benchmark chuẩn (BIPIA, JailbreakBench) và bộ CSKH tiếng Việt chia theo template (xem `docs/DU-AN.md`).
