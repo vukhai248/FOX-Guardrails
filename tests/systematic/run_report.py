@@ -16,6 +16,7 @@ CHECKS = [
     ("S3 audit không giữ bí mật", checks.s3_audit, False),
     ("S4 quan hệ biến đổi", checks.s4_metamorphic, False),
     ("S5 câu hợp lệ giữ nguyên", checks.s5_benign, False),
+    ("S6 text gửi đi không mang bí mật", checks.s6_sent_text, False),
 ]
 
 

@@ -1,5 +1,6 @@
 """Lớp 3 station policy for PII (plan B5.2): pseudonymize before the LLM, mask/restore on output."""
 
+import html
 from dataclasses import dataclass, field
 
 import regex
@@ -163,6 +164,51 @@ def redact_text(clean: str, matches: list[PiiMatch]) -> str:
     """Irreversible redaction for logs: every PII value masked, every placeholder reduced to its tag."""
     text = _rewrite(clean, matches, lambda m: mask_value(m.entity, m.value))
     return PLACEHOLDER.sub(lambda m: f"[{m.group(1)}]", text)
+
+
+_ENCODED_TOKEN = regex.compile(r"\S*(?:%[0-9A-Fa-f]{2}|&#?[A-Za-z0-9]+;|\\[uU][0-9A-Fa-f]{4})\S*")
+
+
+def mask_encoded_pii(text: str) -> tuple[str, int]:
+    """Mask encoded pieces that hide PII: "OTP: &#53;&#55;…", "alice%40mail.example", base64 of a phone.
+
+    The LLM reads such encodings, and the customer's browser decodes HTML entities, so the normal
+    PII pass (which sees only the encoded form) is not enough (systematic check S6, 07/11/2026).
+    Each piece is decoded IN PLACE and the whole sentence re-scanned, so a label before it ("OTP:")
+    still counts. Returns (text, number of pieces masked).
+    """
+    from fox_guard.detectors.url import unquote_all
+    from fox_guard.normalize import normalize
+    from fox_guard.normalize.decode import _unescape, decoded_spans
+
+    from .recognizers import detect_pii
+
+    pieces = [(s, e, d) for s, e, d in decoded_spans(text, min_len=4)]
+    for m in _ENCODED_TOKEN.finditer(text):
+        decoded = _unescape(unquote_all(html.unescape(m.group())))
+        if decoded != m.group():
+            pieces.append((m.start(), m.end(), decoded))
+    hidden = []
+    for start, end, decoded in pieces:
+        candidate = text[:start] + decoded + text[end:]
+        region = (start, start + len(decoded))
+        squashed = regex.sub(r"[\s.\-]", "", decoded)
+        for match in detect_pii(normalize(candidate, decode_max_depth=0)):
+            inside = match.start < region[1] and match.end > region[0]
+            value = regex.sub(r"[\s.\-]", "", match.value)
+            if (inside or (value and value in squashed)) and match.value not in text[start:end]:
+                hidden.append((start, end))
+                break
+    if not hidden:
+        return text, 0
+    out, cursor = [], 0
+    for start, end in sorted(hidden):
+        if start >= cursor:
+            out.append(text[cursor:start] + "[đã che]")
+            cursor = end
+        elif end > cursor:
+            cursor = end
+    return "".join(out) + text[cursor:], len(hidden)
 
 
 def safe_evidence(evidence: str) -> str:

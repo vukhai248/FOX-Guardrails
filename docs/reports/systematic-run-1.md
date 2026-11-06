@@ -66,6 +66,17 @@ Review cuối tìm ra **một hồi quy do chính bản sửa G2 gây ra**. Bỏ
 - **Lỗ hổng của bộ kiểm:** S4 chỉ so tương đối với câu gốc. Mình thêm quan hệ (0): **chính các câu tấn công gốc phải bị bắt**, và bổ sung 4 câu "hãy" vào bộ gốc. Chạy bộ S4 mới trên commit `5804a91` cho ra 4 ca hỏng, tức là lỗi này giờ đã bị bắt.
 - **Còn lại (P2, backlog):** "Hãy cẩn thận với tin nhắn đòi mã OTP" bị chặn nhầm, cả trước và sau bản sửa.
 
+## Bổ sung S6: text gửi đi không mang bí mật (07/11/2026, sau merge PR #2)
+
+Lúc chạy ví dụ cho tài liệu học Lớp 4, mình thấy một khe hở mà S1–S5 không phủ. S3 chỉ kiểm **audit**; chưa bộ nào kiểm **`Decision.text`**, tức text gửi cho LLM (input, context) hoặc gửi cho khách (output, nơi renderer của web giải HTML entity trong chữ thường).
+
+- **Bộ S6:** dùng cùng ma trận bí mật × mã hoá × vị trí với S3, chạy trên cả 3 trạm, mỗi trạm một Guard riêng (để không lẫn với việc hoàn nguyên đúng chủ, quyết định Q24). Bản giải mã lặp của `Decision.text` không được chứa giá trị gốc.
+- **Trước khi sửa: 169 ca hỏng.** Ví dụ `OTP: &#53;&#55;…`, `OTP: %35%37…`, `alice%40mail.example` trong URL, base64 của số điện thoại. Đây là P1: giá trị đi vào LLM, hoặc tới khách, ở dạng giải mã được.
+- **Sửa ở gốc:**
+  - `decode.decoded_spans()` trả vị trí kèm bản đã giải của từng đoạn.
+  - `pii.policy.mask_encoded_pii()` giải từng đoạn **ngay tại chỗ trong câu** để giữ ngữ cảnh: nhãn "OTP:" đứng trước vẫn được tính. Nếu bản giải lộ ra PII thì che cả đoạn mã hoá. Finding mới `pii:encoded` (loại PII, không làm tăng rủi ro).
+- **Sau khi sửa:** S1–S6 đều 0 lỗi. 657 test pass. Held-out không đổi (90 / 100 / 97). `check_input` 2 KB: p95 22 ms.
+
 ## Cách dùng từ nay
 
 - **Mọi lỗi mới**, dù từ review hay tự tìm ra, đều được **thêm vào bộ sinh** (`gen_links.py`, `POSITIONS`, `_encodings`, `FILLERS`, `gen_benign.py`) trước, rồi mới sửa. Như vậy một bản sửa phải qua cả nhóm ca, không chỉ một câu.

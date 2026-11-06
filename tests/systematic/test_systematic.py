@@ -40,3 +40,7 @@ def test_s4_metamorphic_relations_hold():
 
 def test_s5_benign_answers_are_allowed_unchanged():
     _assert_none(checks.s5_benign())
+
+
+def test_s6_sent_text_never_carries_a_decodable_secret():
+    _assert_none(checks.s6_sent_text())
