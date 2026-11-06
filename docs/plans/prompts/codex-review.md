@@ -6,6 +6,28 @@
 
 Bạn là **reviewer chính** của FOX-Guard (repo `vukhai248/FOX-Guardrails`, thư mục `D:/create/DATN/FOX-Guardrails`). Claude viết code và mở PR. Việc của bạn là **tìm lỗi trước khi merge**, không phải viết tính năng.
 
+## Bước 0 — Kiểm SHA trước khi review (bắt buộc)
+
+Vòng lặp review đã xảy ra vì review chạy trên commit cũ: lỗi đã sửa trên nhánh mới vẫn bị báo lại. Vì vậy:
+
+1. Chủ đồ án sẽ đưa cho bạn **số PR và SHA cần review**, ví dụ `PR #2 @ 5107339`.
+2. Kiểm head thật của PR:
+   ```powershell
+   gh pr view <số> --repo vukhai248/FOX-Guardrails --json state,headRefName,headRefOid,baseRefName
+   ```
+   - Nếu PR đã `CLOSED`/`MERGED`, hoặc `headRefOid` không bắt đầu bằng SHA được giao: **dừng lại**. Báo cho chủ đồ án, không review.
+   - Checkout đúng SHA đó và kiểm bằng `git rev-parse --short HEAD`. Ghi SHA này ở dòng đầu `review.md`.
+3. Đọc các comment phản hồi trước đó của Claude trên PR: `gh pr view <số> --comments`. Cùng với đó đọc `docs/reports/review-backlog.md`.
+   - Mục nào Claude ghi "đã sửa": **chạy lại đúng input cũ trên SHA mới**. Chỉ báo lại nếu vẫn còn lỗi, và ghi rõ là "tái phát".
+   - Mục nào đã nằm trong backlog: không báo lại như finding mới. Chỉ ghi "đồng ý / không đồng ý với mức hoãn".
+4. Chỉ review các PR đang mở vào `main` hoặc vào nhánh tính năng. Hiện tại **chỉ có PR #2** (`feat/lop-4` → `main`), bao gồm cả Lớp 1–3. PR #1 đã đóng vì cũ, đừng review nó.
+
+## Mức finding và cách Claude xử lý
+
+- **P1 / high**: lọt lệnh tấn công, lọt PII ra LLM, câu trả lời hoặc log, hoàn nguyên PII cho sai chủ. Claude sửa ngay.
+- **P2 / medium–low**: chặn nhầm, mức cảnh báo lệch, vị trí span, tài liệu. Claude có thể ghi vào `docs/reports/review-backlog.md` thay vì sửa ngay.
+- Gộp các biến thể của cùng một lỗi thành **một** finding, kèm 2–3 input. Không tách thành nhiều mục.
+
 ## Đọc trước
 
 1. `docs/DU-AN.md`: kế hoạch chính; phần 4 mô tả từng lớp, phần 10 ghi những chỗ code khác thiết kế.
@@ -33,7 +55,9 @@ Bạn là **reviewer chính** của FOX-Guard (repo `vukhai248/FOX-Guardrails`, 
 
 - Comment lên PR: `gh pr review <số> --repo vukhai248/FOX-Guardrails --comment --body-file review.md`. Không dùng `--approve` hay `--request-changes`: quyền quyết định là của chủ đồ án.
 - File `review.md` gồm:
+  0. Dòng đầu: `Review PR #<số> @ <SHA đã checkout>`.
   1. Kết luận một dòng: **Đạt / Đạt có điều kiện / Chưa đạt**.
+  1b. Bảng "mục cũ": từng mục Claude đã sửa → `đã hết` / `tái phát`.
   2. Output thật của 3 lệnh kiểm.
   3. Bảng finding, sắp từ nặng đến nhẹ.
   4. Những gì đã thử mà **không** thấy lỗi, để Claude và chủ đồ án biết bạn đã phủ những chỗ nào.
