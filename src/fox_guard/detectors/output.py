@@ -28,7 +28,12 @@ _ASK = (  # "can" = cần, but not the "căn" of "căn cước" (no-diacritics v
 )
 _NEGATION = regex.compile(r"\b(?:khong|chang|dung|chua|never|not|dont|don't|no one|nobody)\b")
 _SOLICIT = regex.compile(r"\b" + _ASK + r"\b[^\n.?!;]{0,50}?\b" + _SECRET_ITEMS + r"\b")
-_CLAUSE_END = regex.compile(r"[,.;!?\n]")
+# Clause boundaries for negation scope. Views have no diacritics, so "mà"/"mã", "còn"/"con" and
+# "nhưng"/"những" collide: only unambiguous conjunctions count, and "nhung" only when a subject or a
+# request follows it ("…không cần địa chỉ nhưng bạn hãy gửi OTP", review B3).
+_CLAUSE_END = regex.compile(
+    r"[,.;!?\n]|\b(?:tuy nhien|nhung ma|but|however|yet|though)\b"
+    r"|\bnhung(?=\s+(?:ban|anh|chi|em|minh|quy khach|khach|shop|hay|vui long|lan nay|bay gio|gio)\b)")
 _PLACEHOLDER_VIEW = regex.compile(r"<[\p{L}_ ]+_\d{1,4}>")
 
 
@@ -82,8 +87,14 @@ REMOVED_LINK = "[liên kết ngoài đã bị gỡ]"
 MALFORMED = "\x00malformed"
 
 
+def _absolute(url: str) -> str:
+    if "://" in url:
+        return url
+    return "http:" + url if url.startswith("//") else "http://" + url
+
+
 def host_of(url: str) -> str:
-    target = url if "://" in url else "http://" + url
+    target = _absolute(url)
     try:
         host = (urlsplit(target).hostname or "").rstrip(".").lower()
     except ValueError:
@@ -113,7 +124,7 @@ def _has_pii(url: str) -> bool:
     from fox_guard.pii.vault import PLACEHOLDER
 
     try:
-        parts = urlsplit(url if "://" in url else "http://" + url)
+        parts = urlsplit(_absolute(url))
     except ValueError:
         return False
     tail = unquote(" ".join((parts.path, parts.query, parts.fragment)).replace("+", " "))

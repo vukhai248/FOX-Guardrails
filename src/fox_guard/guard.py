@@ -12,12 +12,25 @@ from .types import Decision, GuardContext
 if TYPE_CHECKING:
     from .normalize.views import NormalizedText
 
-_FALLBACK = re.compile(r"(?:\d[\s.\-]?){6,}\d|[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
+_FALLBACK = re.compile(
+    r"(?:\d[\s.\-]?){3,}\d"                      # any run of 4+ digits (OTP, PIN, phone, card…)
+    r"|[\w.+-]+@[\w-]+(?:\.[\w-]+)+"                 # emails
+    # labelled secrets: "mật khẩu: …", "OTP 5724", "pass is …"
+    r"|(?i:(?:m[aậ]t\s*kh[aẩ]u|\bmk\b|pass(?:word)?|pwd|otp|pin)\s*(?:l[aà]|:|=|is)?\s*)\S+")
+_URL_TAIL = re.compile(r"((?:https?:)?//[^\s/?#<>\"']+)[^\s<>\"']*", re.IGNORECASE)
 
 
 def _fallback_mask(text: str) -> str:
-    """Used only when the PII engine fails: hide every long digit run and every email."""
+    """Used only when the PII engine fails: hide digit runs, emails and labelled secrets."""
     return _FALLBACK.sub("[đã che]", text)
+
+
+def _strip_url_tails(text: str) -> str:
+    """Audit keeps a URL's host only: paths/queries can hide encoded PII (%35%37…, review B2)."""
+    def keep_host(m):
+        return m.group(0) if m.group(0) == m.group(1) else m.group(1) + "/[đã lược]"
+
+    return _URL_TAIL.sub(keep_host, text)
 
 _REASONS = {
     "unicode:tags": "Phát hiện ký tự Unicode Tags ẩn chứa nội dung.",
@@ -152,9 +165,10 @@ class Guard:
         from .pii.recognizers import detect_pii
 
         try:
-            redacted = redact_text(normalized.clean, detect_pii(normalized))
+            redacted = _strip_url_tails(redact_text(normalized.clean, detect_pii(normalized)))
         except Exception:
-            redacted = _fallback_mask(normalized.clean)
+            # Without a working PII engine the text cannot be proven clean: store nothing (review B4).
+            redacted = "[không lưu: lỗi khi che PII]"
         self.audit.record(decision=decision, ctx=ctx, station=station, text_redacted=redacted,
                           config_version=self.config.config_version)
 

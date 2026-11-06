@@ -1,6 +1,7 @@
 """In-memory pseudonym vault: <PHONE_1> ↔ value per session, with owner and TTL. Never written to disk."""
 
 import time
+import unicodedata
 from dataclasses import dataclass, field
 
 import regex
@@ -19,7 +20,10 @@ def canonical(entity: str, value: str) -> str:
     """Same value written differently ('0912 345 678' vs '0912345678') gets the same placeholder."""
     if entity in ("EMAIL", "PERSON", "VN_ADDRESS", "PASSWORD"):
         return " ".join(value.split()).casefold()
-    return regex.sub(r"[^0-9A-Za-z]", "", value).upper()
+    # Any Unicode decimal digit by its value ("091٢٣…" == "0912…"), letters case-folded. Characters
+    # are never silently dropped except separators, so two different numbers cannot share a key.
+    as_ascii = regex.sub(r"\d", lambda m: str(unicodedata.decimal(m.group(), m.group())), value)
+    return regex.sub(r"[\s.\-_/()+]", "", as_ascii).upper()
 
 
 @dataclass

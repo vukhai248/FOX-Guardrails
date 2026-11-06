@@ -137,7 +137,10 @@ def run_rules(normalized: NormalizedText, station: Station,
                     break
             if not match:
                 continue
-            aligned = not hidden and len(texts[view]) == len(node.clean)
+            # Views derived from nfkc shift positions when NFKC expands a character ("ﬃ" → "ffi"),
+            # so equal length alone is not enough (review A8).
+            aligned = (not hidden and len(texts[view]) == len(node.clean)
+                       and (view == "clean" or node.nfkc == node.clean))
             findings.append(Finding(
                 detector=f"rules:{rule.id}", kind="injection",
                 severity="high" if hidden else rule.severity,

@@ -1,5 +1,6 @@
 """Vietnamese reading views and reversible source coordinates for digit views."""
 
+import bisect
 import csv
 import unicodedata
 from functools import lru_cache
@@ -22,7 +23,9 @@ _NUMBER_RUN = regex.compile(
 _DIGIT_GAP = regex.compile(r"(?<=\d)[\s.\-]+(?=\d)")
 # Leet must not rewrite prices, quantities or identifiers (runs on the no-diacritics view).
 _NO_LEET = regex.compile(
-    r"\d[\d.,]*(?:d|k|tr|trieu|vnd|%)\d*(?!\p{L})"
+    # Start only at the beginning of a number run and never backtrack inside it: "9,9,9,…" without
+    # a unit used to take O(n²) (10 s on 20 000 chars, review finding A2).
+    r"(?<![\d.,])\d[\d.,]*+(?:d|k|tr|trieu|vnd|%)\d*(?!\p{L})"
     r"|(?<![\p{L}\p{N}])[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}(?![\p{L}\p{N}])"
     r"|(?<![\p{L}\p{N}])[0-9a-f]{16,}(?![\p{L}\p{N}])"
     r"|%[0-9a-f]{2}"
@@ -64,6 +67,7 @@ def vietnamese_views(nfkc: str, teencode_path=None) -> tuple[str, str]:
     joined = _FRAGMENT.sub(lambda m: m.group().replace(".", "").replace("-", ""), plain)
     table = load_teencode(str(Path(teencode_path) if teencode_path else _DATA / "teencode_vi.tsv"))
     protected = [m.span() for m in _NO_LEET.finditer(joined)]
+    starts = [a for a, _ in protected]
 
     def replace(match):
         token = match.group()
@@ -72,7 +76,9 @@ def vietnamese_views(nfkc: str, teencode_path=None) -> tuple[str, str]:
         if token in table:
             return table[token]
         start, end = match.span()
-        if any(a < end and start < b for a, b in protected):
+        i = bisect.bisect_right(starts, start) - 1
+        nearby = protected[max(i, 0):i + 2]
+        if any(a < end and start < b for a, b in nearby):
             return token
         token = token.translate(_LEET)
         return table.get(token, token)

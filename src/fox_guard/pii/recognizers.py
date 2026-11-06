@@ -163,7 +163,7 @@ def _scan(text: str) -> list[PiiMatch]:
         return any(a < right and left < b for left, right in ids)
 
     def add(entity, start, end, confident):
-        if not inside_id(start, end):
+        if entity in ("PASSWORD", "OTP") or not inside_id(start, end):
             out.append(PiiMatch(entity, start, end, text[start:end], confident))
 
     def is_amount(end):
@@ -245,6 +245,10 @@ def _compat_view(clean: str) -> str:
     Same length as clean, so spans found on it are spans on clean."""
     out = []
     for ch in clean:
+        digit = unicodedata.decimal(ch, None)
+        if digit is not None:
+            out.append(str(digit))
+            continue
         folded = unicodedata.normalize("NFKC", ch)
         out.append(folded if len(folded) == 1 else ch)
     return "".join(out)

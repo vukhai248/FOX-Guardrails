@@ -85,6 +85,9 @@ class AuditStore:
         return dict(zip([c[0] for c in cursor.description], row, strict=True)) if row else None
 
     def export_jsonl(self, out: str | Path) -> int:
+        target = Path(out)
+        if target.resolve() == self.path.resolve() or (target.exists() and target.samefile(self.path)):
+            raise ValueError("Refusing to export audit JSONL over its own SQLite database")
         cursor = self._conn.execute("SELECT * FROM decisions ORDER BY ts")
         names = [c[0] for c in cursor.description]
         count = 0

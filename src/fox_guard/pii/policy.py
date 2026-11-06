@@ -42,10 +42,31 @@ def mask_value(entity: str, value: str) -> str:
     return {"PERSON": "[tên]", "VN_ADDRESS": "[địa chỉ]"}.get(entity, "[đã che]")
 
 
+_PROVINCES = frozenset(
+    "an giang|ba ria vung tau|bac giang|bac kan|bac lieu|bac ninh|ben tre|binh dinh|binh duong|binh phuoc|"
+    "binh thuan|ca mau|can tho|cao bang|da nang|dak lak|dak nong|dien bien|dong nai|dong thap|gia lai|"
+    "ha giang|ha nam|ha noi|ha tinh|hai duong|hai phong|hau giang|hoa binh|hung yen|khanh hoa|kien giang|"
+    "kon tum|lai chau|lam dong|lang son|lao cai|long an|nam dinh|nghe an|ninh binh|ninh thuan|phu tho|"
+    "phu yen|quang binh|quang nam|quang ngai|quang ninh|quang tri|soc trang|son la|tay ninh|thai binh|"
+    "thai nguyen|thanh hoa|thua thien hue|hue|tien giang|tra vinh|tuyen quang|vinh long|vinh phuc|yen bai|"
+    "ho chi minh|hcm|sai gon".split("|"))
+
+
+def _province_key(part: str) -> str:
+    from .recognizers import no_diacritics
+
+    key = no_diacritics(part).lower().replace("đ", "d").strip(" .")
+    return regex.sub(r"^(?:thanh pho|tp\.?|tinh)\s*", "", key).strip()
+
+
 def province_only(address: str) -> str:
-    """Keep only the last administrative part ('…, quận 1, TP Hồ Chí Minh' → 'TP Hồ Chí Minh')."""
-    parts = [p.strip() for p in address.split(",") if p.strip()]
-    return parts[-1] if len(parts) > 1 else "[địa chỉ]"
+    """Keep only a component that is a known province/city ('…, Hà Nội, căn hộ 07A' → 'Hà Nội').
+
+    Nothing verified → the whole address is masked, never a random last fragment (review A7)."""
+    for part in reversed([p.strip() for p in address.split(",") if p.strip()]):
+        if _province_key(part) in _PROVINCES:
+            return part
+    return "[địa chỉ]"
 
 
 @dataclass
