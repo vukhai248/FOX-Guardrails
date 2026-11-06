@@ -8,6 +8,7 @@ the browser will contact. When in doubt it reports a host rather than none, so t
 (and usually removed) instead of trusted.
 """
 
+import html
 from dataclasses import dataclass
 from urllib.parse import unquote
 
@@ -39,6 +40,9 @@ def unquote_all(text: str) -> str:
 
 
 def parse_url(url: str) -> ParsedUrl:
+    # Markdown renderers decode HTML entities in a destination: "/&sol;evil&period;example" is
+    # "//evil.example" by the time the browser sees it (review round 7).
+    url = html.unescape(url)
     # Browsers drop ASCII tab/newline anywhere and trim C0 controls and spaces at both ends.
     url = regex.sub(r"[\t\n\r]", "", url).strip("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c"
                                                   "\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19"

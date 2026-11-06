@@ -1,5 +1,6 @@
 """Lớp 4 output detectors: the bot asking for secrets (solicitation) and links/images (link guard)."""
 
+import html
 from dataclasses import dataclass, field
 
 import regex
@@ -198,7 +199,7 @@ def _has_pii(url: str) -> bool:
     from fox_guard.pii.recognizers import detect_pii
     from fox_guard.pii.vault import PLACEHOLDER
 
-    if PLACEHOLDER.search(unquote_all(url)):
+    if PLACEHOLDER.search(unquote_all(html.unescape(url))):  # also "&lt;PHONE_1&gt;"
         return True  # restored later into the real value: treat as PII now
     parsed = parse_url(url)
     if parsed.userinfo:

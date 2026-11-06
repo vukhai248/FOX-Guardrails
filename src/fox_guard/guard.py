@@ -29,6 +29,19 @@ _URL_TAIL = regex.compile(
 _PERCENT_RUN = re.compile(r"(?:%[0-9A-Fa-f]{2})+")
 
 
+def _drop_encoded(text: str) -> str:
+    """Audit keeps nothing a decoder could read back: base64/hex, entities, \\u escapes, %XX
+    ("OTP: &#53;&#55;…" decodes to the OTP, review round 7)."""
+    from .normalize.decode import encoded_spans
+
+    out, cursor = [], 0
+    for start, end in encoded_spans(text):
+        if start >= cursor:
+            out.append(text[cursor:start] + "[đã lược]")
+            cursor = end
+    return _PERCENT_RUN.sub("[đã lược]", "".join(out) + text[cursor:])
+
+
 def _fallback_mask(text: str) -> str:
     """Used only when the PII engine fails: hide digit runs, emails and labelled secrets."""
     return _FALLBACK.sub("[đã che]", text)
@@ -190,7 +203,7 @@ class Guard:
             # URLs are reduced (and their hosts decoded) first, then the PII pass runs on the result,
             # so nothing decoded later can skip masking (review round 6).
             reduced = self._normalize(_strip_url_tails(normalized.clean))
-            redacted = _PERCENT_RUN.sub("[đã lược]", redact_text(reduced.clean, detect_pii(reduced)))
+            redacted = _drop_encoded(redact_text(reduced.clean, detect_pii(reduced)))
         except Exception:
             # Without a working PII engine the text cannot be proven clean: store nothing (review B4).
             redacted = "[không lưu: lỗi khi che PII]"

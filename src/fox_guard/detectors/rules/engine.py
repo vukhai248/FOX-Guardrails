@@ -130,7 +130,15 @@ def run_rules(normalized: NormalizedText, station: Station,
         rule = item.rule
         if station not in rule.stations:
             continue
-        plain_texts = [_fold_ws(text) for text in views[0][2].values()]
+        # What this rule actually matched in plain text (review round 7: a substring test let
+        # "xignore all previous instructions", which the rule rejects, hide an encoded copy).
+        plain_hits = set()
+        for view in rule.views:
+            try:
+                plain_hits.update(_fold_ws(m.group())
+                                  for m in item.compiled.finditer(views[0][2][view], timeout=_TIMEOUT_S))
+            except TimeoutError:
+                timed_out.append(rule.id)
         finding = None
         for node, hidden, texts in views:
             for view in rule.views:
@@ -143,8 +151,7 @@ def run_rules(normalized: NormalizedText, station: Station,
                 if hidden:
                     # Review round 6: a plain hit must not hide a second instruction that only
                     # decoding reveals. Concealed = a match whose text the plain views do not contain.
-                    matches = [m for m in matches
-                               if not any(_fold_ws(m.group()) in plain for plain in plain_texts)]
+                    matches = [m for m in matches if _fold_ws(m.group()) not in plain_hits]
                 if matches:
                     break
             if not matches:
