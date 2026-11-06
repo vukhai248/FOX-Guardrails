@@ -12,8 +12,9 @@ Nhánh `opencode/l4-light`, tạo từ `origin/feat/lop-4` @ `0f4059d`. Không s
 | O3 — demo Lớp 4 | `scripts/demo_lop4.py`: 8 ca, phủ `allow` / `mask` / `block` / `review` | `228aeea` |
 
 **Tính độc lập của O1.** O1 do một subagent ở phiên mới viết; subagent chỉ nhận yêu cầu O1 và không
-đọc file nào trong repo. Phiên chính đã đọc code/prompt từ trước khi bắt đầu O1 nên không tự viết bộ
-này; sau khi subagent ghi xong, phiên chính chỉ chạy script đếm/parse trên chính file JSONL. Vì vậy
+đọc file nào khác trong repo — nó chỉ đọc lại chính file vừa ghi để đếm/parse. Phiên chính đã đọc
+code/prompt từ trước khi bắt đầu O1 nên không tự viết bộ này; sau khi subagent ghi xong, phiên chính
+chỉ chạy script đếm/parse trên chính file JSONL. Vì vậy
 nội dung O1 không được viết dựa trên regex của Lớp 4. Đây là cách xử lý vì phiên chính không còn
 "mù" code; nếu cần một held-out tuyệt đối cho lần đo tiếp theo, nên lặp lại với một phiên chỉ có
 prompt O1.
