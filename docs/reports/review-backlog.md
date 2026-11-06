@@ -75,6 +75,7 @@ Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (Op
 | L1 | Link guard đọc Markdown bằng regex, không dùng parser CommonMark thật. Ví dụ HTML entity trong `href` (`ht&#9;tps:`) và `[a](ht\ttps://…)` không có ngoặc nhọn (CommonMark không coi là link) | Lượt 5, tự dò | TB | Cách chắc nhất: web hiển thị câu trả lời của bot với ảnh ngoài tắt và HTML thô tắt |
 | L2 | "ASP.NET" bị gỡ như một link | Lượt 1 | Thấp | Chặn nhầm đã chấp nhận |
 | N1 | Phủ định chi phối động từ khác nhưng nằm **trong** lời yêu cầu: "Bạn gửi mã dùng để không bị hủy đơn (OTP) nhé" → `allow` | Lượt 7 | TB | Không vá thêm regex phủ định; Lớp 5 (classifier/judge) nhận diện ý đồ đòi bí mật |
+| N2 | Câu cảnh báo bắt đầu bằng "Hãy cẩn thận / Hãy lưu ý…" có nhắc tới OTP bị chặn nhầm | Review cuối 07/11 | Thấp | Có từ trước bản sửa; phần phủ định/ý định đã đóng băng, để Lớp 5 |
 | L3 | Base64 trong query của link tới chính shop (`?t=MDkx…` là số điện thoại) không bị gỡ | Lượt 6, tự dò | Thấp | Dữ liệu chỉ tới máy chủ của shop. Muốn chặn thì chỉ cho query theo danh sách khoá (`q`, `page`, `sort`) |
 | R0 | Tính độc lập O1: phiên chính của OpenCode đã đọc code trước, giao cho subagent mới viết | PR #3 báo cáo | Thấp | Lần sau giao O1 cho một phiên chỉ có prompt O1 |
 

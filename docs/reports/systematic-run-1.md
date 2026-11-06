@@ -58,6 +58,14 @@ ruff            → All checks passed!
 held-out L4 (đo, không chỉnh): đòi bí mật 45/50 = 90% · link 30/30 = 100% · câu hợp lệ 58/60 = 97% (trước: 93%)
 ```
 
+## Review cuối (07/11/2026)
+
+Review cuối tìm ra **một hồi quy do chính bản sửa G2 gây ra**. Bỏ "hay" khỏi danh sách động từ yêu cầu làm 6/9 câu dạng "**hãy** + động từ ngoài danh sách" từ `block` thành `allow`, ví dụ "Bạn hãy nhắn mã OTP", "hãy điền mật khẩu", "hãy cho biết mã OTP".
+
+- **Sửa tận gốc:** bản NFKC vẫn còn dấu, nên "hãy" được đánh dấu thành `hayy` trước khi bỏ dấu. "Hay" (= hoặc) không bao giờ là lời yêu cầu. Kết quả: 9/9 câu tấn công bị chặn, các câu liệt kê "OTP hay mật khẩu" vẫn `allow`.
+- **Lỗ hổng của bộ kiểm:** S4 chỉ so tương đối với câu gốc. Mình thêm quan hệ (0): **chính các câu tấn công gốc phải bị bắt**, và bổ sung 4 câu "hãy" vào bộ gốc. Chạy bộ S4 mới trên commit `5804a91` cho ra 4 ca hỏng, tức là lỗi này giờ đã bị bắt.
+- **Còn lại (P2, backlog):** "Hãy cẩn thận với tin nhắn đòi mã OTP" bị chặn nhầm, cả trước và sau bản sửa.
+
 ## Cách dùng từ nay
 
 - **Mọi lỗi mới**, dù từ review hay tự tìm ra, đều được **thêm vào bộ sinh** (`gen_links.py`, `POSITIONS`, `_encodings`, `FILLERS`, `gen_benign.py`) trước, rồi mới sửa. Như vậy một bản sửa phải qua cả nhóm ca, không chỉ một câu.

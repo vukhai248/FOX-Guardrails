@@ -7,6 +7,7 @@ import regex
 
 from fox_guard.normalize import NormalizedText, normalize
 from fox_guard.normalize.unicode import skeleton
+from fox_guard.normalize.vietnamese import no_diacritics
 from fox_guard.types import Finding
 
 from .rules.engine import latin_view
@@ -23,10 +24,11 @@ _SECRET_ITEMS = (
     r"one[- ]time (?:code|password)|password|card number|security code|id card|passport number|bank account)"
 )
 # "can" = cần, but not the "căn" of "căn cước" (no-diacritics views merge the two). No bare "hay":
-# without diacritics it is also "hay" = "or" ("mã OTP, mật khẩu hay số thẻ"), and "hãy gửi…" is
-# already caught by its verb (systematic run 1, S4d/S5).
+# without diacritics it is also "hay" = "or" ("mã OTP, mật khẩu hay số thẻ", systematic run 1).
+# "hãy" is marked as "hayy" from the text that still has diacritics (find_solicitation).
+_HAY_IMPERATIVE = regex.compile(r"(?i)(?<!\w)hãy(?!\w)")
 _ASK = (
-    r"(?:vui long|lam on|xin|can(?!\s+cuoc)|phai|bat buoc|de nghi|yeu cau|"
+    r"(?:vui long|lam on|xin|hayy|can(?!\s+cuoc)|phai|bat buoc|de nghi|yeu cau|"
     r"cho (?:em|minh|shop|ben em|chung toi)(?: xin)?|"
     r"gui|cung cap|nhap|doc|chup|nhan tin|please|provide|send|enter|share|tell us|give us|confirm)"
 )
@@ -52,7 +54,7 @@ _NEGATION_INSIDE = regex.compile(
 # An imperative opens a new request even after a negation: "Để không mất đơn bạn hãy gửi OTP".
 # "hay" is both "hãy" and "hay" (= or: "OTP hay mật khẩu") without diacritics: imperative only
 # when a request verb follows it.
-_IMPERATIVE = regex.compile(r"(?:vui long|lam on|xin|please)\b"
+_IMPERATIVE = regex.compile(r"(?:vui long|lam on|xin|please|hayy)\b"
                             r"|hay\s+(?:\w+\s+){0,2}?(?:gui|cung cap|nhap|doc|chup|nhan tin|share|send)\b")
 # Negation of a purpose, not of the request: "để không mất đơn", "nhằm không bị khoá", "to not lose".
 _PURPOSE_BEFORE = regex.compile(r"\b(?:de|nham|de cho|to|so)\s+$")
@@ -130,7 +132,10 @@ def find_solicitation(normalized: NormalizedText) -> list[Finding]:
     A request inside a negated clause is a warning, not a request. A later clause can still ask
     ("Bạn không cần lo, hãy gửi mã OTP" is caught: the comma ends the negated clause).
     """
-    for view in (normalized.vi_nodiac, normalized.vi_teencode, latin_view(normalized.nfkc)):
+    # "hãy" (imperative) and "hay" (= or) are the same word once diacritics are gone, so "hãy" is
+    # marked as "hayy" before folding: "Bạn hãy nhắn mã OTP" asks, "mã OTP hay mật khẩu" lists.
+    marked = no_diacritics(_HAY_IMPERATIVE.sub("hayy", normalized.nfkc)).lower()
+    for view in (marked, normalized.vi_nodiac, normalized.vi_teencode, latin_view(normalized.nfkc)):
         # Our own placeholders (<CCCD_1>) name an entity; they are not a request for it.
         view = _join_lists(_PLACEHOLDER_VIEW.sub(" ", view))
         for match in _SOLICIT.finditer(view, timeout=0.05, overlapped=True):
