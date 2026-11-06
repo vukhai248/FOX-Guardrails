@@ -144,5 +144,20 @@ def redact_text(clean: str, matches: list[PiiMatch]) -> str:
     return PLACEHOLDER.sub(lambda m: f"[{m.group(1)}]", text)
 
 
+def safe_evidence(evidence: str) -> str:
+    """Evidence leaves the guard (Decision, audit, CLI): mask every PII value found in it.
+
+    Applied to all findings in one place, so no detector can leak user text through evidence
+    (review findings R2 email in a rule match, R5 phone inside a URL host)."""
+    from fox_guard.normalize import normalize
+
+    from .recognizers import detect_pii
+
+    normalized = normalize(evidence, decode_max_depth=0)
+    masked = redact_text(normalized.clean, detect_pii(normalized))
+    # Belt and braces: any remaining run of 7+ digits is a number nobody needs in evidence.
+    return regex.sub(r"\d(?:[\s.\-]?\d){6,}", "[đã che]", masked)[:120]
+
+
 __all__ = ["RESTORABLE", "PiiResult", "apply_context", "apply_input", "apply_output", "mask_value",
            "province_only", "redact_text", "restore_placeholders", "ENTITY_OF_TAG", "TAGS"]

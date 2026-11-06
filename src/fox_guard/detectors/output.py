@@ -16,7 +16,8 @@ from .rules.engine import latin_view
 # are deliberately absent: they are legitimately asked for (address_change, vat_invoice).
 _SECRET_ITEMS = (
     r"(?:so\s+)?(?:cccd|can cuoc(?: cong dan)?|cmnd|chung minh(?: nhan dan| thu)?|anh (?:chup )?giay to|"
-    r"giay to tuy than|ma otp|otp|ma xac (?:thuc|nhan|minh)|mat khau|ma pin|\bpin\b|so the|ma cvv|cvv|cvc|"
+    r"giay to tuy than|ma otp|otp|ma xac (?:thuc|nhan|minh)|mat khau|"
+    r"ma pin|so pin(?! (?:sac|du phong|lithium))|pin code|pin number|so the|ma cvv|cvv|cvc|"
     r"ngay het han(?: the)?|so tai khoan|ma bao mat|"
     r"one[- ]time (?:code|password)|password|card number|security code|id card|passport number|bank account)"
 )
@@ -54,13 +55,23 @@ def find_solicitation(normalized: NormalizedText) -> list[Finding]:
 
 
 # ---------------------------------------------------------------- link guard (B5.4, O1 / O5)
+# TLDs for bare domains (no scheme). An explicit list: a blanket "2+ letters" rule would turn Vietnamese
+# abbreviations such as TP.HCM / TP.HN, or "Node.js", "ASP.NET", "file.pdf" into links.
+_TLDS = sorted("""
+com net org info biz name pro mobi asia tel xyz top site online store shop app dev ai io co me tv cc gg
+ly so to sh ws pw la link click live life world today news blog cloud tech space fun vip win bid loan
+review work party date trade racing download stream cam rest icu buzz monster lat cyou sbs cfd quest
+bond homes email group center best men page website digital agency global media network zone club
+example invalid test ru cn tk ml ga cf gq vn us uk de fr jp kr sg th id ph my au ca in br es it nl eu
+""".split(), key=len, reverse=True)
 _IMAGE = regex.compile(r"!\[[^\]\n]{0,200}\]\(\s*<?([^)\s>]+)>?(?:\s+[\"'][^\"']*[\"'])?\s*\)")
 _INLINE = regex.compile(r"\[([^\]\n]{0,200})\]\(\s*<?([^)\s>]+)>?(?:\s+[\"'][^\"']*[\"'])?\s*\)")
 _REFDEF = regex.compile(r"(?m)^[ \t]*\[[^\]\n]{1,80}\]:[ \t]*<?(\S+?)>?(?:[ \t]+[\"'(].*)?$")
 _BARE = regex.compile(
-    r"(?<![\w@/.-])(?:(?:https?|ftp)://|www\.)[^\s<>()\[\]\"']+"
-    r"|(?<![\w@/.-])(?:[\p{L}\p{N}-]+\.)+(?:com|vn|net|org|info|xyz|top|site|online|store|shop|io|co|me|"
-    r"link|click|app|biz|example|ru|cn|tk)(?:/[^\s<>()\[\]\"']*)?(?![\w-])",
+    # A placeholder (<PHONE_1>) inside a URL belongs to the URL: it is restored into a real value later.
+    r"(?<![\w@/.-])(?:(?:https?|ftp)://|www\.)(?:[^\s<>()\[\]\"']|<[A-Z_]+_\d{1,4}>)+"
+    r"|(?<![\w@/.-])(?:[\p{L}\p{N}-]+\.)+(?:" + "|".join(_TLDS) + r")"
+    r"(?:/(?:[^\s<>()\[\]\"']|<[A-Z_]+_\d{1,4}>)*)?(?![\w-])",
     regex.IGNORECASE,
 )
 _SPACED_DOT = regex.compile(r"(?<=[\p{L}\p{N}])\s*(?:\.|\[\.\]|\(\.\)|\s+dot\s+|\s+cham\s+)\s*"
@@ -68,9 +79,15 @@ _SPACED_DOT = regex.compile(r"(?<=[\p{L}\p{N}])\s*(?:\.|\[\.\]|\(\.\)|\s+dot\s+|
 REMOVED_LINK = "[liên kết ngoài đã bị gỡ]"
 
 
+MALFORMED = "\x00malformed"
+
+
 def host_of(url: str) -> str:
     target = url if "://" in url else "http://" + url
-    host = (urlsplit(target).hostname or "").rstrip(".").lower()
+    try:
+        host = (urlsplit(target).hostname or "").rstrip(".").lower()
+    except ValueError:
+        return MALFORMED
     try:
         return host.encode("idna").decode("ascii")
     except UnicodeError:
@@ -91,11 +108,19 @@ def _lookalike(host: str, allowlist: list[str]) -> bool:
 
 
 def _has_pii(url: str) -> bool:
+    """PII or one of our placeholders anywhere after the host (path, query, fragment)."""
     from fox_guard.pii.recognizers import detect_pii
+    from fox_guard.pii.vault import PLACEHOLDER
 
-    query = unquote(urlsplit(url if "://" in url else "http://" + url).query.replace("+", " "))
-    return bool(query) and bool(detect_pii(normalize(query.replace("&", " ").replace("=", " "),
-                                                     decode_max_depth=0)))
+    try:
+        parts = urlsplit(url if "://" in url else "http://" + url)
+    except ValueError:
+        return False
+    tail = unquote(" ".join((parts.path, parts.query, parts.fragment)).replace("+", " "))
+    if PLACEHOLDER.search(tail):
+        return True  # restored later into the real value: treat as PII now
+    text = regex.sub(r"[&=/?#]", " ", tail).strip()
+    return bool(text) and bool(detect_pii(normalize(text, decode_max_depth=0)))
 
 
 @dataclass
@@ -115,6 +140,10 @@ def guard_links(text: str, allowlist: list[str]) -> LinkResult:
         """True if the URL may stay; records findings otherwise."""
         nonlocal exfil
         host = host_of(url)
+        if host == MALFORMED:
+            findings.append(Finding(detector="link:external", kind="link", severity="medium",
+                                    evidence="malformed URL removed", technique="T2.12"))
+            return False
         if not host:
             return True
         if _allowed(host, allow) and not _has_pii(url):

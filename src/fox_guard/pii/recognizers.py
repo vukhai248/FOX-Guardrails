@@ -1,5 +1,6 @@
 """Lớp 3: Vietnamese PII recognizers (format + checksum + context words), no models, no I/O."""
 
+import unicodedata
 from dataclasses import dataclass
 
 import regex
@@ -97,8 +98,8 @@ _ADMIN = (r"(?:phường|phuong|xã|xa|thị\s*trấn|quận|quan|huyện|huyen|
 _ADDRESS = regex.compile(
     r"(?i)(?:(?:số\s*nhà|so\s*nha|số|so|nhà)\s*)?(?<![\p{N}.,])\d{1,5}[a-z]?(?:/\d{1,4}[a-z]?)*\s*,?\s*"
     r"(?:(?:ngõ|ngo|ngách|ngach|hẻm|hem|kiệt|kiet)\s*\d{1,4}\s*,?\s*)?"
-    r"(?:đường|duong|phố|pho|đ\.)?\s*[\p{L}0-9 .'-]{2,40}?,\s*" + _ADMIN + r"[^\n,;]{1,30}"
-    r"(?:,\s*[^\n,;]{1,40}){0,3}")
+    r"(?:đường|duong|phố|pho|đ\.)?\s*[\p{L}0-9 .'-]{2,40}?,\s*" + _ADMIN + r"(?:[^\n,;.!?]|\.(?!\s|$)){1,30}"
+    r"(?:,\s*(?:[^\n,;.!?]|\.(?!\s|$)){1,40}){0,3}")
 
 
 @dataclass(frozen=True)
@@ -220,12 +221,33 @@ def _scan(text: str) -> list[PiiMatch]:
 
 
 def _resolve(matches: list[PiiMatch]) -> list[PiiMatch]:
+    """Overlaps go to the higher priority. A long address/name that overlaps keeps its remaining
+    pieces, so "…, Hà Nội SĐT 0912345678" masks both the phone and the address around it."""
     rank = {name: i for i, name in enumerate(_PRIORITY)}
     chosen: list[PiiMatch] = []
     for match in sorted(matches, key=lambda m: (rank[m.entity], -(m.end - m.start))):
-        if all(match.end <= c.start or c.end <= match.start for c in chosen):
-            chosen.append(match)
+        pieces = [(match.start, match.end)]
+        for c in chosen:
+            pieces = [part for a, b in pieces
+                      for part in ((a, min(b, c.start)), (max(a, c.end), b)) if part[1] > part[0]]
+        whole = pieces == [(match.start, match.end)]
+        keep_parts = match.entity in ("VN_ADDRESS", "PERSON")
+        for a, b in pieces if (whole or keep_parts) else []:
+            if whole or b - a >= 6:
+                chosen.append(PiiMatch(match.entity, a, b, match.value[a - match.start:b - match.start],
+                                       match.confident))
     return sorted(chosen, key=lambda m: m.start)
+
+
+def _compat_view(clean: str) -> str:
+    """Per-character NFKC where it stays one character (fullwidth ０９１２ → 0912), else unchanged.
+
+    Same length as clean, so spans found on it are spans on clean."""
+    out = []
+    for ch in clean:
+        folded = unicodedata.normalize("NFKC", ch)
+        out.append(folded if len(folded) == 1 else ch)
+    return "".join(out)
 
 
 def detect_pii(normalized: NormalizedText) -> list[PiiMatch]:
@@ -234,6 +256,11 @@ def detect_pii(normalized: NormalizedText) -> list[PiiMatch]:
     Every span is on `clean`. Digits-view hits are mapped back with span_in_clean.
     """
     matches = _scan(normalized.clean)
+    compat = _compat_view(normalized.clean)
+    if compat != normalized.clean:
+        # Fullwidth / compatibility digits and letters an LLM reads as ASCII (review finding R3).
+        matches.extend(PiiMatch(m.entity, m.start, m.end, normalized.clean[m.start:m.end], m.confident)
+                       for m in _scan(compat))
     if normalized.digits != normalized.clean:
         for m in _scan(normalized.digits):
             if m.entity in ("PERSON", "VN_ADDRESS", "EMAIL", "PASSWORD"):

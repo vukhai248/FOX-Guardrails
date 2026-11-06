@@ -82,6 +82,7 @@ class Guard:
 
         started = perf_counter()
         degraded = False
+        output_failed = False
         normalized = self._normalize(text)
         findings = list(normalized.signals)
         try:
@@ -99,6 +100,7 @@ class Guard:
                 working = links.text
             except Exception:
                 degraded = True
+                output_failed = True
         pii_changed = False
         if self.config.pii.enabled:
             try:
@@ -117,7 +119,17 @@ class Guard:
         verdict = decide(station, findings, working, pii_changed, link_edited,
                          PolicyTexts(cfg.refusal_text, cfg.context_hidden_text, cfg.output_safe_text,
                                      cfg.solicitation_text))
+        if output_failed:
+            # Unchecked links/solicitation must never reach the customer.
+            verdict.action, verdict.text = "block", cfg.output_safe_text
         reasons = {**_REASONS, **rule_reasons()}
+        try:
+            from .pii.policy import safe_evidence
+
+            findings = [f.model_copy(update={"evidence": safe_evidence(f.evidence)}) for f in findings]
+        except Exception:
+            degraded = True
+            findings = [f.model_copy(update={"evidence": _fallback_mask(f.evidence)}) for f in findings]
         decision = Decision(
             decision_id=uuid4().hex,
             action=verdict.action,
