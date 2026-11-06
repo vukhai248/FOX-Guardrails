@@ -197,4 +197,5 @@ bộ mới.
   cần thêm script chấm và ngưỡng, việc này không nằm trong O1–O3.
 - **Docstring lỗi thời:** `src/fox_guard/__init__.py:1` vẫn ghi "chưa chặn gì cho tới Đợt 4".
   OpenCode không sửa vì quy tắc cấm sửa `.py` trong `src/`.
-- **PR:** mở vào `feat/lop-4`, không merge; chờ review.
+- **PR:** https://github.com/vukhai248/FOX-Guardrails/pull/3 — mở vào `feat/lop-4`, không merge;
+  CI GitHub Actions chạy trên PR.
