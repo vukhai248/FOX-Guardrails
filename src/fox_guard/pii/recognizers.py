@@ -1,5 +1,6 @@
 """Lớp 3: Vietnamese PII recognizers (format + checksum + context words), no models, no I/O."""
 
+import unicodedata
 from dataclasses import dataclass
 
 import regex
@@ -94,11 +95,14 @@ _NOT_PEOPLE = frozenset(no_diacritics(p).lower() for p in (
     "Phạm Ngũ Lão", "Hoàng Sa", "Trường Sa", "Đồng Nai", "Mai Châu"))
 _ADMIN = (r"(?:phường|phuong|xã|xa|thị\s*trấn|quận|quan|huyện|huyen|thị\s*xã|thành\s*phố|thanh\s*pho|tp\.?|"
           r"tỉnh|tinh|p\.|q\.|ấp|thôn|khu\s*phố|tổ)(?!\p{L})")
+_CONTACT = (r"(?:e-?mail|mail|gmail|s[đd]t|đt|dt|tel|phone|zalo|số\s*điện|so\s*dien|điện\s*thoại|"
+            r"dien\s*thoai|liên\s*hệ|lien\s*he)(?!\p{L})")
 _ADDRESS = regex.compile(
     r"(?i)(?:(?:số\s*nhà|so\s*nha|số|so|nhà)\s*)?(?<![\p{N}.,])\d{1,5}[a-z]?(?:/\d{1,4}[a-z]?)*\s*,?\s*"
     r"(?:(?:ngõ|ngo|ngách|ngach|hẻm|hem|kiệt|kiet)\s*\d{1,4}\s*,?\s*)?"
-    r"(?:đường|duong|phố|pho|đ\.)?\s*[\p{L}0-9 .'-]{2,40}?,\s*" + _ADMIN + r"[^\n,;]{1,30}"
-    r"(?:,\s*[^\n,;]{1,40}){0,3}")
+    r"(?:đường|duong|phố|pho|đ\.)?\s*[\p{L}0-9 .'-]{2,40}?,\s*" + _ADMIN + r"(?:[^\n,;.!?]|\.(?!\s|$)){1,30}"
+    # A trailing part never starts with a contact label: ", email lan@…" is not the address.
+    r"(?:,\s*+(?!" + _CONTACT + r")(?:[^\n,;.!?]|\.(?!\s|$)){1,40}){0,3}")
 
 
 @dataclass(frozen=True)
@@ -153,8 +157,20 @@ def _context(lowered: str, start: int, entity: str, end: int | None = None) -> b
     return bool(_CONTEXT_RE[entity].search(window))
 
 
+def _fold(text: str) -> str:
+    """No-diacritics lowercase, one output char per input char (review round 3, item 3).
+
+    Folding the whole string drops combining marks such as the emoji selector U+FE0F, which shifts
+    every later index; a char that would vanish or expand is kept as is instead."""
+    out = []
+    for ch in text:
+        folded = no_diacritics(ch).lower()
+        out.append(folded if len(folded) == 1 else ch)
+    return "".join(out)
+
+
 def _scan(text: str) -> list[PiiMatch]:
-    lowered = no_diacritics(text).lower()
+    lowered = _fold(text)
     out: list[PiiMatch] = []
     ids = [m.span() for m in _ID_TOKEN.finditer(text)]
 
@@ -162,18 +178,18 @@ def _scan(text: str) -> list[PiiMatch]:
         return any(a < right and left < b for left, right in ids)
 
     def add(entity, start, end, confident):
-        if not inside_id(start, end):
+        # A labelled secret or an email (needs "@domain") is never just a hash ID (round 3, item 4).
+        if entity in ("PASSWORD", "OTP", "EMAIL") or not inside_id(start, end):
             out.append(PiiMatch(entity, start, end, text[start:end], confident))
 
     def is_amount(end):
         return bool(_UNIT_AFTER.match(text[end:end + 8]))
 
-    # lowered keeps clean's length (NFC chars map 1:1 after dropping marks), so spans are shared.
-    aligned = len(lowered) == len(text)
+    # lowered has clean's length by construction (_fold), so spans are shared.
     for pattern in (_SECRET, _SECRET_BEFORE):
-        for m in pattern.finditer(lowered if aligned else text):
+        for m in pattern.finditer(lowered):
             add("OTP", m.start("value"), m.end("value"), True)
-    for m in _PASSWORD.finditer(lowered if aligned else text):
+    for m in _PASSWORD.finditer(lowered):
         add("PASSWORD", m.start("value"), m.end("value"), True)
     for m in _EMAIL.finditer(text):
         add("EMAIL", *m.span(), True)
@@ -220,12 +236,37 @@ def _scan(text: str) -> list[PiiMatch]:
 
 
 def _resolve(matches: list[PiiMatch]) -> list[PiiMatch]:
+    """Overlaps go to the higher priority. A long address/name that overlaps keeps its remaining
+    pieces, so "…, Hà Nội SĐT 0912345678" masks both the phone and the address around it."""
     rank = {name: i for i, name in enumerate(_PRIORITY)}
     chosen: list[PiiMatch] = []
     for match in sorted(matches, key=lambda m: (rank[m.entity], -(m.end - m.start))):
-        if all(match.end <= c.start or c.end <= match.start for c in chosen):
-            chosen.append(match)
+        pieces = [(match.start, match.end)]
+        for c in chosen:
+            pieces = [part for a, b in pieces
+                      for part in ((a, min(b, c.start)), (max(a, c.end), b)) if part[1] > part[0]]
+        whole = pieces == [(match.start, match.end)]
+        keep_parts = match.entity in ("VN_ADDRESS", "PERSON")
+        for a, b in pieces if (whole or keep_parts) else []:
+            if whole or b - a >= 6:
+                chosen.append(PiiMatch(match.entity, a, b, match.value[a - match.start:b - match.start],
+                                       match.confident))
     return sorted(chosen, key=lambda m: m.start)
+
+
+def _compat_view(clean: str) -> str:
+    """Per-character NFKC where it stays one character (fullwidth ０９１２ → 0912), else unchanged.
+
+    Same length as clean, so spans found on it are spans on clean."""
+    out = []
+    for ch in clean:
+        digit = unicodedata.decimal(ch, None)
+        if digit is not None:
+            out.append(str(digit))
+            continue
+        folded = unicodedata.normalize("NFKC", ch)
+        out.append(folded if len(folded) == 1 else ch)
+    return "".join(out)
 
 
 def detect_pii(normalized: NormalizedText) -> list[PiiMatch]:
@@ -234,6 +275,11 @@ def detect_pii(normalized: NormalizedText) -> list[PiiMatch]:
     Every span is on `clean`. Digits-view hits are mapped back with span_in_clean.
     """
     matches = _scan(normalized.clean)
+    compat = _compat_view(normalized.clean)
+    if compat != normalized.clean:
+        # Fullwidth / compatibility digits and letters an LLM reads as ASCII (review finding R3).
+        matches.extend(PiiMatch(m.entity, m.start, m.end, normalized.clean[m.start:m.end], m.confident)
+                       for m in _scan(compat))
     if normalized.digits != normalized.clean:
         for m in _scan(normalized.digits):
             if m.entity in ("PERSON", "VN_ADDRESS", "EMAIL", "PASSWORD"):

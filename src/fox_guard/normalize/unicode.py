@@ -9,7 +9,10 @@ import regex
 from fox_guard.types import Finding
 
 _DATA = Path(__file__).resolve().parent.parent / "data"
-_FLAG = regex.compile("\U0001f3f4[\U000e0030-\U000e0039\U000e0061-\U000e007a]{1,6}\U000e007f")
+# Only England, Scotland and Wales exist as tag-sequence flags; any other black flag + tags is a
+# carrier for hidden text (review finding A5: flags spelling "ignore", "all", …).
+_FLAG = regex.compile("\U0001f3f4(?:" + "|".join(
+    "".join(chr(0xE0000 + ord(c)) for c in code) for code in ("gbeng", "gbsct", "gbwls")) + ")\U000e007f")
 _EP = regex.compile(r"\p{Extended_Pictographic}\Z")
 _IGNORABLE = regex.compile(r"\p{Default_Ignorable_Code_Point}\Z")
 _WORDS = regex.compile(r"\p{L}[\p{L}\p{M}\p{N}]*")

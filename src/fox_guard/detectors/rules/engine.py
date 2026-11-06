@@ -99,6 +99,10 @@ def _node_views(node: NormalizedText) -> dict[str, str]:
             "vi_teencode": node.vi_teencode, "latin": latin_view(node.nfkc)}
 
 
+def _fold_ws(text: str) -> str:
+    return " ".join(text.casefold().split())
+
+
 def _mask_evidence(text: str) -> str:
     # Rules never need digits as evidence; masking them keeps accidental PII out of audit.
     return regex.sub(r"\d", "*", " ".join(text.split()))[:120]
@@ -108,15 +112,17 @@ def run_rules(normalized: NormalizedText, station: Station,
               rules: tuple[CompiledRule, ...] | None = None) -> list[Finding]:
     """One finding per matching rule.
 
-    Hidden text (decoded Unicode Tags) and decoded views are searched first: a match there
-    means the instruction was deliberately concealed, so severity is raised to high.
+    The plain text is searched first. When a rule matches nothing there but matches hidden text
+    (decoded Unicode Tags) or a decoded view, the instruction was concealed: severity becomes high.
     Spans are given only when the matched view is index-aligned with clean.
     """
     rules = rules if rules is not None else load_rules()
     concealed = [child for child in normalized.decoded]
     if normalized.hidden_tags:
         concealed.insert(0, normalize(normalized.hidden_tags, decode_max_depth=0))
-    nodes = [(child, True) for child in concealed] + [(normalized, False)]
+    # Plain text first: a hidden view raises severity only when it reveals a match the plain text
+    # lacks. An unrelated "%20" elsewhere must not turn a medium hit into high (round 3, item 7).
+    nodes = [(normalized, False)] + [(child, True) for child in concealed]
     views = [(node, hidden, _node_views(node)) for node, hidden in nodes]
     findings = []
     timed_out = []
@@ -124,27 +130,55 @@ def run_rules(normalized: NormalizedText, station: Station,
         rule = item.rule
         if station not in rule.stations:
             continue
+        # What this rule actually matched in plain text (review round 7: a substring test let
+        # "xignore all previous instructions", which the rule rejects, hide an encoded copy).
+        # Plain views are scanned once; the node loop below reuses these matches.
+        plain_matches = {}
+        for view in rule.views:
+            try:
+                plain_matches[view] = list(item.compiled.finditer(views[0][2][view], timeout=_TIMEOUT_S))
+            except TimeoutError:
+                # Never skip silently: an attacker could craft text that stalls a rule.
+                timed_out.append(rule.id)
+                plain_matches[view] = []
+        plain_hits = {_fold_ws(m.group()) for found in plain_matches.values() for m in found}
+        finding = None
         for node, hidden, texts in views:
-            match, view = None, None
             for view in rule.views:
-                try:
-                    match = item.compiled.search(texts[view], timeout=_TIMEOUT_S)
-                except TimeoutError:
-                    # Never skip silently: an attacker could craft text that stalls a rule.
-                    timed_out.append(rule.id)
-                    match = None
-                if match:
+                if not hidden:
+                    matches = plain_matches[view]
+                else:
+                    try:
+                        matches = list(item.compiled.finditer(texts[view], timeout=_TIMEOUT_S))
+                    except TimeoutError:
+                        timed_out.append(rule.id)
+                        matches = []
+                if hidden:
+                    # Review round 6: a plain hit must not hide a second instruction that only
+                    # decoding reveals. Concealed = a match whose text the plain views do not contain.
+                    matches = [m for m in matches if _fold_ws(m.group()) not in plain_hits]
+                if matches:
                     break
-            if not match:
+            if not matches:
                 continue
-            aligned = not hidden and len(texts[view]) == len(node.clean)
-            findings.append(Finding(
+            match = matches[0]
+            if finding is not None:
+                finding = finding.model_copy(update={"severity": "high"})  # plain hit + concealed one
+                break
+            # Views derived from nfkc shift positions when NFKC expands a character ("ﬃ" → "ffi"),
+            # so equal length alone is not enough (review A8).
+            aligned = (not hidden and len(texts[view]) == len(node.clean)
+                       and (view == "clean" or node.nfkc == node.clean))
+            finding = Finding(
                 detector=f"rules:{rule.id}", kind="injection",
                 severity="high" if hidden else rule.severity,
                 span=match.span() if aligned else None,
                 evidence=_mask_evidence(match.group()), technique=rule.technique,
-            ))
-            break
+            )
+            if hidden:
+                break
+        if finding is not None:
+            findings.append(finding)
     if timed_out:
         findings.append(Finding(
             detector="rules:timeout", kind="injection", severity="medium",

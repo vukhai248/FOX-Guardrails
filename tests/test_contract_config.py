@@ -17,7 +17,8 @@ def test_load_sample_config():
     assert config.classifier.primary == "meta-llama/Llama-Prompt-Guard-2-86M"
     assert config.classifier.theta_low is None
     assert config.classifier.theta_high is None
-    assert config.links.allowlist == []
+    assert config.links.allowlist == ['shop.example']
+    assert config.audit.enabled is True
     assert config.audit.sqlite_path == "var/fox_guard.sqlite"
 
 

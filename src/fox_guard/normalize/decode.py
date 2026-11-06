@@ -30,6 +30,38 @@ def hides_text(pieces) -> bool:
     return any(ch.isalnum() or ord(ch) >= 0x80 for piece in pieces for ch in piece)
 
 
+_ENTITY_RUN = re.compile(r"(?:&(?:#[0-9]+|#x[0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]+);)+")
+_ESCAPE_RUN = re.compile(r"(?:\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8})+")
+_PERCENT_RUN = re.compile(r"(?:%[0-9a-fA-F]{2})+")
+
+
+def encoded_spans(text: str) -> list[tuple[int, int]]:
+    """Spans this decoder could turn into hidden text: what the audit must not keep (review round 7).
+
+    Same rules as candidates(): base64/hex tokens that decode to readable text, and runs of
+    entities, \\u escapes or %XX that spell letters or digits (not "&amp;" or "%20" alone).
+    """
+    exclusions = [m.span() for pattern in (_UUID, _JWT, _HASH) for m in pattern.finditer(text)]
+    spans = []
+    for pattern, decode in ((_B64, lambda t: base64.b64decode(t + "=" * (-len(t) % 4), altchars=b"-_",
+                                                              validate=True).decode("utf-8")),
+                            (_HEX, lambda t: bytes.fromhex(t[2:] if t.lower().startswith("0x") else t)
+                             .decode("utf-8"))):
+        for match in pattern.finditer(text):
+            if any(match.start() < right and match.end() > left for left, right in exclusions):
+                continue
+            try:
+                if readable(decode(match.group())):
+                    spans.append(match.span())
+            except (ValueError, binascii.Error, UnicodeDecodeError):
+                continue
+    for pattern, decode in ((_ENTITY_RUN, html.unescape),
+                            (_ESCAPE_RUN, lambda t: _ESCAPE.sub(lambda e: chr(int(e[1] or e[2], 16)), t)),
+                            (_PERCENT_RUN, lambda t: unquote(t, encoding="latin-1"))):
+        spans.extend(m.span() for m in pattern.finditer(text) if hides_text([decode(m.group())]))
+    return sorted(spans)
+
+
 def candidates(text: str):
     """Yield (decoded text, codec); never execute text or perform I/O.
 
