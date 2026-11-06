@@ -40,6 +40,8 @@ Lớp 1–4 là bộ lọc quy tắc (regex, danh sách từ). Nó **không** đ
   Các mục này để Lớp 5 hoặc một gói sau xử lý.
 - Gộp các biến thể của cùng một lỗi thành **một** finding, kèm 2–3 input. Không tách thành nhiều mục.
 
+**Link có hai lớp chặn** (từ 07/11/2026): lớp cuối là renderer của web (`checkUrlSafety` trong `web_ui/src/components/chat-widget.tsx`). Lệch cú pháp Markdown/URL chỉ là **P1 khi qua được cả hai lớp**. Kiểm bằng `python -X utf8 -m pytest -q -m oracle tests/systematic` (S1 `both_layers`); không đoán bằng tay. Lỗi mới nào cũng phải kèm cách thêm nó vào bộ sinh trong `tests/systematic/`.
+
 **Điều kiện merge:** một lượt review không còn P1 theo định nghĩa trên thì kết luận **Đạt**, kể cả khi còn P2. Liệt kê các P2 ở cuối báo cáo.
 
 ## Đọc trước
