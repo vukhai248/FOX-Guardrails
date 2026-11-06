@@ -24,9 +24,23 @@ Vòng lặp review đã xảy ra vì review chạy trên commit cũ: lỗi đã 
 
 ## Mức finding và cách Claude xử lý
 
-- **P1 / high**: lọt lệnh tấn công, lọt PII ra LLM, câu trả lời hoặc log, hoàn nguyên PII cho sai chủ. Claude sửa ngay.
-- **P2 / medium–low**: chặn nhầm, mức cảnh báo lệch, vị trí span, tài liệu. Claude có thể ghi vào `docs/reports/review-backlog.md` thay vì sửa ngay.
+Lớp 1–4 là bộ lọc quy tắc (regex, danh sách từ). Nó **không** được kỳ vọng hiểu mọi cách diễn đạt tiếng Việt; việc đó thuộc Lớp 5 (classifier). Vì vậy xếp mức như sau (từ 07/11/2026):
+
+- **P1, chặn merge.** Chỉ gồm:
+  1. dữ liệu cá nhân hoặc bí mật **rời khỏi hệ thống**: link/ảnh tới host ngoài allowlist, PII trong URL, giá trị thật đi vào LLM, log, SQLite, JSONL dưới dạng đọc được hoặc giải mã được;
+  2. hoàn nguyên PII cho sai chủ;
+  3. lỗi do **chính bản sửa của lượt trước** gây ra (hồi quy).
+- **P2, ghi vào backlog, không chặn merge.**
+  - Câu bot đòi bí mật bằng cách diễn đạt mới.
+  - Phạm vi phủ định ("không", "đừng", "mà"…).
+  - Câu tấn công diễn đạt mới mà luật chưa có.
+  - Mức `review` thay vì `block`.
+  - Chặn nhầm, span, tài liệu.
+  
+  Các mục này để Lớp 5 hoặc một gói sau xử lý.
 - Gộp các biến thể của cùng một lỗi thành **một** finding, kèm 2–3 input. Không tách thành nhiều mục.
+
+**Điều kiện merge:** một lượt review không còn P1 theo định nghĩa trên thì kết luận **Đạt**, kể cả khi còn P2. Liệt kê các P2 ở cuối báo cáo.
 
 ## Đọc trước
 
