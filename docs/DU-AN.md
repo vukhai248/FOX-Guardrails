@@ -3,7 +3,7 @@
 
 > **File chính của đồ án.** Đọc file này trước. Ở đây có đủ: kiến trúc, công nghệ, danh sách tính năng, schema dữ liệu, mô hình tấn công, các lớp rào chắn, thực nghiệm, lộ trình và **bảng tick tiến độ**.
 > Các file trong `docs/plans/*` là đặc tả gốc cho agent đọc khi code. File này là bản tổng hợp cho bạn học và quản lý.
-> Cập nhật lần cuối: **05/11/2026** (sau Lớp 3). Người cập nhật: Claude, sau mỗi lần nghiệm thu.
+> Cập nhật lần cuối: **07/11/2026** (sau Lớp 4). Người cập nhật: Claude, sau mỗi lần nghiệm thu.
 
 **Ký hiệu trạng thái dùng trong mọi bảng:**
 ✅ xong và đã nghiệm thu · 🟡 đang làm / xong nhưng chưa nghiệm thu · ⏳ đã lên kế hoạch, chưa làm · ⛔ bị chặn (chờ điều kiện) · ✂️ có thể cắt nếu trễ
@@ -12,7 +12,7 @@
 - **FOX-Guard là trọng tâm học thuật**, phần được chấm chính. Web e-commerce chỉ là **ứng dụng thử nghiệm** (testbed), cung cấp chỗ cho kẻ tấn công chèn dữ liệu và chỗ để đo.
 - Làm theo **từng lớp bảo mật**. Xong một lớp thì **dừng**: Claude nghiệm thu, bạn đọc tài liệu học `docs/hoc/lop-N-*.md`, rồi mới sang lớp sau.
 - **Đo được, giải thích được.** Mọi con số phải kèm cỡ mẫu. Không tuyên bố chặn 100%.
-- Người làm (từ 05/11/2026): **Claude** viết code, mở PR trên GitHub. **Codex** là reviewer chính: chạy lại test, dò ca biên, comment lên PR (prompt `plans/prompts/codex-review.md`). **Bạn** đọc review và quyết định merge. Antigravity không còn tham gia.
+- Người làm (từ 07/11/2026): **Claude** viết code, mở PR và **tự review** bằng bộ kiểm hệ thống `tests/systematic/` (S1–S5, có đáp án chuẩn). **OpenCode** làm việc nhẹ (bộ held-out viết trước khi đọc code, README, demo). **Bạn** quyết định merge. Codex và Antigravity không còn tham gia (Codex review 7 lượt cho PR #2 mà không hội tụ).
 
 ---
 
@@ -24,14 +24,14 @@
 | **FOX-Guard Lớp 1 — Chuẩn hoá ký tự** | ✅ | 100% | Đã merge `main`, CI xanh (3.11 + 3.13) |
 | **FOX-Guard Lớp 2 — Luật phát hiện PI** | ✅ | 100% | 21 luật. Held-out độc lập: **bắt 64,6%, chặn nhầm 0%**. Đã merge `main` |
 | **FOX-Guard Lớp 3 — PII tiếng Việt + giả danh hoá** | ✅ | 100% | 14 loại PII. Held-out độc lập: **bắt 90,0%, bắt nhầm 2/40**. Đã merge `main` |
-| FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit | ⏳ | 0% | Từ lớp này guard mới bắt đầu **chặn thật** |
+| **FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit** | ✅ | 100% | Guard bắt đầu **chặn thật**. Held-out độc lập (OpenCode, 140 câu): **bot đòi bí mật 90%, link 100%, câu hợp lệ cho qua 97%**. Bộ kiểm hệ thống S1–S5: 0 lỗi. Đã merge `main` (PR #2) |
 | FOX-Guard Lớp 5 — Classifier + khoanh vùng | ⛔ | 0% | Cần bạn chấp nhận license Prompt Guard 2 + tập dev của Phần C |
 | FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | ⏳ | 0% | |
 | Thực nghiệm (Phần C) | ⏳ | 0% | Chưa giao. Phải có trước Lớp 5 |
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
-| **Toàn đồ án (ước tính)** | 🟡 | **~40%** | Lịch: 03/11 → 07/12/2026 |
+| **Toàn đồ án (ước tính)** | 🟡 | **~50%** | Lịch: 03/11 → 07/12/2026 |
 
-**Việc tiếp theo:** (1) bạn đọc tài liệu học Lớp 1, 2, 3 (`docs/hoc/`) và chạy 3 demo; (2) sau đó làm Lớp 4 (kiểm đầu ra + policy + audit): từ lớp này guard mới **chặn thật**.
+**Việc tiếp theo:** (1) bạn đọc tài liệu học Lớp 4 (`docs/hoc/lop-4-dau-ra-policy-audit.md`) và chạy demo; (2) Phần C1: dữ liệu thực nghiệm, **bạn duyệt mẫu gốc**; (3) Lớp 5 (classifier): cần bạn tự chấp nhận license Prompt Guard 2 trên Hugging Face.
 
 ---
 
@@ -292,12 +292,12 @@ Mỗi tính năng có mã `FG-xx`. Cột "Lớp" chỉ tới mục mô tả chi 
 | FG-13 | Nhận diện PII VN: CCCD, CMND, SĐT, email, thẻ (Luhn), STK, MST, hộ chiếu, biển số, BHYT, OTP, tên, địa chỉ | ● | ● | ● | 3 | ✅ |
 | FG-14 | Giả danh hoá `<PHONE_1>` ổn định trong phiên + hoàn nguyên đúng chủ | ● | ● | ● | 3 | ✅ |
 | FG-15 | Chính sách PII theo trạm + `intent` (chỉ giữ tỉnh/thành khi tra đơn) | ● | ● | ● | 3 | ✅ |
-| FG-16 | Chặn bot đòi PII (solicitation), có danh sách cho phép theo `intent` | | | ● | 4 | ⏳ |
-| FG-17 | Link guard: allowlist, Punycode, homoglyph domain, link chứa PII, xoá ảnh ngoài | | | ● | 4 | ⏳ |
-| FG-18 | Gộp rủi ro + 4 hành động theo trạm (`allow/mask/block/review`) | ● | ● | ● | 4 | ⏳ |
-| FG-19 | Cờ `harden_prompt`, `require_confirmation` (tool ghi), `session_flagged` | ● | ● | | 4 | ⏳ |
-| FG-20 | Audit SQLite chỉ lưu text đã che + `fox-guard audit why <id>` | ● | ● | ● | 4 | ⏳ |
-| FG-21 | Chế độ giảm cấp khi detector lỗi/timeout (`degraded=true`, không tự DoS) | ● | ● | ● | 4 | ⏳ |
+| FG-16 | Chặn bot đòi PII (solicitation), có danh sách cho phép theo `intent` | | | ● | 4 | ✅ |
+| FG-17 | Link guard: allowlist, Punycode, homoglyph domain, link chứa PII, xoá ảnh ngoài | | | ● | 4 | ✅ |
+| FG-18 | Gộp rủi ro + 4 hành động theo trạm (`allow/mask/block/review`) | ● | ● | ● | 4 | ✅ |
+| FG-19 | Cờ `harden_prompt`, `require_confirmation` (tool ghi), `session_flagged` | ● | ● | | 4 | ✅ |
+| FG-20 | Audit SQLite chỉ lưu text đã che + `fox-guard audit why <id>` | ● | ● | ● | 4 | ✅ |
+| FG-21 | Chế độ giảm cấp khi detector lỗi/timeout (`degraded=true`, không tự DoS) | ● | ● | ● | 4 | ✅ |
 | FG-22 | Classifier Prompt Guard 2, cửa sổ 512 token, ngưỡng chốt trên dev | ● | ● | | 5 | ⛔ |
 | FG-23 | Điểm rủi ro theo phiên (≥ 3 medium trong 10 lượt → review) | ● | | | 5 | ⏳ ✂️ |
 | FG-24 | LLM judge kiểu PromptArmor (chỉ khi điểm mơ hồ) | ● | ● | | 5 | ⏳ ✂️ |
@@ -501,7 +501,15 @@ Theo nhóm (held-out): cấu trúc 6/6 · ghi đè 5/6 · đòi prompt 4/6 · l�
 
 ---
 
-### 4.4 Lớp 4 — Kiểm đầu ra + policy + audit đã che ⏳
+### 4.4 Lớp 4 — Kiểm đầu ra + policy + audit đã che ✅
+
+> **Thực tế (07/11/2026, PR #2, merge `a50fd0b`).** Tài liệu học: [`hoc/lop-4-dau-ra-policy-audit.md`](hoc/lop-4-dau-ra-policy-audit.md).
+> - Bot đòi bí mật: không cần danh sách cho phép theo `intent`. SĐT, địa chỉ, MST **không có** trong danh sách bí mật, nên hỏi chúng luôn hợp lệ. Câu cảnh báo phủ định ("Shop không bao giờ yêu cầu…") được cho qua. Phần phủ định đã đóng băng; câu diễn đạt mới là việc của Lớp 5.
+> - Link guard là **lớp thứ hai**. Lớp chặn cuối là renderer của web (`checkUrlSafety`, xem Phần 10 mục 19). Bộ tách URL `detectors/url.py` theo quy tắc host của WHATWG. Link tới shop chỉ được giữ khi phần sau host gồm toàn ký tự an toàn.
+> - Gộp rủi ro hiện dùng nguyên mức của luật (chưa có classifier). CONTEXT `high` ẩn **cả đoạn**; cắt đúng câu là việc của Lớp 5.
+> - Audit xoá mọi thứ có thể giải mã ngược: base64/hex, entity HTML, escape unicode, `%XX`, đuôi URL, userinfo, chữ số trong host và evidence.
+> - Kiểm: 656 test; bộ kiểm hệ thống S1–S5 ở `tests/systematic/` (0 lỗi, báo cáo `docs/reports/systematic-run-1.md`); held-out OpenCode 140 câu: bot đòi bí mật **90%**, link **100%**, câu hợp lệ cho qua **97%**.
+
 
 **4.4.1 Chặn bot đòi PII (solicitation, P4/O3)**
 - Luật trên OUTPUT bắt câu yêu cầu/mời cung cấp: CCCD/căn cước, ảnh giấy tờ, OTP, mật khẩu, PIN, số thẻ/CVV/ngày hết hạn, STK + chuyển khoản/đặt cọc. Bắt cả không dấu và teencode.
@@ -625,7 +633,7 @@ Tool ghi `create_support_ticket`: nếu trong lượt có CONTEXT medium/high th
 | Trường | Kiểu | Ý nghĩa |
 | --- | --- | --- |
 | `decision_id` | str (uuid hex) | Khoá để tra audit, gắn vào `chat_logs.guard_decision_ids` |
-| `action` | `allow` \| `mask` \| `block` \| `review` | Hành động. **Hiện luôn `allow`** cho tới Lớp 4 (Lớp 1–2 chỉ báo tín hiệu) |
+| `action` | `allow` \| `mask` \| `block` \| `review` | Hành động, do policy của Lớp 4 chọn (`policy/engine.py`) |
 | `text` | str | Văn bản app dùng tiếp (đã chuẩn hoá / đã che / đã cắt / câu từ chối) |
 | `risk` | `low` \| `medium` \| `high` | Rủi ro gộp (hiện = mức cao nhất trong findings) |
 | `findings` | list[Finding] | Danh sách phát hiện |
@@ -651,7 +659,7 @@ Tool ghi `create_support_ticket`: nếu trong lượt có CONTEXT medium/high th
 | `decoded` | Danh sách bản giải mã, mỗi bản đã chạy lại bước 1–6 |
 | `signals` | Danh sách `Finding` loại `unicode` |
 
-### 5.5 Audit SQLite ⏳ (Lớp 4)
+### 5.5 Audit SQLite ✅ (Lớp 4)
 
 **Bảng `decisions`:**
 
@@ -678,8 +686,8 @@ Tool ghi `create_support_ticket`: nếu trong lượt có CONTEXT medium/high th
 | `config_version` | ✅ | Ghi vào audit |
 | `normalize.max_chars` (≤ 20.000), `normalize.decode_max_depth` (≤ 2) | ✅ | Giới hạn Lớp 1 |
 | `classifier.primary/secondary/theta_low/theta_high` | ✅ khung (ngưỡng `null`) | Lớp 5; `theta_low ≤ theta_high` được kiểm |
-| `links.allowlist` | ✅ khung (rỗng) | Lớp 4 |
-| `audit.sqlite_path` | ✅ khung | Lớp 4 |
+| `links.allowlist` | ✅ dùng (`[shop.example]` trong `fox-guard.yaml`) | Lớp 4 |
+| `audit.enabled/sqlite_path/salt_env` | ✅ dùng | Lớp 4 |
 | `rules`, `pii`, `policy`, `harden_prompt_text`… | ⏳ | Thêm dần theo lớp; khoá lạ luôn bị báo lỗi |
 
 ### 5.7 API sidecar (Lớp 6) ⏳
@@ -841,8 +849,8 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 | ✓ | Gói | Việc | Lớp | Người làm | Commit / nơi | Tài liệu học |
 | :---: | --- | --- | --- | --- | --- | --- |
 | [x] | B0 | Khung repo: package, CLI, pyproject, CI, thư viện vào DL | — | Claude | `e65a746` (main) | — |
-| [x] | B1 | Hợp đồng `GuardContext/Finding/Decision`, cấu hình chặt, SDK 3 trạm, `docs/api.md` | — | Codex | `5788f78`, `bc66f50` | — |
-| [x] | B2 | Chuẩn hoá 8 bước, 9 view, confusables 16.0.0 | 1 | Codex | `f662f60` → `c2a0bfb` | — |
+| [x] | B1 | Hợp đồng `GuardContext/Finding/Decision`, cấu hình chặt, SDK 3 trạm, `docs/api.md` | — | Claude | `5788f78`, `bc66f50` | — |
+| [x] | B2 | Chuẩn hoá 8 bước, 9 view, confusables 16.0.0 | 1 | Claude | `f662f60` → `c2a0bfb` | — |
 | [x] | B1b | Sửa leet/gộp cảnh báo; teencode 205 dòng; 42 + 39 fixture; sửa báo nhầm URL; không làm mất cảnh báo mạnh trong mã hoá; tài liệu học + demo | 1 | Claude | `7708ca3` → `01f2446` | ✅ `lop-1-chuan-hoa.md` |
 | [x] | — | Merge Lớp 1 vào `main`, push, CI xanh 3.11 + 3.13 | — | Claude | `777fd0d` | |
 | [ ] | — | Bạn đọc tài liệu học Lớp 1 + Lớp 2 | 1, 2 | Bạn | | |
@@ -850,19 +858,21 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 | [x] | B5.1 | 14 recognizer PII VN (checksum + ngữ cảnh), 125 câu tự sinh + 36 hard-negative, 2 bộ red-team (held-out 90,0% / 2 nhầm) | 3 | Claude | merge Lớp 3 | ✅ `lop-3-pii.md` |
 | [ ] | B5.1b | Spike NER tên/địa chỉ (underthesea / GLiNER) | 3 | — | ✂️ | |
 | [x] | B5.2 | Vault giả danh hoá ↔ hoàn nguyên đúng chủ, chính sách 3 trạm theo source/intent, `redact_for_log` | 3 | Claude | merge Lớp 3 | |
-| [ ] | B5.3 | Chặn bot đòi PII | 4 | Codex | | `lop-4-dau-ra-policy-audit.md` |
-| [ ] | B5.4 | Link guard (allowlist, Punycode, lookalike, exfil, xoá ảnh) | 4 | Codex | | |
-| [ ] | B6.1–6.2 | Gộp rủi ro + hành động theo trạm + cờ | 4 | Codex | | |
-| [ ] | B6.5 | Audit SQLite đã che + test quét byte + `audit why` | 4 | Codex | | |
-| [ ] | B6.6 | Chế độ giảm cấp | 4 | Codex | | |
-| [ ] | B4.1 | Classifier PG2 + deberta, ngưỡng trên dev | 5 | Codex | ⛔ license + tập dev | `lop-5-classifier-khoanh-vung.md` |
-| [ ] | B6.3–6.4 | Khoanh vùng cắt câu + datamarking | 5 | Codex | | |
-| [ ] | B4.2 ✂️ | Điểm theo phiên | 5 | Codex | | |
-| [ ] | B4.3 ✂️ | LLM judge | 5 | Codex | | |
-| [ ] | B7 | Sidecar + ví dụ SDK | 6 | Codex | | `lop-6-tich-hop.md` |
-| [ ] | B9 | Cắm vào web qua 3 hook | 6 | Codex | | |
-| [ ] | B10 | Dashboard Streamlit | 6 | Codex | | |
-| [ ] | B8 ✂️ | Proxy OpenAI-compatible | 6 | Codex | | |
+| [x] | B5.3 | Chặn bot đòi PII (phủ định, danh sách Markdown, không dấu/teencode) | 4 | Claude | PR #2 | ✅ `lop-4-dau-ra-policy-audit.md` |
+| [x] | B5.4 | Link guard (allowlist, bộ tách URL theo WHATWG, lookalike, exfil, xoá ảnh, URL an toàn) | 4 | Claude | PR #2 | |
+| [x] | B6.1–6.2 | Gộp rủi ro + hành động theo trạm + cờ | 4 | Claude | PR #2 | |
+| [x] | B6.5 | Audit SQLite đã che + quét byte + giải mã lặp (S3) + `audit why/export` | 4 | Claude | PR #2 | |
+| [x] | B6.6 | Chế độ giảm cấp (che dự phòng; audit không lưu text khi PII lỗi) | 4 | Claude | PR #2 | |
+| [x] | — | Bộ kiểm hệ thống S1–S5 (renderer thật, WHATWG, giải mã lặp, quan hệ biến đổi, câu hợp lệ); held-out OpenCode 140 câu; merge `main` | 4 | Claude, OpenCode | `a50fd0b` | |
+| [ ] | — | Bạn đọc tài liệu học Lớp 3 + Lớp 4 | 3, 4 | Bạn | | |
+| [ ] | B4.1 | Classifier PG2 + deberta, ngưỡng trên dev | 5 | Claude | ⛔ license + tập dev | `lop-5-classifier-khoanh-vung.md` |
+| [ ] | B6.3–6.4 | Khoanh vùng cắt câu + datamarking | 5 | Claude | | |
+| [ ] | B4.2 ✂️ | Điểm theo phiên | 5 | Claude | | |
+| [ ] | B4.3 ✂️ | LLM judge | 5 | Claude | | |
+| [ ] | B7 | Sidecar + ví dụ SDK | 6 | Claude | | `lop-6-tich-hop.md` |
+| [ ] | B9 | Cắm vào web qua 3 hook | 6 | Claude | | |
+| [ ] | B10 | Dashboard Streamlit | 6 | Claude | | |
+| [ ] | B8 ✂️ | Proxy OpenAI-compatible | 6 | Claude | | |
 
 **Phần C — Dữ liệu và thực nghiệm**
 
@@ -894,10 +904,12 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 ### 9.3 Quy trình mỗi lớp
 
 ```text
-Claude giao việc (prompt chi tiết + chỗ dễ sai)
-   → Codex viết test thất bại trước (RED) → viết code (GREEN) → báo cáo 4 mục + output thật
-   → Claude chạy lại toàn bộ test, đọc diff, tự dò ca biên, viết thêm ca kiểm độc lập
-   → Đạt? → cập nhật file này + báo bạn đọc tài liệu học → bạn đọc xong → lớp tiếp theo
+(từ 07/11/2026)
+Claude viết test thất bại trước (RED) → viết code (GREEN) trên nhánh riêng, mở PR
+   → OpenCode viết bộ held-out độc lập TRƯỚC khi đọc code (chỉ dùng để đo, không chỉnh theo nó)
+   → Claude chạy bộ kiểm hệ thống tests/systematic (S1–S5) + pytest + ruff; lỗi mới thêm vào bộ sinh rồi mới sửa
+   → Claude tự review lần cuối theo tiêu chí P1 (dữ liệu rời hệ thống, trả PII sai chủ, hồi quy)
+   → bạn quyết merge → cập nhật file này + tài liệu học → bạn đọc xong → lớp tiếp theo
 ```
 
 ---
@@ -960,7 +972,10 @@ Claude giao việc (prompt chi tiết + chỗ dễ sai)
 | Q24 | Chỉ SĐT/email/địa chỉ được hoàn nguyên, và chỉ cho đúng chủ; CCCD/thẻ/STK luôn che; OTP/mật khẩu xoá | Claude (05/11) | Bot không bao giờ cần in lại giấy tờ hay thẻ cho khách |
 | Q25 | Đổi vai: Claude code + mở PR, Codex review chính, bạn quyết định merge. Lớp 1–3 (đã nằm trên `main`) được mở một PR review bù | Bạn (05/11) | Codex hoạt động lại; cần người review khác người viết code |
 
-**Câu còn mở:** ngày nộp/bảo vệ chính xác (đang giả định sau 07/12/2026) · license Prompt Guard 2 · ai làm Phần C.
+| Q26 | Bỏ Codex; Claude tự review bằng bộ kiểm hệ thống S1–S5 có đáp án chuẩn | Bạn (07/11) | 7 lượt review PR #2 không hội tụ; bộ kiểm hệ thống tìm 83 ca trong một lần chạy |
+| Q27 | Link guard là lớp thứ hai; lớp cuối là renderer của web. Lệch cú pháp link chỉ là P1 khi qua cả hai lớp | Claude (07/11) | Đo được bằng S1; tránh vá vô hạn theo cú pháp Markdown |
+
+**Câu còn mở:** ngày nộp/bảo vệ chính xác (đang giả định sau 07/12/2026) · license Prompt Guard 2 · Phần C do Claude làm, bạn duyệt mẫu gốc.
 
 ---
 
@@ -987,6 +1002,9 @@ Claude giao việc (prompt chi tiết + chỗ dễ sai)
 | L3-FN | OTP 6 số không kèm từ khoá (2/7 held-out); tên viết thường / chỉ tên riêng chưa bắt | Đã biết; Lớp 4 chặn bot **đòi** OTP; spike NER để sau |
 | L3-FP | Tên cửa hàng giống tên người ("Nguyễn Kim", "Hoàng Hà") bị che (2/40) | Chấp nhận: chỉ che, không chặn |
 | L2-FN | 17/48 câu held-out lọt luật (lệnh lịch sự chôn trong review, giả thẩm quyền kể chuyện, many-shot `kh:`/`bot:`) | Đã biết, Lớp 5 bù; test giữ mức sàn ≥ 60% |
+| L4-FN | Bot đòi bí mật bằng cách nói mới (tiếng Anh: passport photo, card expiry; phủ định chi phối động từ khác) lọt khoảng 10% held-out | Đã biết, đóng băng regex; Lớp 5 bù (backlog H1, N1) |
+| L4-FP | Câu cảnh báo "Hãy cẩn thận với tin nhắn đòi mã OTP", hướng dẫn đổi mật khẩu trong app, "ASP.NET" | Đã biết (backlog N2, H6, L2); chỉ là chặn nhầm, không lọt dữ liệu |
+| L4-L3 | Link tương đối của shop kèm base64 trong query vẫn được giữ | Chấp nhận: dữ liệu chỉ tới máy chủ của shop (backlog L3) |
 | BUG-A-01 | Một user review một sản phẩm nhiều lần | Đã sửa trên nhánh `fix/a-k5`, chưa nghiệm thu, chưa áp dụng DB |
 | A-OPEN-1 | Hết hàng đúng lúc khách trả tiền → webhook 503, Stripe gửi lại mãi | Ghi nhận |
 | OPS-1 | File mật khẩu DB dạng chữ thường `D:/backups/supabase/db-password.txt` | Bạn cần xoá |
