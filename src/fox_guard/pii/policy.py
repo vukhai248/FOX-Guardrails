@@ -201,14 +201,14 @@ def mask_encoded_pii(text: str) -> tuple[str, int]:
                 break
     if not hidden:
         return text, 0
-    out, cursor = [], 0
+    out, cursor, count = [], 0, 0
     for start, end in sorted(hidden):
         if start >= cursor:
             out.append(text[cursor:start] + "[đã che]")
+            cursor, count = end, count + 1
+        elif end > cursor:  # overlapping pieces of the same encoded run count once
             cursor = end
-        elif end > cursor:
-            cursor = end
-    return "".join(out) + text[cursor:], len(hidden)
+    return "".join(out) + text[cursor:], count
 
 
 def safe_evidence(evidence: str) -> str:
@@ -224,7 +224,8 @@ def safe_evidence(evidence: str) -> str:
     masked = redact_text(normalized.clean, detect_pii(normalized))
     # Belt and braces: evidence never needs a number. 3+ digits covers OTPs that no detector can
     # label, e.g. a host "572431.shop.example" quoted by the link guard (systematic run 1, S3).
-    return regex.sub(r"\d(?:[\s.\-]?\d){2,}", "[đã che]", masked)[:120]
+    # Digits next to "*" belong to an already masked value ("0912***678") and stay readable.
+    return regex.sub(r"(?<![\d*])\d(?:[\s.\-]?\d){2,}(?![\d*])", "[đã che]", masked)[:120]
 
 
 __all__ = ["RESTORABLE", "PiiResult", "apply_context", "apply_input", "apply_output", "mask_value",
