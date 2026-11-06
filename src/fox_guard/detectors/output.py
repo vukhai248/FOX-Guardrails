@@ -37,10 +37,52 @@ _CLAUSE_END = regex.compile(
 _PLACEHOLDER_VIEW = regex.compile(r"<[\p{L}_ ]+_\d{1,4}>")
 
 
-def _negated(view: str, start: int) -> bool:
-    """A negation earlier in the same clause ("Shop không bao giờ yêu cầu bạn cung cấp OTP")."""
+# Inside the request itself: "vui lòng KHÔNG cung cấp", "please NEVER share". "dung" is đừng only
+# right before a verb: in no-diacritics views it is also "đúng" ("gửi đúng mã OTP" is a request).
+_NEGATION_INSIDE = regex.compile(
+    r"\b(?:khong|chang|chua|never|not|dont|don't)\b"
+    r"|\bdung\s+(?:bao gio\s+)?(?:gui|cung cap|nhap|doc|chia se|tiet lo|dua|cho|share|send)\b")
+# An imperative opens a new request even after a negation: "Để không mất đơn bạn hãy gửi OTP".
+# "hay" is both "hãy" and "hay" (= or: "OTP hay mật khẩu") without diacritics: imperative only
+# when a request verb follows it.
+_IMPERATIVE = regex.compile(r"(?:vui long|lam on|xin|please)\b"
+                            r"|hay\s+(?:\w+\s+){0,2}?(?:gui|cung cap|nhap|doc|chup|nhan tin|share|send)\b")
+# Negation of a purpose, not of the request: "để không mất đơn", "nhằm không bị khoá", "to not lose".
+_PURPOSE_BEFORE = regex.compile(r"\b(?:de|nham|de cho|to|so)\s+$")
+# Words that may sit between a negation and the request it negates (no-diacritics, lowercase).
+_WARNING_FRAME = frozenset("""
+bao gio he can phai se duoc nen the yeu cau hoi doi xin gui cung cap nhap doc nhan tin goi dien thoai
+email sms qua chat zalo link de cho ban anh chi em minh quy khach hang shop ben chung toi nhan vien
+cua ai bat ky va hoac hay bo phan cskh tu lam on vui long tuyet doi bao h k ko
+ask asks asking asked will would ever you your to for us we our staff anyone request require
+send provide share give by via phone call message messages team support do does did never not
+ma otp mat khau so the cvv cvc pin cccd cmnd can cuoc cong dan tai khoan xac thuc minh ngay het han
+giay to tuy than chup nhung thong nhu
+password code card number id passport bank account security one time or and any
+""".split())
+
+
+def _negated(view: str, start: int, end: int) -> bool:
+    """True when the matched request is a warning ("Shop không bao giờ yêu cầu bạn cung cấp OTP").
+
+    Review round 4: a negation counts only when it governs the request. One inside the request
+    always does. One earlier in the clause does, unless it negates a purpose ("để không …") or
+    an imperative ("hãy", "vui lòng", "please") starts the request after it.
+    """
+    if _NEGATION_INSIDE.search(view, start, end):
+        return True
+    if _IMPERATIVE.match(view, start):
+        return False
     clause_start = max((m.end() for m in _CLAUSE_END.finditer(view, 0, start)), default=0)
-    return bool(_NEGATION.search(view, clause_start, start))
+    for neg in _NEGATION.finditer(view, clause_start, start):
+        if _PURPOSE_BEFORE.search(view, clause_start, neg.start()):
+            continue
+        # The negation governs the request only if what lies between is the frame of a warning
+        # ("không BAO GIỜ YÊU CẦU BẠN"), not another verb ("Đừng LO NHÉ bạn gửi OTP").
+        between = view[neg.end():start].split()
+        if len(between) <= 12 and all(word in _WARNING_FRAME for word in between):
+            return True
+    return False
 
 
 def find_solicitation(normalized: NormalizedText) -> list[Finding]:
@@ -53,7 +95,7 @@ def find_solicitation(normalized: NormalizedText) -> list[Finding]:
         # Our own placeholders (<CCCD_1>) name an entity; they are not a request for it.
         view = _PLACEHOLDER_VIEW.sub(" ", view)
         for match in _SOLICIT.finditer(view, timeout=0.05, overlapped=True):
-            if not _negated(view, match.start()):
+            if not _negated(view, match.start(), match.end()):
                 return [Finding(detector="solicitation", kind="solicitation", severity="high",
                                 evidence=regex.sub(r"\d", "*", match.group())[:120], technique="T2.4")]
     return []
@@ -71,10 +113,14 @@ example invalid test ru cn tk ml ga cf gq vn us uk de fr jp kr sg th id ph my au
 """.split(), key=len, reverse=True)
 _IMAGE = regex.compile(r"!\[[^\]\n]{0,200}\]\(\s*<?([^)\s>]+)>?(?:\s+[\"'][^\"']*[\"'])?\s*\)")
 _INLINE = regex.compile(r"\[([^\]\n]{0,200})\]\(\s*<?([^)\s>]+)>?(?:\s+[\"'][^\"']*[\"'])?\s*\)")
-_REFDEF = regex.compile(r"(?m)^[ \t]*\[[^\]\n]{1,80}\]:[ \t]*<?(\S+?)>?(?:[ \t]+[\"'(].*)?$")
+# CommonMark allows the destination on the next line ("[x]:\n  //evil.example/pixel", review round 4).
+_REFDEF = regex.compile(r"(?m)^[ \t]*\[[^\]\n]{1,80}\]:[ \t]*(?:\n[ \t]*)?<?(\S+?)>?(?:[ \t]+[\"'(].*)?$")
 _BARE = regex.compile(
     # A placeholder (<PHONE_1>) inside a URL belongs to the URL: it is restored into a real value later.
     r"(?<![\w@/.-])(?:(?:https?|ftp)://|www\.)(?:[^\s<>()\[\]\"']|<[A-Z_]+_\d{1,4}>)+"
+    # Scheme-relative "//host/x" anywhere in the text: browsers resolve it against the page.
+    r"|(?<![\w:/.-])//(?:[\p{L}\p{N}-]+\.)+[\p{L}\p{N}-]+(?::\d+)?"
+    r"(?:[/?#](?:[^\s<>()\[\]\"']|<[A-Z_]+_\d{1,4}>)*)?"
     r"|(?<![\w@/.-])(?:[\p{L}\p{N}-]+\.)+(?:" + "|".join(_TLDS) + r")"
     r"(?:/(?:[^\s<>()\[\]\"']|<[A-Z_]+_\d{1,4}>)*)?(?![\w-])",
     regex.IGNORECASE,
@@ -105,8 +151,30 @@ def host_of(url: str) -> str:
         return host
 
 
+def _non_ascii_host(url: str) -> bool:
+    """An internationalized host ("straße.example", "ｓｈｏｐ.example", "xn--…").
+
+    Python's idna codec is IDNA2003 (ß → ss) while browsers use UTS #46 (ß kept), so the two can
+    name different hosts (review round 4). The shop's allowlist is ASCII: such hosts never match it."""
+    try:
+        raw = urlsplit(_absolute(url)).hostname or ""
+    except ValueError:
+        return True
+    return not raw.isascii() or "xn--" in raw
+
+
 def _allowed(host: str, allowlist: list[str]) -> bool:
     return any(host == a or host.endswith("." + a) for a in allowlist)
+
+
+def _unquote_all(text: str) -> str:
+    """Decode %XX until stable (bounded): "%2535" hides "%35" hides "5"."""
+    for _ in range(4):
+        decoded = unquote(text)
+        if decoded == text:
+            break
+        text = decoded
+    return text
 
 
 def _lookalike(host: str, allowlist: list[str]) -> bool:
@@ -119,18 +187,22 @@ def _lookalike(host: str, allowlist: list[str]) -> bool:
 
 
 def _has_pii(url: str) -> bool:
-    """PII or one of our placeholders anywhere after the host (path, query, fragment)."""
+    """PII or one of our placeholders anywhere in the URL, the host included.
+
+    A placeholder in the host ("https://<PHONE_1>.shop.example/") would be restored into the real
+    number and leak it through DNS (review round 4)."""
     from fox_guard.pii.recognizers import detect_pii
     from fox_guard.pii.vault import PLACEHOLDER
 
+    whole = _unquote_all(url)
+    if PLACEHOLDER.search(whole):
+        return True  # restored later into the real value: treat as PII now
     try:
-        parts = urlsplit(_absolute(url))
+        parts = urlsplit(_absolute(whole))
     except ValueError:
         return False
-    tail = unquote(" ".join((parts.path, parts.query, parts.fragment)).replace("+", " "))
-    if PLACEHOLDER.search(tail):
-        return True  # restored later into the real value: treat as PII now
-    text = regex.sub(r"[&=/?#]", " ", tail).strip()
+    tail = " ".join((parts.hostname or "", parts.path, parts.query, parts.fragment)).replace("+", " ")
+    text = regex.sub(r"[&=/?#.]", " ", tail).strip()
     return bool(text) and bool(detect_pii(normalize(text, decode_max_depth=0)))
 
 
@@ -155,9 +227,15 @@ def guard_links(text: str, allowlist: list[str]) -> LinkResult:
             findings.append(Finding(detector="link:external", kind="link", severity="medium",
                                     evidence="malformed URL removed", technique="T2.12"))
             return False
+        scheme = url.split(":", 1)[0].lower() if regex.match(r"[a-z][a-z0-9+.-]*:", url, regex.I) else ""
+        if scheme and scheme not in ("http", "https") and not host:
+            # javascript:, data:, vbscript:… run or embed content without any host to allowlist.
+            findings.append(Finding(detector="link:external", kind="link", severity="medium",
+                                    evidence=f"{scheme}: URL removed"[:120], technique="T2.12"))
+            return False
         if not host:
             return True
-        if _allowed(host, allow) and not _has_pii(url):
+        if _allowed(host, allow) and not _non_ascii_host(url) and not _has_pii(url):
             return True
         if _has_pii(url):
             exfil = True

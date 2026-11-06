@@ -6,6 +6,8 @@ from time import perf_counter
 from typing import TYPE_CHECKING
 from uuid import uuid4
 
+import regex
+
 from .config import GuardConfig, load_config
 from .types import Decision, GuardContext
 
@@ -17,7 +19,12 @@ _FALLBACK = re.compile(
     r"|[\w.+-]+@[\w-]+(?:\.[\w-]+)+"                 # emails
     # labelled secrets: "mật khẩu: …", "OTP 5724", "pass is …"
     r"|(?i:(?:m[aậ]t\s*kh[aẩ]u|\bmk\b|pass(?:word)?|pwd|otp|pin)\s*(?:l[aà]|:|=|is)?\s*)\S+")
-_URL_TAIL = re.compile(r"((?:https?:)?//[^\s/?#<>\"']+)[^\s<>\"']*", re.IGNORECASE)
+# With or without a scheme ("shop.example/x?otp=…", review round 4). Over-matching only shortens
+# what audit keeps, so a generic 2+ letter TLD is fine here (unlike the link guard).
+_URL_TAIL = regex.compile(
+    r"((?:(?:https?|ftp):)?//[^\s/?#<>\"']+|(?<![\w@.-])(?:[\p{L}\p{N}-]+\.)+\p{L}{2,}(?::\d+)?)"
+    r"(?:[/?#][^\s<>\"']*)?", regex.IGNORECASE)
+_PERCENT_RUN = re.compile(r"(?:%[0-9A-Fa-f]{2})+")
 
 
 def _fallback_mask(text: str) -> str:
@@ -30,7 +37,8 @@ def _strip_url_tails(text: str) -> str:
     def keep_host(m):
         return m.group(0) if m.group(0) == m.group(1) else m.group(1) + "/[đã lược]"
 
-    return _URL_TAIL.sub(keep_host, text)
+    # Any %XX left outside a URL can still decode to a secret: audit never needs it.
+    return _PERCENT_RUN.sub("[đã lược]", _URL_TAIL.sub(keep_host, text))
 
 _REASONS = {
     "unicode:tags": "Phát hiện ký tự Unicode Tags ẩn chứa nội dung.",

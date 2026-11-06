@@ -12,6 +12,18 @@ Quy tắc từ 06/11/2026: mỗi lượt review, lỗi quan trọng (lọt PII, 
 | 5 Địa chỉ nuốt ", email …" | Đã sửa: phần đuôi địa chỉ không bắt đầu bằng nhãn liên hệ |
 | 7 `%20` không liên quan nâng mức | Đã sửa: chỉ nâng khi bản văn bản thường không khớp |
 
+## Đã chốt lượt review 4 (PR #2 @ `5107339`)
+
+5 mục P1, sửa theo nhóm nguyên nhân chứ không theo từng câu. Test D1–D6 hỏng trước khi sửa.
+
+| Mục | Sửa |
+| --- | --- |
+| 1 Tên miền quốc tế (`straße`) | Host không phải ASCII hoặc có `xn--` không bao giờ khớp allowlist |
+| 2 Tham chiếu nhiều dòng, `//host` | `_REFDEF` nhận đích ở dòng sau; mọi `//host/…` trong văn bản đều bị gỡ (sửa luôn H3). Thêm: `javascript:`, `data:` bị gỡ |
+| 3 Placeholder trong hostname | Kiểm placeholder và PII trên toàn URL, giải `%XX` lặp tới khi ổn định |
+| 4 Audit URL không scheme | Audit cắt đuôi cả URL không có `//` và xoá mọi chuỗi `%XX` |
+| 5 Phủ định ở vế mục đích | Phủ định chỉ tính khi giữa nó và lời yêu cầu chỉ có từ của khung câu cảnh báo. Phủ định nằm trong lời yêu cầu luôn được tính. Sửa luôn 3 câu cảnh báo từng bị chặn nhầm ("Xin bạn đừng gửi…", "Vui lòng không cung cấp…", "Please never share…") |
+
 ## Việc hoãn
 
 Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (OpenCode, PR #3) phát hiện. **Không sửa bằng cách thêm đúng các câu này vào regex**, vì làm vậy là tune trên held-out. Khi làm thì viết câu dev mới cùng loại, rồi đo lại held-out đúng một lần.
@@ -20,7 +32,7 @@ Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (Op
 | --- | --- | --- | --- | --- |
 | H1 | Thiếu từ vựng tiếng Anh khi bot đòi bí mật: passport photo, online banking password, PIN, confirmation code, bank account number, card expiry, one-time password | oh-009, 010, 027, 040 | Cao | Lớp 5 (classifier) cũng phủ được |
 | H2 | Teencode rút gọn "số tk + mk" | oh-018 | TB | Cần bảng teencode cho "tk", "mk" ở đầu ra |
-| H3 | URL `//host/path` nằm trần trong câu (không markdown) không bị gỡ | oh-061, 079 | Cao | Có xử lý `//host` trong ảnh/link markdown (B1), chưa có cho văn bản thường |
+| ~~H3~~ | ~~URL `//host/path` trần trong câu~~ | oh-061, 079 | — | **Đã sửa ở lượt 4** bằng quy tắc chung cho `//host` (không dựa trên câu held-out) |
 | H4 | Phủ định bị cắt sớm khi danh sách dài hoặc khi có câu tiếp theo | oh-089, 129, 131 | TB | Bị chặn nhầm (false positive), không gây lọt dữ liệu |
 | H5 | "mã PIN máy" (PIN mở khoá điện thoại) bị coi là đòi PIN | oh-091 | Thấp | |
 | H6 | Hướng dẫn đổi mật khẩu trong app ("nhập mật khẩu cũ") bị chặn | oh-099 | TB | Cần phân biệt "nhập vào app" với "gửi cho shop" |
@@ -34,5 +46,7 @@ Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (Op
 | Bot đòi bí mật (50) | 45/50 = 90% |
 | Link nguy hiểm (30) | 28/30 = 93% |
 | Câu hợp lệ cho qua (60) | 55/60 = 92% (chặn nhầm 8%) |
+
+Đo lại sau lượt 4 (không chỉnh theo held-out): bot đòi bí mật 45/50 = 90%, link 30/30 = 100%, câu hợp lệ 56/60 = 93%.
 
 Đây là số kiểm nội bộ, **không phải kết quả đồ án**. Kết quả chính thức dùng benchmark chuẩn (BIPIA, JailbreakBench) và bộ CSKH tiếng Việt chia theo template (xem `docs/DU-AN.md`).
