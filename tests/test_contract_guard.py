@@ -20,8 +20,13 @@ def test_check_stations_allow_clean_text_and_return_measured_decisions(station):
     assert decision.text == "Tiếng Việt"
     assert decision.action == "allow"
     assert decision.risk == "low"
-    assert decision.findings == decision.reasons == decision.flags == []
-    assert decision.degraded is False
+    assert decision.findings == decision.flags == []
+    # PG2 weights are local only (gitignored): without them (CI) INPUT/CONTEXT run degraded, never block.
+    has_model = (guard.config.classifier.model_dir and
+                 (Path(guard.config.classifier.model_dir) / "meta-llama-Llama-Prompt-Guard-2-86M").exists())
+    expect_degraded = station in guard.config.classifier.stations and not has_model
+    assert decision.degraded is expect_degraded
+    assert len(decision.reasons) == int(expect_degraded)
     assert 0 < decision.latency_ms <= elapsed_ms
     assert UUID(hex=decision.decision_id).version == 4
     assert len(decision.decision_id) == 32

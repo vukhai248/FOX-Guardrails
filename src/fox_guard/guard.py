@@ -74,6 +74,7 @@ _REASONS = {
     "unicode:encoded": "Phát hiện nội dung được giấu bằng mã hoá.",
     "unicode:oversize": "Văn bản quá dài; chỉ kiểm tra phần trong giới hạn cấu hình.",
     "oversize": "Văn bản quá dài; chỉ kiểm tra phần trong giới hạn cấu hình.",
+    "budget:classifier": "Văn bản dài: classifier chỉ chấm phần đầu; luật vẫn quét toàn bộ.",
     "pii:unknown_placeholder": "Câu trả lời chứa mã giả danh PII không do guard cấp (bot bịa hoặc bị dụ).",
     "pii:encoded": "Phát hiện thông tin cá nhân viết ở dạng mã hoá (%XX, &#…;, base64…); đã che.",
     "solicitation": "Câu trả lời yêu cầu khách cung cấp thông tin nhạy cảm (CCCD, OTP, mật khẩu, thẻ…).",
@@ -229,7 +230,7 @@ class Guard:
         if clf.enabled and clf.theta_high is not None:
             from .detectors.classifier import get_classifier
 
-            if get_classifier(clf).score(n.clean) >= clf.theta_high:
+            if get_classifier(clf).score_limited(n.clean, clf.max_windows)[0] >= clf.theta_high:
                 return True
         return any(f.kind in ("injection", "unicode") and f.severity in ("medium", "high") for f in found)
 
@@ -255,19 +256,23 @@ class Guard:
 
         >= theta_high → medium; [theta_low, theta_high) → low. A classifier finding alone never
         exceeds medium; the policy raises it to high only together with a rule (B6.1)."""
-        from .detectors.classifier import get_classifier
+        from .detectors.classifier import get_classifier, guard_score
 
         cfg = self.config.classifier
         if cfg.theta_low is None or cfg.theta_high is None:
             raise ValueError("classifier enabled without calibrated theta_low/theta_high")
         model = get_classifier(cfg)
-        texts = [normalized.clean, normalized.hidden_tags, *(child.clean for child in normalized.decoded)]
-        score = max(model.score(t) for t in texts if t)
+        score, partial = guard_score(model, normalized, cfg.max_windows)
+        findings = []
+        if partial:  # visible in audit; rules still saw the whole text; does not change the action.
+            # Not "classifier:*": merge_risk would count it as a classifier hit (B6.1) and block.
+            findings.append(Finding(detector="budget:classifier", kind="injection", severity="low",
+                                    evidence=f"window budget {cfg.max_windows} reached"))
         if score < cfg.theta_low:
-            return []
+            return findings
         severity = "medium" if score >= cfg.theta_high else "low"
-        return [Finding(detector=f"classifier:{model.short_name}", kind="injection", severity=severity,
-                        score=round(score, 4), evidence=f"score {score:.3f}")]
+        return [*findings, Finding(detector=f"classifier:{model.short_name}", kind="injection",
+                                   severity=severity, score=round(score, 4), evidence=f"score {score:.3f}")]
 
     def _audit(self, decision: Decision, ctx: GuardContext, station: str, normalized) -> None:
         from .pii.policy import redact_text

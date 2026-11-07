@@ -15,8 +15,9 @@ def test_load_sample_config():
     assert config.normalize.max_chars == 20000
     assert config.normalize.decode_max_depth == 2
     assert config.classifier.primary == "meta-llama/Llama-Prompt-Guard-2-86M"
-    # Lớp 5: thresholds chosen on dev (eval/reports/thresholds_deberta.json); classifier off by default.
-    assert config.classifier.enabled is False
+    # Lớp 5: PG2 on, thresholds chosen on dev (eval/reports/thresholds_pg2.json).
+    assert config.classifier.enabled is True and config.classifier.use == "primary"
+    assert Path(config.classifier.model_dir).is_absolute()  # not tied to the caller's cwd
     assert 0 < config.classifier.theta_low <= config.classifier.theta_high <= 1
     assert config.links.allowlist == ['shop.example']
     assert config.audit.enabled is True
