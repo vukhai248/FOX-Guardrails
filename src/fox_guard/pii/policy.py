@@ -1,5 +1,7 @@
 """Lớp 3 station policy for PII (plan B5.2): pseudonymize before the LLM, mask/restore on output."""
 
+import bisect
+import html
 from dataclasses import dataclass, field
 
 import regex
@@ -165,6 +167,79 @@ def redact_text(clean: str, matches: list[PiiMatch]) -> str:
     return PLACEHOLDER.sub(lambda m: f"[{m.group(1)}]", text)
 
 
+# Tokens are split with \S+ first and then tested: "\S*(?:…)\S*" backtracked quadratically on one long
+# token without spaces ("9," * 10000 took 7.5 s, check S7).
+_TOKEN = regex.compile(r"\S+")
+_ENCODED_MARK = regex.compile(r"%[0-9A-Fa-f]{2}|&#?[A-Za-z0-9]+;|\\[uU][0-9A-Fa-f]{4}")
+
+
+def mask_encoded_pii(text: str) -> tuple[str, int]:
+    """Mask encoded pieces that hide PII: "OTP: &#53;&#55;…", "alice%40mail.example", base64 of a phone.
+
+    The LLM reads such encodings, and the customer's browser decodes HTML entities, so the normal
+    PII pass (which sees only the encoded form) is not enough (systematic check S6, 07/11/2026).
+    Each piece is decoded IN PLACE and the whole sentence re-scanned, so a label before it ("OTP:")
+    still counts. Returns (text, number of pieces masked).
+    """
+    from fox_guard.detectors.url import unquote_all
+    from fox_guard.normalize import normalize
+    from fox_guard.normalize.decode import _unescape, decoded_spans
+
+    from .recognizers import detect_pii
+
+    pieces = [(s, e, d) for s, e, d in decoded_spans(text, min_len=4)]
+    for m in _TOKEN.finditer(text):
+        if not _ENCODED_MARK.search(m.group()):
+            continue
+        decoded = _unescape(unquote_all(html.unescape(m.group())))
+        if decoded != m.group():
+            pieces.append((m.start(), m.end(), decoded))
+    if not pieces:
+        return text, 0
+    # Non-overlapping pieces, widest first at each position (a whole URL token beats a %XX run in it).
+    chosen, last_end = [], -1
+    for start, end, decoded in sorted(pieces, key=lambda p: (p[0], p[0] - p[1])):
+        if start >= last_end:
+            chosen.append((start, end, decoded))
+            last_end = end
+    # Decode every piece in place in ONE candidate sentence and scan it ONCE. Re-scanning the whole
+    # text per piece was quadratic: 5,000 "%41" tokens took over ten minutes (final review, PR #4).
+    parts, regions, cursor, offset = [], [], 0, 0
+    for start, end, decoded in chosen:
+        parts.append(text[cursor:start])
+        offset += start - cursor
+        regions.append((offset, offset + len(decoded), start, end, regex.sub(r"[\s.\-]", "", decoded)))
+        parts.append(decoded)
+        offset += len(decoded)
+        cursor = end
+    parts.append(text[cursor:])
+    candidate = "".join(parts)
+    normalized = normalize(candidate, decode_max_depth=0)
+    aligned = normalized.clean == candidate
+    starts = [r[0] for r in regions]
+    hidden = set()
+    for match in detect_pii(normalized):
+        value = regex.sub(r"[\s.\-]", "", match.value)
+        if aligned:  # regions overlapping the match, found by bisection
+            first = max(bisect.bisect_right(starts, match.start) - 1, 0)
+            candidates = range(first, bisect.bisect_left(starts, match.end))
+        else:        # positions shifted: fall back to the value itself (still linear per match)
+            candidates = range(len(regions))
+        for index in candidates:
+            r_start, r_end, start, end, squashed = regions[index]
+            inside = aligned and match.start < r_end and match.end > r_start
+            if (inside or (value and value in squashed)) and match.value not in text[start:end]:
+                hidden.add(index)
+    if not hidden:
+        return text, 0
+    out, cursor = [], 0
+    for index in sorted(hidden):
+        _, _, start, end, _ = regions[index]
+        out.append(text[cursor:start] + "[đã che]")
+        cursor = end
+    return "".join(out) + text[cursor:], len(hidden)
+
+
 def safe_evidence(evidence: str) -> str:
     """Evidence leaves the guard (Decision, audit, CLI): mask every PII value found in it.
 
@@ -178,7 +253,8 @@ def safe_evidence(evidence: str) -> str:
     masked = redact_text(normalized.clean, detect_pii(normalized))
     # Belt and braces: evidence never needs a number. 3+ digits covers OTPs that no detector can
     # label, e.g. a host "572431.shop.example" quoted by the link guard (systematic run 1, S3).
-    return regex.sub(r"\d(?:[\s.\-]?\d){2,}", "[đã che]", masked)[:120]
+    # Digits next to "*" belong to an already masked value ("0912***678") and stay readable.
+    return regex.sub(r"(?<![\d*])\d(?:[\s.\-]?\d){2,}(?![\d*])", "[đã che]", masked)[:120]
 
 
 __all__ = ["RESTORABLE", "PiiResult", "apply_context", "apply_input", "apply_output", "mask_value",
