@@ -35,14 +35,9 @@ Các bộ dưới đây được kiểm tra trực tiếp qua Hugging Face / Git
 
 ## Đề xuất giao thức đánh giá mới (thay C3)
 
-Đo **end-to-end qua web thật** (cần gắn guard vào web — Lớp 6), mỗi nhánh cấu hình chạy cùng bộ ca:
-
-| Nhánh | Mô tả |
-|---|---|
-| G0 | Web không guard (mốc) |
-| G1 | Lớp 1–4 (luật, PII, đầu ra) |
-| G2 | G1 + PG2 (cấu hình hiện tại) |
-| G3 | G2 + datamarking (context) |
+Đo **end-to-end qua web thật** (guard đã gắn plug-and-play — Lớp 6), dùng đúng các arm của
+`docs/DU-AN.md` §7.3: **G0** (không phòng thủ), **G1** (hiện trạng web), **G2** (FOX luật, không classifier),
+**G4** (FOX đầy đủ: luật + PG2 + gộp rủi ro + datamarking). Mọi arm chạy cùng bộ ca.
 
 | Chỉ số | Định nghĩa | Bộ |
 |---|---|---|

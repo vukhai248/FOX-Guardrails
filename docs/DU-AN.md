@@ -771,6 +771,12 @@ Số đo: pytest 93 · Node/PGlite 77/77 · Playwright 29 + A5.4 chạy thật �
 | **CSKH tiếng Việt (tự xây)** | Indirect + direct | 30% `template_id` | 70% `template_id` | ~500 ca: review 120, ghi chú đơn 100, chat 80, hard-benign 120, sạch 80 |
 | PII tổng hợp | PII | 30% | 70% | 300 câu, số giả nhưng đúng định dạng/checksum |
 | openpii (locale `vi`) | PII ngoài | — | 1.000 mẫu | Đối chiếu |
+| 🆕 **CyberSecEval PI** (Meta PurpleLlama) | Direct + indirect; EN 251, **VI 50** (trong bộ đa ngôn ngữ 1.004) | theo `injection_variant` | còn lại | Có system prompt chứa bí mật + **câu hỏi chấm** → ASR end-to-end không cần judge. MIT |
+| 🆕 **LLMail-Inject** (Microsoft 2025) | Indirect qua email RAG, tấn công thích nghi do người viết | mẫu phân tầng | mẫu phân tầng | Có nhãn thành công + email vô hại để đo FPR. MIT |
+| 🆕 **NotInject** | Benign có từ kích hoạt (over-defense), EN 339 | — | toàn bộ | Đo chặn nhầm của luật + PG2. MIT |
+| 🆕 **MultiJail** (cột `vi`) | Direct độc hại, VI do người dịch, 315 | — | toàn bộ | Bổ sung tấn công tiếng Việt cho INPUT. MIT |
+
+🆕 = bổ sung sau research 07/11 (`docs/research/benchmark-datasets-2026-11.md`): C2 cho thấy chỉ đo detector chưa đủ, thiếu tấn công tiếng Việt thật và thiếu đo over-defense. **Chưa tải** — hỏi trước khi tải. Bộ tham khảo, chưa dùng: SPML, deepset/prompt-injections, GenTel-Bench, AgentDojo/InjecAgent (agent có tool hành động, ngoài phạm vi), WildJailbreak (gated), PINT (không công khai).
 
 **Chia dev/test theo `template_id`:** một mẫu gốc và mọi biến thể của nó chỉ nằm ở một phía, để không "học thuộc đề". Kiểm trùng gần (Jaccard 5-gram ≥ 0,8) giữa dev và test.
 
