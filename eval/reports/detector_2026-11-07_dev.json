@@ -1,0 +1,864 @@
+{
+ "date": "2026-11-07",
+ "split": "dev",
+ "arms": {
+  "R": {
+   "bipia": {
+    "overall": {
+     "n_pos": 150,
+     "n_neg": 150,
+     "tp": 0,
+     "fp": 0,
+     "precision": 0.0,
+     "recall": 0.0,
+     "recall_ci": [
+      0.0,
+      0.025
+     ],
+     "f1": 0.0,
+     "f1_ci": [
+      0.0,
+      0.0
+     ],
+     "fpr": 0.0,
+     "fpr_ci": [
+      0.0,
+      0.025
+     ]
+    },
+    "p50_ms": 14.22,
+    "p95_ms": 35.33,
+    "recall_by_position": {
+     "end": {
+      "n": 50,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0713
+      ]
+     },
+     "middle": {
+      "n": 50,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0713
+      ]
+     },
+     "start": {
+      "n": 50,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0713
+      ]
+     }
+    },
+    "recall_by_task": {
+     "email": {
+      "n": 6,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.3903
+      ]
+     },
+     "table": {
+      "n": 144,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.026
+      ]
+     }
+    },
+    "recall_by_attack_category": {
+     "Alphanumeric Substitution": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Anagramming": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Clickbait": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Content Creation": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Homophonic Substitution": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Information Retrieval": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Instruction": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Language Translation": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Learning and Tutoring": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Malware Distribution": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Misspelling Intentionally": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Persuasion": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Programming Help": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Social Interaction": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Space Removal & Grouping": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     }
+    }
+   },
+   "cskh_vi": {
+    "p50_ms": 1.04,
+    "p95_ms": 3.04,
+    "fpr_hard_benign": {
+     "n": 36,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0964
+     ]
+    },
+    "fpr_hard_benign_by_source": {
+     "chat": {
+      "n": 6,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.3903
+      ]
+     },
+     "order_note": {
+      "n": 18,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1759
+      ]
+     },
+     "review": {
+      "n": 12,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2425
+      ]
+     }
+    },
+    "fpr_clean": {
+     "n": 23,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.1431
+     ]
+    },
+    "fpr_clean_by_source": {
+     "chat": {
+      "n": 15,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2039
+      ]
+     },
+     "review": {
+      "n": 8,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.3244
+      ]
+     }
+    },
+    "false_positive_examples": []
+   },
+   "pii_synthetic": {
+    "by_entity": {
+     "ADDRESS": {
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "BANK_ACCOUNT": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "BHYT": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "CARD": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "CCCD": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "CMND": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "EMAIL": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "OTP": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 5,
+      "precision": 1.0,
+      "recall": 0.4444,
+      "f1": 0.6154
+     },
+     "PASSPORT": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PASSWORD": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PERSON": {
+      "tp": 11,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PHONE": {
+      "tp": 16,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PLATE": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "TAX_ID": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "ALL": {
+      "tp": 85,
+      "fp": 0,
+      "fn": 5,
+      "precision": 1.0,
+      "recall": 0.9444,
+      "f1": 0.9714
+     }
+    },
+    "obfuscated_T3_12": {
+     "tp": 15,
+     "fp": 0,
+     "fn": 1,
+     "precision": 1.0,
+     "recall": 0.9375,
+     "f1": 0.9677
+    },
+    "false_mask_rate_hard_negative": {
+     "n": 30,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.1135
+     ]
+    },
+    "p50_ms": 0.63,
+    "p95_ms": 0.94
+   }
+  },
+  "R-noNorm": {
+   "bipia": {
+    "overall": {
+     "n_pos": 150,
+     "n_neg": 150,
+     "tp": 0,
+     "fp": 0,
+     "precision": 0.0,
+     "recall": 0.0,
+     "recall_ci": [
+      0.0,
+      0.025
+     ],
+     "f1": 0.0,
+     "f1_ci": [
+      0.0,
+      0.0
+     ],
+     "fpr": 0.0,
+     "fpr_ci": [
+      0.0,
+      0.025
+     ]
+    },
+    "p50_ms": 4.33,
+    "p95_ms": 11.39,
+    "recall_by_position": {
+     "end": {
+      "n": 50,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0713
+      ]
+     },
+     "middle": {
+      "n": 50,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0713
+      ]
+     },
+     "start": {
+      "n": 50,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0713
+      ]
+     }
+    },
+    "recall_by_task": {
+     "email": {
+      "n": 6,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.3903
+      ]
+     },
+     "table": {
+      "n": 144,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.026
+      ]
+     }
+    },
+    "recall_by_attack_category": {
+     "Alphanumeric Substitution": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Anagramming": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Clickbait": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Content Creation": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Homophonic Substitution": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Information Retrieval": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Instruction": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Language Translation": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Learning and Tutoring": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Malware Distribution": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Misspelling Intentionally": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Persuasion": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Programming Help": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Social Interaction": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     },
+     "Space Removal & Grouping": {
+      "n": 10,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2775
+      ]
+     }
+    }
+   },
+   "cskh_vi": {
+    "p50_ms": 0.42,
+    "p95_ms": 1.19,
+    "fpr_hard_benign": {
+     "n": 36,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0964
+     ]
+    },
+    "fpr_hard_benign_by_source": {
+     "chat": {
+      "n": 6,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.3903
+      ]
+     },
+     "order_note": {
+      "n": 18,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1759
+      ]
+     },
+     "review": {
+      "n": 12,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2425
+      ]
+     }
+    },
+    "fpr_clean": {
+     "n": 23,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.1431
+     ]
+    },
+    "fpr_clean_by_source": {
+     "chat": {
+      "n": 15,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.2039
+      ]
+     },
+     "review": {
+      "n": 8,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.3244
+      ]
+     }
+    },
+    "false_positive_examples": []
+   },
+   "pii_synthetic": {
+    "by_entity": {
+     "ADDRESS": {
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "BANK_ACCOUNT": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "BHYT": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "CARD": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "CCCD": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.8889
+     },
+     "CMND": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6667
+     },
+     "EMAIL": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "OTP": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 5,
+      "precision": 1.0,
+      "recall": 0.4444,
+      "f1": 0.6154
+     },
+     "PASSPORT": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PASSWORD": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PERSON": {
+      "tp": 11,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PHONE": {
+      "tp": 14,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.875,
+      "f1": 0.9333
+     },
+     "PLATE": {
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "TAX_ID": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.6667,
+      "f1": 0.8
+     },
+     "ALL": {
+      "tp": 78,
+      "fp": 0,
+      "fn": 12,
+      "precision": 1.0,
+      "recall": 0.8667,
+      "f1": 0.9286
+     }
+    },
+    "obfuscated_T3_12": {
+     "tp": 8,
+     "fp": 0,
+     "fn": 8,
+     "precision": 1.0,
+     "recall": 0.5,
+     "f1": 0.6667
+    },
+    "false_mask_rate_hard_negative": {
+     "n": 30,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.1135
+     ]
+    },
+    "p50_ms": 0.1,
+    "p95_ms": 0.16
+   }
+  }
+ }
+}
