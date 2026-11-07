@@ -38,28 +38,49 @@ _PERCENT_RUN = re.compile(r"(?:%[0-9a-fA-F]{2})+")
 def encoded_spans(text: str) -> list[tuple[int, int]]:
     """Spans this decoder could turn into hidden text: what the audit must not keep (review round 7).
 
-    Same rules as candidates(): base64/hex tokens that decode to readable text, and runs of
-    entities, \\u escapes or %XX that spell letters or digits (not "&amp;" or "%20" alone).
+    Same rules as candidates(): see decoded_spans()."""
+    return [(start, end) for start, end, _ in decoded_spans(text, min_len=8)]
+
+
+def _b64(token: str) -> str:
+    return base64.b64decode(token + "=" * (-len(token) % 4), altchars=b"-_", validate=True).decode("utf-8")
+
+
+def _hex(token: str) -> str:
+    return bytes.fromhex(token[2:] if token.lower().startswith("0x") else token).decode("utf-8")
+
+
+def _unescape(token: str) -> str:
+    return _ESCAPE.sub(lambda e: chr(int(e[1] or e[2], 16)), token)
+
+
+def decoded_spans(text: str, min_len: int = 8) -> list[tuple[int, int, str]]:
+    """(start, end, decoded) for every piece this decoder can read back.
+
+    base64/hex tokens count when they decode to readable text of at least `min_len` characters
+    (8 for hidden instructions and audit; PII masking passes 4 so a base64 OTP is found too).
+    Runs of entities, \\u escapes or %XX count when they spell letters or digits.
     """
     exclusions = [m.span() for pattern in (_UUID, _JWT, _HASH) for m in pattern.finditer(text)]
-    spans = []
-    for pattern, decode in ((_B64, lambda t: base64.b64decode(t + "=" * (-len(t) % 4), altchars=b"-_",
-                                                              validate=True).decode("utf-8")),
-                            (_HEX, lambda t: bytes.fromhex(t[2:] if t.lower().startswith("0x") else t)
-                             .decode("utf-8"))):
+    found = []
+    for pattern, decode in ((_B64, _b64), (_HEX, _hex)):
         for match in pattern.finditer(text):
             if any(match.start() < right and match.end() > left for left, right in exclusions):
                 continue
             try:
-                if readable(decode(match.group())):
-                    spans.append(match.span())
+                value = decode(match.group())
             except (ValueError, binascii.Error, UnicodeDecodeError):
                 continue
-    for pattern, decode in ((_ENTITY_RUN, html.unescape),
-                            (_ESCAPE_RUN, lambda t: _ESCAPE.sub(lambda e: chr(int(e[1] or e[2], 16)), t)),
-                            (_PERCENT_RUN, lambda t: unquote(t, encoding="latin-1"))):
-        spans.extend(m.span() for m in pattern.finditer(text) if hides_text([decode(m.group())]))
-    return sorted(spans)
+            if (len(value) >= min_len and all(ch.isprintable() for ch in value)
+                    and sum(ch.isalnum() or ch.isspace() for ch in value) >= 0.8 * len(value)):
+                found.append((match.start(), match.end(), value))
+    for pattern, decode in ((_ENTITY_RUN, html.unescape), (_ESCAPE_RUN, _unescape),
+                            (_PERCENT_RUN, lambda t: unquote(t, encoding="utf-8", errors="replace"))):
+        for match in pattern.finditer(text):
+            value = decode(match.group())
+            if hides_text([value]):
+                found.append((match.start(), match.end(), value))
+    return sorted(found)
 
 
 def candidates(text: str):

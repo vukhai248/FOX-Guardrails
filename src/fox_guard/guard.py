@@ -9,7 +9,7 @@ from uuid import uuid4
 import regex
 
 from .config import GuardConfig, load_config
-from .types import Decision, GuardContext
+from .types import Decision, Finding, GuardContext
 
 if TYPE_CHECKING:
     from .normalize.views import NormalizedText
@@ -75,6 +75,7 @@ _REASONS = {
     "unicode:oversize": "Văn bản quá dài; chỉ kiểm tra phần trong giới hạn cấu hình.",
     "oversize": "Văn bản quá dài; chỉ kiểm tra phần trong giới hạn cấu hình.",
     "pii:unknown_placeholder": "Câu trả lời chứa mã giả danh PII không do guard cấp (bot bịa hoặc bị dụ).",
+    "pii:encoded": "Phát hiện thông tin cá nhân viết ở dạng mã hoá (%XX, &#…;, base64…); đã che.",
     "solicitation": "Câu trả lời yêu cầu khách cung cấp thông tin nhạy cảm (CCCD, OTP, mật khẩu, thẻ…).",
     "link:external": "Câu trả lời chứa liên kết/ảnh ngoài danh sách cho phép; đã gỡ.",
     "link:lookalike": "Câu trả lời chứa tên miền giả dạng tên miền của shop.",
@@ -152,12 +153,18 @@ class Guard:
         pii_changed = False
         if self.config.pii.enabled:
             try:
+                # Encoded PII first ("OTP: &#53;…", "alice%40mail…"): the LLM and the browser can
+                # read it back, the normal pass below cannot see it (systematic check S6).
+                working, hidden_pieces = pii_policy.mask_encoded_pii(working)
+                if hidden_pieces:
+                    findings.append(Finding(detector="pii:encoded", kind="pii", severity="medium",
+                                            evidence=f"{hidden_pieces} đoạn mã hoá chứa PII đã che"))
                 target = self._normalize(working) if working != normalized.clean else normalized
                 apply = {"input": pii_policy.apply_input, "context": pii_policy.apply_context,
                          "output": pii_policy.apply_output}[station]
                 result = apply(target.clean, detect_pii(target), ctx, self.vault)
                 findings.extend(result.findings)
-                pii_changed, working = result.changed, result.text
+                pii_changed, working = result.changed or bool(hidden_pieces), result.text
             except Exception:
                 # Fail safe for privacy: crude masking rather than sending raw numbers to the LLM.
                 degraded = True
