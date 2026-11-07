@@ -77,6 +77,20 @@ Lúc chạy ví dụ cho tài liệu học Lớp 4, mình thấy một khe hở 
   - `pii.policy.mask_encoded_pii()` giải từng đoạn **ngay tại chỗ trong câu** để giữ ngữ cảnh: nhãn "OTP:" đứng trước vẫn được tính. Nếu bản giải lộ ra PII thì che cả đoạn mã hoá. Finding mới `pii:encoded` (loại PII, không làm tăng rủi ro).
 - **Sau khi sửa:** S1–S6 đều 0 lỗi. 657 test pass. Held-out không đổi (90 / 100 / 97). `check_input` 2 KB: p95 22 ms.
 
+## Review PR #4 + bộ S7: độ trễ đầu vào xấu nhất (07/11/2026)
+
+Review PR #4 tìm ra **2 hồi quy độ trễ bình phương** trong `mask_encoded_pii`. Bộ S1–S6 không bắt được, vì chỉ thử câu ngắn.
+
+| Lỗi | Đầu vào 20 KB | `main` | Trước khi sửa | Sau khi sửa |
+| --- | --- | --- | --- | --- |
+| Quét lại cả câu cho **mỗi** đoạn mã hoá | `"%41 " * 5000` | 0,33 s | **trên 10 phút** | 0,44 s |
+| Regex `\S*(?:%..)\S*` quay lui trên một token dài | `"9," * 10000` | 0,10 s | **7,5 s** | 0,10 s |
+
+- **Sửa:**
+  - Giải tất cả các đoạn vào **một** câu ứng viên và quét PII **một lần**; tra vùng bằng `bisect`.
+  - Tách token bằng `\S+` trước rồi mới kiểm từng token.
+- **Bộ S7 mới:** 7 dạng đầu vào xấu nhất × 3 trạm, mỗi lần gọi phải dưới 3 giây. Sau khi sửa, mọi ca dưới 0,5 giây, ngang `main`.
+
 ## Cách dùng từ nay
 
 - **Mọi lỗi mới**, dù từ review hay tự tìm ra, đều được **thêm vào bộ sinh** (`gen_links.py`, `POSITIONS`, `_encodings`, `FILLERS`, `gen_benign.py`) trước, rồi mới sửa. Như vậy một bản sửa phải qua cả nhóm ca, không chỉ một câu.

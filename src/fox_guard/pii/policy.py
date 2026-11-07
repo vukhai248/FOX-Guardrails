@@ -1,5 +1,6 @@
 """Lớp 3 station policy for PII (plan B5.2): pseudonymize before the LLM, mask/restore on output."""
 
+import bisect
 import html
 from dataclasses import dataclass, field
 
@@ -166,7 +167,10 @@ def redact_text(clean: str, matches: list[PiiMatch]) -> str:
     return PLACEHOLDER.sub(lambda m: f"[{m.group(1)}]", text)
 
 
-_ENCODED_TOKEN = regex.compile(r"\S*(?:%[0-9A-Fa-f]{2}|&#?[A-Za-z0-9]+;|\\[uU][0-9A-Fa-f]{4})\S*")
+# Tokens are split with \S+ first and then tested: "\S*(?:…)\S*" backtracked quadratically on one long
+# token without spaces ("9," * 10000 took 7.5 s, check S7).
+_TOKEN = regex.compile(r"\S+")
+_ENCODED_MARK = regex.compile(r"%[0-9A-Fa-f]{2}|&#?[A-Za-z0-9]+;|\\[uU][0-9A-Fa-f]{4}")
 
 
 def mask_encoded_pii(text: str) -> tuple[str, int]:
@@ -184,31 +188,56 @@ def mask_encoded_pii(text: str) -> tuple[str, int]:
     from .recognizers import detect_pii
 
     pieces = [(s, e, d) for s, e, d in decoded_spans(text, min_len=4)]
-    for m in _ENCODED_TOKEN.finditer(text):
+    for m in _TOKEN.finditer(text):
+        if not _ENCODED_MARK.search(m.group()):
+            continue
         decoded = _unescape(unquote_all(html.unescape(m.group())))
         if decoded != m.group():
             pieces.append((m.start(), m.end(), decoded))
-    hidden = []
-    for start, end, decoded in pieces:
-        candidate = text[:start] + decoded + text[end:]
-        region = (start, start + len(decoded))
-        squashed = regex.sub(r"[\s.\-]", "", decoded)
-        for match in detect_pii(normalize(candidate, decode_max_depth=0)):
-            inside = match.start < region[1] and match.end > region[0]
-            value = regex.sub(r"[\s.\-]", "", match.value)
+    if not pieces:
+        return text, 0
+    # Non-overlapping pieces, widest first at each position (a whole URL token beats a %XX run in it).
+    chosen, last_end = [], -1
+    for start, end, decoded in sorted(pieces, key=lambda p: (p[0], p[0] - p[1])):
+        if start >= last_end:
+            chosen.append((start, end, decoded))
+            last_end = end
+    # Decode every piece in place in ONE candidate sentence and scan it ONCE. Re-scanning the whole
+    # text per piece was quadratic: 5,000 "%41" tokens took over ten minutes (final review, PR #4).
+    parts, regions, cursor, offset = [], [], 0, 0
+    for start, end, decoded in chosen:
+        parts.append(text[cursor:start])
+        offset += start - cursor
+        regions.append((offset, offset + len(decoded), start, end, regex.sub(r"[\s.\-]", "", decoded)))
+        parts.append(decoded)
+        offset += len(decoded)
+        cursor = end
+    parts.append(text[cursor:])
+    candidate = "".join(parts)
+    normalized = normalize(candidate, decode_max_depth=0)
+    aligned = normalized.clean == candidate
+    starts = [r[0] for r in regions]
+    hidden = set()
+    for match in detect_pii(normalized):
+        value = regex.sub(r"[\s.\-]", "", match.value)
+        if aligned:  # regions overlapping the match, found by bisection
+            first = max(bisect.bisect_right(starts, match.start) - 1, 0)
+            candidates = range(first, bisect.bisect_left(starts, match.end))
+        else:        # positions shifted: fall back to the value itself (still linear per match)
+            candidates = range(len(regions))
+        for index in candidates:
+            r_start, r_end, start, end, squashed = regions[index]
+            inside = aligned and match.start < r_end and match.end > r_start
             if (inside or (value and value in squashed)) and match.value not in text[start:end]:
-                hidden.append((start, end))
-                break
+                hidden.add(index)
     if not hidden:
         return text, 0
-    out, cursor, count = [], 0, 0
-    for start, end in sorted(hidden):
-        if start >= cursor:
-            out.append(text[cursor:start] + "[đã che]")
-            cursor, count = end, count + 1
-        elif end > cursor:  # overlapping pieces of the same encoded run count once
-            cursor = end
-    return "".join(out) + text[cursor:], count
+    out, cursor = [], 0
+    for index in sorted(hidden):
+        _, _, start, end, _ = regions[index]
+        out.append(text[cursor:start] + "[đã che]")
+        cursor = end
+    return "".join(out) + text[cursor:], len(hidden)
 
 
 def safe_evidence(evidence: str) -> str:

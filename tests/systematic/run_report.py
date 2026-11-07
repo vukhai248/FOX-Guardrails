@@ -17,6 +17,7 @@ CHECKS = [
     ("S4 quan hệ biến đổi", checks.s4_metamorphic, False),
     ("S5 câu hợp lệ giữ nguyên", checks.s5_benign, False),
     ("S6 text gửi đi không mang bí mật", checks.s6_sent_text, False),
+    ("S7 độ trễ đầu vào xấu nhất", checks.s7_worst_case_latency, False),
 ]
 
 
