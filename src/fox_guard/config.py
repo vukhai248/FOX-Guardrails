@@ -22,7 +22,9 @@ class ClassifierConfig(_ConfigModel):
     enabled: bool = False
     use: str = Field(default="secondary", pattern="^(primary|secondary)$")
     # Local copies only (no network at runtime): <model_dir>/<model id with "/" → "-">.
+    # A relative model_dir in a YAML file is resolved against that file's folder (load_config).
     model_dir: str = "models"
+    # "auto": CUDA when available, else CPU.
     device: str = "cpu"
     window_tokens: int = Field(default=512, ge=32, le=512)
     overlap_tokens: int = Field(default=64, ge=0, le=256)
@@ -98,4 +100,10 @@ def load_config(path: str | Path) -> GuardConfig:
         content = yaml.safe_load(stream)
     if not isinstance(content, dict):
         raise ValueError(f"Configuration {path} must contain a YAML mapping")
-    return GuardConfig.model_validate(content)
+    config = GuardConfig.model_validate(content)
+    # The web runs the guard from its own folder: a relative model_dir must not depend on the cwd,
+    # or the classifier silently degrades to "no model".
+    model_dir = Path(config.classifier.model_dir)
+    if not model_dir.is_absolute():
+        config.classifier.model_dir = str((Path(path).resolve().parent / model_dir).resolve())
+    return config

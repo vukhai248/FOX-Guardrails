@@ -125,3 +125,29 @@ def test_groq_backend_split_always_shrinks():
         windows = char_windows(text, size, min(200, size // 2))
         assert all(len(w) < n for w in windows) and "".join(windows[:1]) and windows[-1].endswith("x")
         assert sum(len(w) for w in windows) >= n
+
+
+def test_device_auto_resolves_to_a_real_device():
+    assert clf_module.resolve_device("auto") in ("cuda", "cpu")
+    assert clf_module.resolve_device("cpu") == "cpu"
+
+
+def test_yaml_model_dir_does_not_depend_on_cwd(tmp_path, monkeypatch):
+    from pathlib import Path
+
+    from fox_guard.config import load_config
+
+    repo = Path(__file__).resolve().parents[1]
+    monkeypatch.chdir(tmp_path)
+    config = load_config(repo / "fox-guard.yaml")
+    assert Path(config.classifier.model_dir) == repo / "models"
+
+
+def test_missing_weights_degrade_with_a_warning(tmp_path, caplog):
+    cfg = GuardConfig.model_validate({"classifier": {"enabled": True, "model_dir": str(tmp_path),
+                                                     "theta_low": 0.1, "theta_high": 0.5}})
+    with caplog.at_level("WARNING", logger="fox_guard"):
+        d = Guard(cfg).check_input("Shop ơi áo này còn size M không?",
+                                   GuardContext(session_id="s", user_ref="u", station="input"))
+    assert d.action == "allow" and d.degraded
+    assert "runs degraded" in caplog.text

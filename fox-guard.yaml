@@ -6,13 +6,14 @@ normalize:            # B2
   decode_max_depth: 2
 
 classifier:           # Lớp 5: ngưỡng chốt trên dev (eval/calibrate.py), không chỉnh theo test
-  primary: meta-llama/Llama-Prompt-Guard-2-86M      # chưa dùng: chờ bạn chấp nhận license trên HF
-  secondary: protectai/deberta-v3-base-prompt-injection-v2
-  enabled: false      # tắt mặc định: deberta yếu trên tiếng Việt và chậm trên CPU (eval/reports/lop5-deberta_2026-11-07.md)
-  use: secondary
-  model_dir: models   # trọng số tải sẵn, không tải lúc chạy
-  theta_low: 0.999324   # deberta, FPR dev ≤ 10% (eval/reports/thresholds_deberta.json)
-  theta_high: 0.999991  # deberta, FPR dev ≤ 2%
+  primary: meta-llama/Llama-Prompt-Guard-2-86M      # đang dùng (eval/reports/lop5-pg2_2026-11-07.md)
+  secondary: protectai/deberta-v3-base-prompt-injection-v2   # nhánh so sánh: chấm cao tiếng Việt hợp lệ
+  enabled: true       # thiếu trọng số hoặc lỗi model → guard chạy giảm cấp (flag degraded), không chặn
+  use: primary
+  model_dir: models   # tương đối theo thư mục file này; trọng số tải sẵn, không tải lúc chạy
+  device: auto        # CUDA nếu có, không thì CPU
+  theta_low: 0.014798   # PG2, FPR dev ≤ 10% (eval/reports/thresholds_pg2.json)
+  theta_high: 0.021179  # PG2, FPR dev ≤ 2%
 
 pii:                  # B5: giả danh hoá theo phiên, bản đồ chỉ trong bộ nhớ
   enabled: true

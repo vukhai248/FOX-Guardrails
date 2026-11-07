@@ -9,10 +9,12 @@
 """
 
 import hashlib
+import logging
 from collections import OrderedDict
 from pathlib import Path
 
 _CACHE_SIZE = 4096
+_log = logging.getLogger("fox_guard")
 
 
 def positive_label(id2label: dict[int, str]) -> int:
@@ -32,6 +34,17 @@ def positive_label(id2label: dict[int, str]) -> int:
     return others[0] if len(others) == 1 else max(labels)
 
 
+def resolve_device(device: str) -> str:
+    if device != "auto":
+        return device
+    try:
+        import torch
+
+        return "cuda" if torch.cuda.is_available() else "cpu"
+    except ImportError:
+        return "cpu"
+
+
 def local_path(model_dir: str, model_id: str) -> Path:
     return Path(model_dir) / model_id.replace("/", "-")
 
@@ -42,12 +55,13 @@ class Classifier:
     ):
         self.model_id = model_id
         self.path = local_path(model_dir, model_id)
-        self.device = device
+        self.device = resolve_device(device)
         self.window = window
         self.overlap = overlap
         self._model = None
         self._tokenizer = None
         self._positive = 1
+        self._warned = False
         self._cache: OrderedDict[str, float] = OrderedDict()
 
     @property
@@ -61,6 +75,9 @@ class Classifier:
         if self._model is not None:
             return
         if not self.available():
+            if not self._warned:  # degraded mode must be visible, once per process
+                _log.warning("classifier weights not found at %s: Lớp 5 runs degraded", self.path)
+                self._warned = True
             raise FileNotFoundError(f"classifier weights not found at {self.path}")
         from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
