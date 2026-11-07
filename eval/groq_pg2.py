@@ -70,8 +70,9 @@ class GroqPromptGuard:
         except BadRequestError as e:
             if "context_length" not in str(e) or len(text) <= MIN_WINDOW:
                 raise
-            half = max(MIN_WINDOW, len(text) // 2)
-            return max(self._call(w) for w in char_windows(text, half + OVERLAP_CHARS // 2, OVERLAP_CHARS))
+            # Every window strictly shorter than `text`, so the recursion always shrinks.
+            size = len(text) // 2 + 1
+            return max(self._call(w) for w in char_windows(text, size, min(OVERLAP_CHARS, size // 2)))
 
     def score(self, text: str) -> float:
         if not text.strip():

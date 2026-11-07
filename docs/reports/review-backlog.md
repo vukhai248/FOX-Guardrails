@@ -91,3 +91,8 @@ Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (Op
 Đo lại sau lượt 4 (không chỉnh theo held-out): bot đòi bí mật 45/50 = 90%, link 30/30 = 100%, câu hợp lệ 56/60 = 93%.
 
 Đây là số kiểm nội bộ, **không phải kết quả đồ án**. Kết quả chính thức dùng benchmark chuẩn (BIPIA, JailbreakBench) và bộ CSKH tiếng Việt chia theo template (xem `docs/DU-AN.md`).
+
+## Review PR #8 (Prompt Guard 2) — 2026-11-07
+
+- **PG2-1 (P3):** khi nạp model, chưa có kiểm tra chiều nhãn lúc chạy (ví dụ chấm 1 câu tấn công mẫu và 1 câu vô hại, báo lỗi nếu ngược). Lỗi nhãn đảo đã sửa bằng `positive_label` + test; kiểm tra lúc chạy là lớp bảo vệ thêm cho model mới sau này.
+- **PG2-2 (P3):** JBB FPR 15 % với PG2 ở trạm INPUT (chỉ ra `review`, không chặn). Đo lại ở C3 end-to-end xem harden prompt có làm giảm chất lượng trả lời không.
