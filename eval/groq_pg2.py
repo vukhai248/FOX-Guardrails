@@ -74,6 +74,14 @@ class GroqPromptGuard:
             size = len(text) // 2 + 1
             return max(self._call(w) for w in char_windows(text, size, min(OVERLAP_CHARS, size // 2)))
 
+    def n_tokens(self, text: str) -> int:
+        """No tokenizer here (gated): characters as a stand-in, same ordering for the decoded-view rule."""
+        return len(text)
+
+    def score_limited(self, text: str, max_windows: int | None) -> tuple[float, int, int]:
+        """Eval backend: always scores the whole text (no window budget)."""
+        return self.score(text), 1, 1
+
     def score(self, text: str) -> float:
         if not text.strip():
             return 0.0

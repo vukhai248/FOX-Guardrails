@@ -12,8 +12,9 @@ classifier:           # Lớp 5: ngưỡng chốt trên dev (eval/calibrate.py),
   use: primary
   model_dir: models   # tương đối theo thư mục file này; trọng số tải sẵn, không tải lúc chạy
   device: auto        # CUDA nếu có, không thì CPU
-  theta_low: 0.014798   # PG2, FPR dev ≤ 10% (eval/reports/thresholds_pg2.json)
-  theta_high: 0.021179  # PG2, FPR dev ≤ 2%
+  max_windows: 8      # tối đa 8 cửa sổ 512 token mỗi lượt kiểm (~3.600 token): GPU ≈1 s, CPU ≈7 s tệ nhất
+  theta_low: 0.003154   # PG2, FPR dev ≤ 10% (eval/reports/thresholds_pg2.json)
+  theta_high: 0.007576  # PG2, FPR dev ≤ 2%
 
 pii:                  # B5: giả danh hoá theo phiên, bản đồ chỉ trong bộ nhớ
   enabled: true

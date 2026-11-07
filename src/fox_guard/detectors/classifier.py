@@ -85,10 +85,23 @@ class Classifier:
         self._model = AutoModelForSequenceClassification.from_pretrained(self.path).to(self.device).eval()
         self._positive = positive_label({int(k): str(v) for k, v in self._model.config.id2label.items()})
 
+    def n_tokens(self, text: str) -> int:
+        """Token count (no special tokens); cheap next to a forward pass."""
+        self._load()
+        return len(self._tokenizer(text, add_special_tokens=False)["input_ids"])
+
     def score(self, text: str) -> float:
-        if not text.strip():
-            return 0.0
-        key = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        """Max over ALL windows (calibration / eval). The guard uses `score_limited`."""
+        return self.score_limited(text, None)[0]
+
+    def score_limited(self, text: str, max_windows: int | None) -> tuple[float, int, int]:
+        """(max score over the first `max_windows` windows, windows scored, windows in the text).
+
+        Cost grows with text length; the guard bounds it per check so one long message cannot hold
+        the model for tens of seconds (review of PR #9)."""
+        if not text.strip() or max_windows == 0:
+            return 0.0, 0, 0 if not text.strip() else 1
+        key = hashlib.sha256(f"{max_windows}\0{text}".encode()).hexdigest()
         if key in self._cache:
             self._cache.move_to_end(key)
             return self._cache[key]
@@ -104,14 +117,41 @@ class Classifier:
             padding=True,
             return_tensors="pt",
         )
-        inputs = {k: v.to(self.device) for k, v in encoded.items() if k in ("input_ids", "attention_mask")}
+        total = int(encoded["input_ids"].shape[0])
+        used = total if max_windows is None else min(total, max_windows)
+        inputs = {k: encoded[k][:used].to(self.device) for k in ("input_ids", "attention_mask")}
         with torch.no_grad():
             probs = self._model(**inputs).logits.softmax(-1)[:, self._positive]
-        value = float(probs.max().item())
-        self._cache[key] = value
+        result = (float(probs.max().item()), used, total)
+        self._cache[key] = result
         if len(self._cache) > _CACHE_SIZE:
             self._cache.popitem(last=False)
-        return value
+        return result
+
+
+def views_to_score(model, normalized) -> list[str]:
+    """Texts the classifier reads, in budget priority: visible, concealed, then decoded views.
+
+    A decoded view is scored only if it reads MORE naturally than the visible text, i.e. tokenizes
+    no longer: ROT13 of an ordinary review is gibberish (more tokens) and is skipped — scoring it cost
+    ~25 s on a long text and its noisy scores were counted as catches (review of PR #9); ROT13 of a
+    ROT13-encoded attack, or a base64 payload, is shorter and is scored."""
+    texts = [normalized.clean, normalized.hidden_tags]
+    if normalized.decoded:
+        limit = model.n_tokens(normalized.clean) if normalized.clean.strip() else 0
+        texts += [c.clean for c in normalized.decoded if not limit or model.n_tokens(c.clean) <= limit]
+    return [t for t in texts if t.strip()]
+
+
+def guard_score(model, normalized, max_windows: int | None) -> tuple[float, bool]:
+    """(max score, budget reached). The single scoring rule shared by the guard and eval/calibrate.py."""
+    budget, score, partial = max_windows, 0.0, False
+    for text in views_to_score(model, normalized):
+        value, used, total = model.score_limited(text, budget)
+        score, partial = max(score, value), partial or used < total
+        if budget is not None:
+            budget -= used
+    return score, partial
 
 
 _INSTANCES: dict[tuple, Classifier] = {}

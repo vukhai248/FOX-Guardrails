@@ -3,7 +3,7 @@
 theta_high: smallest threshold whose false-positive rate on dev benign text is <= 2%;
 theta_low : smallest threshold whose false-positive rate is <= 10%.
 Dev benign = VI CSKH dev (hard-benign + clean) + BIPIA dev clean contexts. Scores are computed the
-way the guard computes them (clean + hidden + decoded views, max over token windows).
+way the guard computes them (guard_score: views, decoded-view filter, window budget).
 
 python -X utf8 -m eval.calibrate [--use secondary|primary] [--device cpu|cuda|groq]
 Writes eval/reports/thresholds_<model>.json; the test split is never read here.
@@ -15,7 +15,7 @@ from datetime import date
 from pathlib import Path
 
 from fox_guard.config import ClassifierConfig
-from fox_guard.detectors.classifier import get_classifier
+from fox_guard.detectors.classifier import get_classifier, guard_score
 from fox_guard.normalize import normalize
 
 from .metrics import binary
@@ -27,9 +27,9 @@ def read(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text("utf-8").splitlines() if line.strip()]
 
 
-def guard_score(model, text: str) -> float:
-    n = normalize(text)
-    return max(model.score(t) for t in [n.clean, n.hidden_tags, *(c.clean for c in n.decoded)] if t)
+def score_as_guard(model, text: str) -> float:
+    """Exactly the guard's rule (views, decoded-view filter, window budget): detectors/classifier.py."""
+    return guard_score(model, normalize(text), ClassifierConfig().max_windows)[0]
 
 
 def threshold_for(benign: list[float], max_fpr: float) -> float:
@@ -56,9 +56,9 @@ def main() -> None:
     rows = []
     for c in cskh:
         text = c["user_query"] if c["source"] == "chat" else c["carrier_text"]
-        rows.append({"set": f"cskh_{c['label']}", "label": c["label"] == "attack", "score": guard_score(model, text)})
+        rows.append({"set": f"cskh_{c['label']}", "label": c["label"] == "attack", "score": score_as_guard(model, text)})
     for c in bipia:
-        rows.append({"set": f"bipia_{c['label']}", "label": c["label"] == "attack", "score": guard_score(model, c["text"])})
+        rows.append({"set": f"bipia_{c['label']}", "label": c["label"] == "attack", "score": score_as_guard(model, c["text"])})
     benign = [r["score"] for r in rows if not r["label"]]
     theta_high, theta_low = threshold_for(benign, 0.02), threshold_for(benign, 0.10)
     report = {"date": date.today().isoformat(), "model": model.model_id, "split": "dev",

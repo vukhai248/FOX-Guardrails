@@ -28,6 +28,8 @@ class ClassifierConfig(_ConfigModel):
     device: str = "cpu"
     window_tokens: int = Field(default=512, ge=32, le=512)
     overlap_tokens: int = Field(default=64, ge=0, le=256)
+    # Windows scored per check across all views (clean → hidden → decoded); bounds worst-case latency.
+    max_windows: int = Field(default=8, ge=1, le=64)
     stations: list[str] = Field(default_factory=lambda: ["input", "context"])
     theta_low: float | None = Field(default=None, ge=0, le=1)
     theta_high: float | None = Field(default=None, ge=0, le=1)

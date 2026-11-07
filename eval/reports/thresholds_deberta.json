@@ -10,25 +10,25 @@
    "n": 150,
    "ge_theta_low": 0,
    "ge_theta_high": 0,
-   "median": 0.9804
+   "median": 0.0042
   },
   "bipia_clean": {
    "n": 150,
    "ge_theta_low": 16,
    "ge_theta_high": 2,
-   "median": 0.9855
+   "median": 0.0263
   },
   "cskh_clean": {
    "n": 23,
    "ge_theta_low": 1,
    "ge_theta_high": 0,
-   "median": 0.8017
+   "median": 0.0011
   },
   "cskh_hard_benign": {
    "n": 36,
    "ge_theta_low": 3,
    "ge_theta_high": 2,
-   "median": 0.9875
+   "median": 0.87
   }
  },
  "bipia_dev_at_theta_high": {
