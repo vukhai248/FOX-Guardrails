@@ -27,11 +27,11 @@
 | **FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit** | ✅ | 100% | Guard bắt đầu **chặn thật**. Held-out độc lập (OpenCode, 140 câu): **bot đòi bí mật 90%, link 100%, câu hợp lệ cho qua 97%**. Bộ kiểm hệ thống S1–S5: 0 lỗi. Đã merge `main` (PR #2) |
 | FOX-Guard Lớp 5 — Classifier + khoanh vùng | ⛔ | 0% | Cần bạn chấp nhận license Prompt Guard 2 + tập dev của Phần C |
 | FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | ⏳ | 0% | |
-| Thực nghiệm (Phần C) | ⏳ | 0% | Chưa giao. Phải có trước Lớp 5 |
+| Thực nghiệm (Phần C) | 🟡 | 25% | **C1 xong** (PR #5): BIPIA, JBB, openpii vi, CSKH VI (chưa có ca tấn công tiếng Việt), PII VI; chia dev/test trong `eval/datasets/SPLIT_REPORT.md`. Tiếp theo: C2 (đo detector-level) |
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
 | **Toàn đồ án (ước tính)** | 🟡 | **~50%** | Lịch: 03/11 → 07/12/2026 |
 
-**Việc tiếp theo:** (1) bạn đọc tài liệu học Lớp 4 (`docs/hoc/lop-4-dau-ra-policy-audit.md`) và chạy demo; (2) Phần C1: dữ liệu thực nghiệm, **bạn duyệt mẫu gốc**; (3) Lớp 5 (classifier): cần bạn tự chấp nhận license Prompt Guard 2 trên Hugging Face.
+**Việc tiếp theo:** (1) bạn đọc tài liệu học Lớp 4 và duyệt mẫu gốc của C1 (`eval/datasets/*/templates/`); (2) C2: đo FOX hiện tại (Lớp 1–4, arm R) trên dev/test; (3) Lớp 5 (classifier): cần bạn tự chấp nhận license Prompt Guard 2 trên Hugging Face.
 
 ---
 
@@ -878,7 +878,7 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 
 | ✓ | Gói | Việc | Điều kiện |
 | :---: | --- | --- | --- |
-| [ ] | C1 | Tải BIPIA/JBB/openpii; `build.py` bộ CSKH + PII; chia dev/test; `SPLIT_REPORT.md` | Bạn duyệt toàn bộ mẫu gốc |
+| [x] | C1 | Tải BIPIA/JBB/openpii; `build.py` bộ CSKH + PII; chia dev/test; `SPLIT_REPORT.md` (PR #5, `9ea2858`). Mẫu gốc do tác tử độc lập viết. **Ca tấn công tiếng Việt hoãn**: bạn chọn tạm BIPIA + JBB | Bạn duyệt toàn bộ mẫu gốc (còn chờ) |
 | [ ] | C2 | `run_detectors.py` + `metrics.py`: bảng detector-level 3 bộ | Sau Lớp 2–5 |
 | [ ] | C3 | `run_e2e.py` + recorder + chấm canary + kiểm tay mẫu | Sau Lớp 6 |
 | [ ] | C4 | `SUMMARY.md`: bảng, biểu đồ, McNemar | |
@@ -1004,6 +1004,7 @@ Claude viết test thất bại trước (RED) → viết code (GREEN) trên nh�
 | L2-FN | 17/48 câu held-out lọt luật (lệnh lịch sự chôn trong review, giả thẩm quyền kể chuyện, many-shot `kh:`/`bot:`) | Đã biết, Lớp 5 bù; test giữ mức sàn ≥ 60% |
 | L4-FN | Bot đòi bí mật bằng cách nói mới (tiếng Anh: passport photo, card expiry; phủ định chi phối động từ khác) lọt khoảng 10% held-out | Đã biết, đóng băng regex; Lớp 5 bù (backlog H1, N1) |
 | L4-FP | Câu cảnh báo "Hãy cẩn thận với tin nhắn đòi mã OTP", hướng dẫn đổi mật khẩu trong app, "ASP.NET" | Đã biết (backlog N2, H6, L2); chỉ là chặn nhầm, không lọt dữ liệu |
+| C1-OPEN | Bộ CSKH tiếng Việt chưa có ca tấn công (agent viết mẫu bị bộ lọc an toàn dừng); hiện chỉ đo chặn nhầm | Bạn chọn tạm dùng BIPIA + JBB (07/11) |
 | L4-L3 | Link tương đối của shop kèm base64 trong query vẫn được giữ | Chấp nhận: dữ liệu chỉ tới máy chủ của shop (backlog L3) |
 | BUG-A-01 | Một user review một sản phẩm nhiều lần | Đã sửa trên nhánh `fix/a-k5`, chưa nghiệm thu, chưa áp dụng DB |
 | A-OPEN-1 | Hết hàng đúng lúc khách trả tiền → webhook 503, Stripe gửi lại mãi | Ghi nhận |
