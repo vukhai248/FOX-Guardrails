@@ -27,11 +27,11 @@
 | **FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit** | ✅ | 100% | Guard bắt đầu **chặn thật**. Held-out độc lập (OpenCode, 140 câu): **bot đòi bí mật 90%, link 100%, câu hợp lệ cho qua 97%**. Bộ kiểm hệ thống S1–S5: 0 lỗi. Đã merge `main` (PR #2) |
 | FOX-Guard Lớp 5 — Classifier + khoanh vùng | 🟡 | 80% | **Prompt Guard 2 bật** trong `fox-guard.yaml` (PR #9): JBB bắt **83,6%** (deberta 12,9%), BIPIA **11,7%** (deberta 5,7%), chặn nhầm CSKH tiếng Việt **0%**; p95 ~280 ms trên GPU. Ngân sách 8 cửa sổ/lượt (tệ nhất 1,5 s GPU, 7 s CPU), bỏ chấm ROT13 vô nghĩa (số v1 có nhiễu, đã thay). Khoanh vùng, datamarking **tắt mặc định**. **Còn:** B4.2/B4.3 tuỳ chọn; tài liệu học Lớp 5 |
 | FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | ⏳ | 0% | |
-| Thực nghiệm (Phần C) | 🟡 | 45% | **C1 + C2 (arm R) xong.** Luật Lớp 1–4: BIPIA/JBB recall **0%**, chặn nhầm **0%** mọi bộ; PII VI F1 **0,95**; chuẩn hoá nâng recall PII biến dạng 0,52 → 0,91 (`eval/reports/detector_2026-11-07.md`). C2 cho arm M/H chờ Lớp 5 |
+| Thực nghiệm (Phần C) | 🟡 | 60% | **C1 + C2 xong** (arm R, M/H-deberta, M/H-pg2). Luật Lớp 1–4: BIPIA/JBB 0%, chặn nhầm 0%; PII VI F1 **0,95**; PG2: JBB **83,6%**, BIPIA **11,7%**, chặn nhầm CSKH **0%** (`eval/reports/lop5-pg2_2026-11-07.md`). **Còn:** C3 end-to-end (cần Lớp 6), C4 tổng hợp; bộ tấn công tiếng Việt (C1-OPEN) |
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
-| **Toàn đồ án (ước tính)** | 🟡 | **~50%** | Lịch: 03/11 → 07/12/2026 |
+| **Toàn đồ án (ước tính)** | 🟡 | **~58%** | Lịch: 03/11 → 07/12/2026 |
 
-**Việc tiếp theo:** (1) quyết định bật PG2 (`classifier.enabled: true`, `use: primary`, ngưỡng dev) trong cấu hình chạy thật; (2) viết tài liệu học Lớp 5; (3) C3 end-to-end trên web (đo cả hệ, gồm harden prompt và datamarking); (4) bạn đọc tài liệu học Lớp 4–5, duyệt mẫu gốc C1. Báo cáo PG2: `eval/reports/lop5-pg2_2026-11-07.md`.
+**Việc tiếp theo:** (1) **Lớp 6 — tích hợp FOX-Guard vào web** (3 hook input/context/output, model PG2 nạp một lần), vì C3 end-to-end phụ thuộc vào nó; (2) C3: đo cả hệ trên web (tỉ lệ tấn công thành công, chất lượng trả lời, độ trễ); (3) tài liệu học Lớp 5; (4) báo cáo + slide từ tuần cuối 11. Báo cáo PG2: `eval/reports/lop5-pg2_2026-11-07.md`.
 
 ---
 
