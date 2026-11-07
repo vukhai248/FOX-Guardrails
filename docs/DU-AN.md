@@ -26,12 +26,12 @@
 | **FOX-Guard Lớp 3 — PII tiếng Việt + giả danh hoá** | ✅ | 100% | 14 loại PII. Held-out độc lập: **bắt 90,0%, bắt nhầm 2/40**. Đã merge `main` |
 | **FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit** | ✅ | 100% | Guard bắt đầu **chặn thật**. Held-out độc lập (OpenCode, 140 câu): **bot đòi bí mật 90%, link 100%, câu hợp lệ cho qua 97%**. Bộ kiểm hệ thống S1–S5: 0 lỗi. Đã merge `main` (PR #2) |
 | FOX-Guard Lớp 5 — Classifier + khoanh vùng | 🟡 | 80% | **Prompt Guard 2 bật** trong `fox-guard.yaml` (PR #9): JBB bắt **83,6%** (deberta 12,9%), BIPIA **11,7%** (deberta 5,7%), chặn nhầm CSKH tiếng Việt **0%**; p95 ~280 ms trên GPU. Ngân sách 8 cửa sổ/lượt (tệ nhất 1,5 s GPU, 7 s CPU), bỏ chấm ROT13 vô nghĩa (số v1 có nhiễu, đã thay). Khoanh vùng, datamarking **tắt mặc định**. **Còn:** B4.2/B4.3 tuỳ chọn; tài liệu học Lớp 5 |
-| FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | 🟡 | 50% | **Plug-and-play:** `fox-guard serve` (sidecar HTTP, `X-FOX-Key`, PG2 nạp 1 lần; 100 request song song 0 lỗi, p50 44 ms) + web bật bằng `FOX_GUARD_MODE=off\|inproc\|sidecar` (3 hook + hoàn nguyên tham số tool + log đã che; fail-closed). Demo thật: 3/3 tấn công bị chặn trước LLM (0,3–0,7 s). **Còn:** proxy (tuỳ chọn), dashboard |
+| FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | 🟡 | 60% | **Plug-and-play đã merge** (FOX #10, web #1): `fox-guard serve` + `FOX_GUARD_MODE=off\|inproc\|sidecar`, fail-closed (kiểm thật khi sidecar tắt). Web dùng **TokenHarbor DeepSeek v4.1 Flash** làm LLM chính, Gemini dự phòng (web #2); OpenRouter (embedding/rerank) xoay 2 key — chỉ ở máy. Chạy thật: giá, so sánh, chính sách đúng; tấn công bị chặn trước LLM. **Còn:** proxy (tuỳ chọn), dashboard |
 | Thực nghiệm (Phần C) | 🟡 | 60% | **C1 + C2 xong** (arm R, M/H-deberta, M/H-pg2). Luật Lớp 1–4: BIPIA/JBB 0%, chặn nhầm 0%; PII VI F1 **0,95**; PG2: JBB **83,6%**, BIPIA **11,7%**, chặn nhầm CSKH **0%** (`eval/reports/lop5-pg2_2026-11-07.md`). **Còn:** C3 end-to-end (cần Lớp 6), C4 tổng hợp; bộ tấn công tiếng Việt (C1-OPEN) |
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
 | **Toàn đồ án (ước tính)** | 🟡 | **~58%** | Lịch: 03/11 → 07/12/2026 |
 
-**Việc tiếp theo:** (1) merge 2 PR Lớp 6 (FOX + web); (2) tải bộ benchmark mới (CyberSecEval EN+VI, NotInject, MultiJail-vi, LLMail-Inject — `docs/research/benchmark-datasets-2026-11.md`) và chạy **C3 end-to-end** G0–G3 (ASR, utility, FPR, độ trễ); (3) bạn thay API key OpenRouter của web (đang lỗi 401); (4) tài liệu học Lớp 5–6; báo cáo + slide từ cuối tháng 11.
+**Việc tiếp theo:** (1) **C3 end-to-end**: tải CyberSecEval (EN+VI), NotInject, MultiJail-vi, LLMail-Inject (mẫu) — hỏi trước khi tải — rồi chạy G0/G1/G2/G4 qua web (ASR, utility, FPR, PII, độ trễ); (2) sửa vòng lặp `product_reviews` với DeepSeek (tool đòi mã sản phẩm, model gọi lại bằng tên); (3) tài liệu học Lớp 5–6; (4) báo cáo + slide từ cuối tháng 11.
 
 ---
 
