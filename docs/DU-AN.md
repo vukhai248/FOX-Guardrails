@@ -25,13 +25,13 @@
 | **FOX-Guard Lớp 2 — Luật phát hiện PI** | ✅ | 100% | 21 luật. Held-out độc lập: **bắt 64,6%, chặn nhầm 0%**. Đã merge `main` |
 | **FOX-Guard Lớp 3 — PII tiếng Việt + giả danh hoá** | ✅ | 100% | 14 loại PII. Held-out độc lập: **bắt 90,0%, bắt nhầm 2/40**. Đã merge `main` |
 | **FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit** | ✅ | 100% | Guard bắt đầu **chặn thật**. Held-out độc lập (OpenCode, 140 câu): **bot đòi bí mật 90%, link 100%, câu hợp lệ cho qua 97%**. Bộ kiểm hệ thống S1–S5: 0 lỗi. Đã merge `main` (PR #2) |
-| FOX-Guard Lớp 5 — Classifier + khoanh vùng | 🟡 | 50% | deberta gắn vào guard, ngưỡng chốt trên dev, gộp rủi ro B6.1; BIPIA bắt 5,7%, JBB 12,9%, nhưng chấm cao câu tiếng Việt hợp lệ nên **tắt mặc định**. Khoanh vùng cắt câu **tắt mặc định** (lọt payload tách câu, LOC-1); datamarking có, tắt mặc định (PR #7). **Còn chờ:** Prompt Guard 2 (bạn chấp nhận license trên HF) |
+| FOX-Guard Lớp 5 — Classifier + khoanh vùng | 🟡 | 75% | **Prompt Guard 2** chạy local (GPU 40–256 ms), ngưỡng chốt trên dev; test: JBB bắt **80,4%** (deberta 12,9%), chặn nhầm CSKH tiếng Việt **0%** (deberta 2,4%), BIPIA chỉ 5,0% (cả hai model yếu với injection gián tiếp). Sửa lỗi đảo nhãn PG2 (PR #8). Khoanh vùng, datamarking, classifier đều **tắt mặc định**. **Còn:** chọn bật PG2 trong `fox-guard.yaml`; B4.2/B4.3 tuỳ chọn; tài liệu học Lớp 5 |
 | FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | ⏳ | 0% | |
 | Thực nghiệm (Phần C) | 🟡 | 45% | **C1 + C2 (arm R) xong.** Luật Lớp 1–4: BIPIA/JBB recall **0%**, chặn nhầm **0%** mọi bộ; PII VI F1 **0,95**; chuẩn hoá nâng recall PII biến dạng 0,52 → 0,91 (`eval/reports/detector_2026-11-07.md`). C2 cho arm M/H chờ Lớp 5 |
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
 | **Toàn đồ án (ước tính)** | 🟡 | **~50%** | Lịch: 03/11 → 07/12/2026 |
 
-**Việc tiếp theo:** (1) **Lớp 5 (classifier)**: C2 cho thấy luật bắt 0% BIPIA/JBB, nên Lớp 5 là phần còn thiếu lớn nhất. Cần bạn tự bấm Agree license `meta-llama/Llama-Prompt-Guard-2-86M` trên Hugging Face; (2) bạn đọc tài liệu học Lớp 4, duyệt mẫu gốc C1.
+**Việc tiếp theo:** (1) quyết định bật PG2 (`classifier.enabled: true`, `use: primary`, ngưỡng dev) trong cấu hình chạy thật; (2) viết tài liệu học Lớp 5; (3) C3 end-to-end trên web (đo cả hệ, gồm harden prompt và datamarking); (4) bạn đọc tài liệu học Lớp 4–5, duyệt mẫu gốc C1. Báo cáo PG2: `eval/reports/lop5-pg2_2026-11-07.md`.
 
 ---
 
