@@ -1,4 +1,4 @@
-"""Console script `fox-guard`. Các lệnh `serve`, `proxy`, `audit why` thêm ở B6–B8."""
+"""Console script `fox-guard`: version, rules, audit, serve (Lớp 6 sidecar)."""
 
 import csv
 import json
@@ -111,6 +111,33 @@ def audit_export(out: Annotated[Path, typer.Argument(help="File JSONL kết qu�
     """Xuất toàn bộ quyết định ra JSONL (cho Phần C và dashboard)."""
 
     typer.echo(f"{_open(db).export_jsonl(out)} quyết định → {out}")
+
+
+
+_LOOPBACK = {"127.0.0.1", "localhost", "::1"}
+
+
+@app.command()
+def serve(
+    config: Annotated[Path, typer.Option(help="File cấu hình YAML.")] = Path("fox-guard.yaml"),
+    host: Annotated[str, typer.Option(help="Địa chỉ lắng nghe.")] = "127.0.0.1",
+    port: Annotated[int, typer.Option(help="Cổng.")] = 8091,
+) -> None:
+    """Lớp 6: chạy sidecar HTTP (model nạp một lần). Khoá: biến môi trường FOX_SIDECAR_KEY."""
+    import os
+
+    import uvicorn
+
+    from fox_guard.guard import Guard
+    from fox_guard.server import create_app, warm_up
+
+    key = os.environ.get("FOX_SIDECAR_KEY") or None
+    if key is None and host not in _LOOPBACK:
+        typer.echo("Từ chối: lắng nghe ngoài loopback cần FOX_SIDECAR_KEY.", err=True)
+        raise typer.Exit(code=2)
+    guard = Guard.from_config(config)
+    warm_up(guard)
+    uvicorn.run(create_app(guard, key), host=host, port=port, log_level="warning")
 
 
 if __name__ == "__main__":
