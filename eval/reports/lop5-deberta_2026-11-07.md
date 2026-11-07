@@ -38,7 +38,20 @@
 | 512 token | 1.617 ms | 1.629 ms |
 | 2.048 token | 3.746 ms | 3.869 ms |
 
-p95 ở 512 token **vượt mục tiêu 300 ms** của §4.5.1. Theo kế hoạch, bước tiếp theo là ONNX cộng lượng tử hoá, hoặc chạy GPU khi triển khai.
+Bảng trên đo qua `Classifier.score`. Văn bản 512 token sau khi thêm token đặc biệt bị tách thành **2 cửa sổ**, nên con số gấp đôi. Đo một cửa sổ riêng: fp32 p50 **852 ms** ở 512 token, 211 ms ở 128 token.
+
+**Thử tăng tốc** (cùng máy, CPU):
+
+| Cách | 512 token p50 | Khớp với fp32 |
+| --- | --- | --- |
+| fp32 (gốc) | 852 ms | — |
+| int8 động của PyTorch (`quantize_dynamic`) | 591 ms | **không**: chênh điểm tối đa 0,85; chỉ 40/61 câu dev còn cùng phía ngưỡng 0,5 |
+
+- **Loại** int8 động vì làm sai điểm.
+- ONNX cần cài gói `onnx` hoặc tải bản `onnx/model.onnx` (khoảng 740 MB). Theo tỉ lệ thường gặp, nó cũng chỉ nhanh khoảng 1,5–2 lần, tức vẫn trên 300 ms ở 512 token.
+- **Kết luận:** deberta-base trên CPU không đạt mục tiêu ở 512 token. Hai hướng còn lại:
+  - chạy GPU (đo được khoảng 120 ms);
+  - Prompt Guard 2, 86M tham số, nhỏ hơn deberta-base khoảng một nửa. Đo lại khi có license.
 
 ## Kết luận tạm (cho chương thực nghiệm)
 

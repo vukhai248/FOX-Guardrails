@@ -178,12 +178,20 @@ class Guard:
                 masked = _fallback_mask(working)
                 pii_changed, working = masked != working, masked
         cfg = self.config.policy
+        if station == "context" and cfg.datamarking:
+            from .policy.localize import looks_like_delimiter
+
+            if looks_like_delimiter(normalized.vi_nodiac):  # data imitating our wrapper (T2.5)
+                findings.append(Finding(detector="datamark:delimiter", kind="injection", severity="medium",
+                                        evidence="delimiter-like text in untrusted data", technique="T2.5"))
         verdict = decide(station, findings, working, pii_changed, link_edited,
                          PolicyTexts(cfg.refusal_text, cfg.context_hidden_text, cfg.output_safe_text,
                                      cfg.solicitation_text))
         if output_failed:
             # Unchecked links/solicitation must never reach the customer.
             verdict.action, verdict.text = "block", cfg.output_safe_text
+        if station == "context":
+            self._localize_and_mark(verdict, working, ctx)
         reasons = {**_REASONS, **rule_reasons()}
         try:
             from .pii.policy import safe_evidence
@@ -208,6 +216,39 @@ class Guard:
         if self.audit is not None:
             self._audit(decision, ctx, station, normalized)
         return decision
+
+    def _sentence_is_injection(self, sentence: str) -> bool:
+        """B6.3: does this piece on its own raise an injection alarm (rule, concealed text, classifier)?"""
+        from .detectors.rules import run_rules
+
+        n = self._normalize(sentence)
+        found = [f for f in n.signals if f.severity == "high"]
+        if self.config.rules.enabled:
+            found += run_rules(n, "context")
+        clf = self.config.classifier
+        if clf.enabled and clf.theta_high is not None:
+            from .detectors.classifier import get_classifier
+
+            if get_classifier(clf).score(n.clean) >= clf.theta_high:
+                return True
+        return any(f.kind in ("injection", "unicode") and f.severity in ("medium", "high") for f in found)
+
+    def _localize_and_mark(self, verdict, working: str, ctx: GuardContext) -> None:
+        """CONTEXT: cut only the injected sentences (B6.3), then wrap what remains (B6.4)."""
+        from .policy.localize import datamark, localize
+
+        cfg = self.config.policy
+        if verdict.action == "block" and cfg.localize:
+            try:
+                result = localize(working, self._sentence_is_injection, cfg.localized_text,
+                                  cfg.localize_max_share)
+            except Exception:
+                result = None  # localization is an improvement, never a reason to leak: keep it hidden
+            if result is not None:
+                verdict.action, verdict.text = "mask", result[0]
+                verdict.flags = [*verdict.flags, "localized"]
+        if cfg.datamarking and verdict.action != "block":
+            verdict.text = datamark(verdict.text, ctx.source)
 
     def _classify(self, normalized) -> list[Finding]:
         """Lớp 5: score clean text plus any hidden/decoded text; thresholds come from the dev split.

@@ -14,12 +14,16 @@
 | Chốt ngưỡng trên dev | `eval/calibrate.py` → `eval/reports/thresholds_deberta.json` | θ_low 0,999324 · θ_high 0,999991 |
 | Đo C2 arm M-deberta, H-deberta (dev rồi test một lần) | `eval/run_detectors.py`, `eval/reports/lop5-deberta_2026-11-07.md` | BIPIA bắt 5,7% (chặn nhầm 3,3%) · JBB bắt 12,9% (0%) · CSKH chặn nhầm 2,4% |
 | Test không cần model | `tests/test_classifier.py` | 7 test + 1 test `@model` |
+| Thử tăng tốc CPU | `eval/reports/lop5-deberta_2026-11-07.md` | int8 động của PyTorch bị **loại** (sai điểm). ONNX không đủ đạt 300 ms ở 512 token. Hướng còn lại: GPU hoặc PG2 |
+| **B6.3 khoanh vùng** | `src/fox_guard/policy/localize.py`, `guard._localize_and_mark` | CONTEXT high chỉ cắt câu bị chèn (`mask` + cờ `localized`). Ẩn cả đoạn khi: không câu nào tự giải thích được cảnh báo (ví dụ Tags ẩn), cắt hơn 60% số câu, hoặc phần giữ lại vẫn còn cảnh báo |
+| **B6.4 datamarking** | như trên; `policy.datamarking` (mặc định **tắt**, bật theo arm) | Thẻ bọc có mã ngẫu nhiên mỗi request; escape `« »`; chuỗi giả thẻ ghi finding `datamark:delimiter` (T2.5) |
+| Test khoanh vùng | `tests/test_localize.py` | 7 test |
 
 ## Còn lại
 
 1. **Bạn:** chấp nhận license `meta-llama/Llama-Prompt-Guard-2-86M` trên Hugging Face, tạo token read, rồi chạy `hf auth login`. Sau đó Claude tải PG2 vào `models/`, chạy `python -X utf8 -m eval.calibrate --use primary`, rồi đo arm M-pg2 và H-pg2 (thêm vào `ARMS` trong `run_detectors.py`).
-2. **Tăng tốc CPU:** p95 ở 512 token là 1,6 s, mục tiêu 300 ms. Hướng xử lý: ONNX + lượng tử hoá int8, hoặc GPU.
-3. **B6.3–6.4:** khoanh vùng (cắt đúng câu bị chèn trong CONTEXT) và datamarking.
+2. **Tăng tốc:** đo lại với PG2. Nếu vẫn chậm thì chạy classifier trên GPU, hoặc chỉ chấm ở trạm CONTEXT.
+3. ~~B6.3–6.4~~ **xong.** Còn lại: đo khoanh vùng giữ được bao nhiêu utility khi có ca tấn công tiếng Việt (C1-OPEN), hoặc qua end-to-end C3.
 4. **B4.2 / B4.3 (✂️, có thể cắt):** điểm theo phiên, LLM judge. Judge có thể là cách duy nhất bắt injection kiểu "giao việc" của BIPIA.
 5. Cập nhật `docs/DU-AN.md` (mục 4.5, Phần 10, Phần 12) và tài liệu học `docs/hoc/lop-5-classifier-khoanh-vung.md` khi Lớp 5 xong.
 
