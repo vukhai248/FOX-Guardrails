@@ -33,3 +33,12 @@
 C:/Users/Admin/anaconda3/envs/DL/python.exe -X utf8 -m eval.calibrate --device cuda
 C:/Users/Admin/anaconda3/envs/DL/python.exe -X utf8 -m eval.run_detectors --split dev --arm H-deberta --device cuda --tag _H-deberta
 ```
+
+## 2026-11-07 — Prompt Guard 2
+
+- License được duyệt; model tải về `models/meta-llama-Llama-Prompt-Guard-2-86M` (1.1 GB, gitignored).
+- Sửa lỗi nhãn: config PG2 không có `id2label` → điểm bị đảo; `positive_label` + test.
+- Ngưỡng dev local: θ_low 0.014798 / θ_high 0.021179. Test một lần: BIPIA recall 5.0 %, FPR 0.7 %;
+  JBB recall 80.4 %; CSKH FPR 0 %. GPU GTX 1650: 40 ms (tin ngắn), 256 ms (827 token).
+- Báo cáo: `eval/reports/lop5-pg2_2026-11-07.md`. Backend Groq (`eval/groq_pg2.py`) giữ cho máy không có model.
+- Còn lại: quyết định `use: primary` cho bản chạy thật; B4.2/B4.3 (tuỳ chọn); tài liệu học lop-5.

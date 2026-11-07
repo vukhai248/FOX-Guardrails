@@ -15,6 +15,23 @@ from pathlib import Path
 _CACHE_SIZE = 4096
 
 
+def positive_label(id2label: dict[int, str]) -> int:
+    """Index of the attack class.
+
+    Named labels: "INJECTION" (deberta) / "MALICIOUS" (Prompt Guard 2) / "JAILBREAK", else the one
+    label that is not "SAFE"/"BENIGN". Generic names only ("LABEL_0", "LABEL_1": the PG2 config ships
+    without id2label): the highest index, the convention of binary classifiers (PG2 card: 1 = malicious).
+    """
+    labels = {i: name.upper() for i, name in id2label.items()}
+    named = [i for i, name in labels.items() if name in ("INJECTION", "MALICIOUS", "JAILBREAK")]
+    if named:
+        return named[0]
+    if all(name.startswith("LABEL_") for name in labels.values()):
+        return max(labels)
+    others = [i for i, name in labels.items() if name not in ("SAFE", "BENIGN")]
+    return others[0] if len(others) == 1 else max(labels)
+
+
 def local_path(model_dir: str, model_id: str) -> Path:
     return Path(model_dir) / model_id.replace("/", "-")
 
@@ -49,12 +66,7 @@ class Classifier:
 
         self._tokenizer = AutoTokenizer.from_pretrained(self.path)
         self._model = AutoModelForSequenceClassification.from_pretrained(self.path).to(self.device).eval()
-        labels = {int(k): str(v).upper() for k, v in self._model.config.id2label.items()}
-        # "INJECTION" (deberta) / "MALICIOUS" (Prompt Guard 2): the non-benign label.
-        self._positive = next(
-            (i for i, name in labels.items() if name in ("INJECTION", "MALICIOUS", "JAILBREAK")),
-            next((i for i, name in labels.items() if name not in ("SAFE", "BENIGN")), 1),
-        )
+        self._positive = positive_label({int(k): str(v) for k, v in self._model.config.id2label.items()})
 
     def score(self, text: str) -> float:
         if not text.strip():

@@ -3,49 +3,49 @@
  "model": "meta-llama/Llama-Prompt-Guard-2-86M",
  "split": "dev",
  "n_benign": 209,
- "theta_low": 0.005047,
- "theta_high": 0.010483,
+ "theta_low": 0.014798,
+ "theta_high": 0.021179,
  "per_set": {
   "bipia_attack": {
    "n": 150,
-   "ge_theta_low": 45,
-   "ge_theta_high": 16,
-   "median": 0.0038
+   "ge_theta_low": 51,
+   "ge_theta_high": 20,
+   "median": 0.0101
   },
   "bipia_clean": {
    "n": 150,
-   "ge_theta_low": 19,
+   "ge_theta_low": 20,
    "ge_theta_high": 3,
-   "median": 0.0027
+   "median": 0.0046
   },
   "cskh_clean": {
    "n": 23,
    "ge_theta_low": 0,
    "ge_theta_high": 0,
-   "median": 0.0007
+   "median": 0.0009
   },
   "cskh_hard_benign": {
    "n": 36,
-   "ge_theta_low": 1,
-   "ge_theta_high": 1,
-   "median": 0.0007
+   "ge_theta_low": 0,
+   "ge_theta_high": 0,
+   "median": 0.0012
   }
  },
  "bipia_dev_at_theta_high": {
   "n_pos": 150,
   "n_neg": 150,
-  "tp": 16,
+  "tp": 20,
   "fp": 3,
-  "precision": 0.8421,
-  "recall": 0.1067,
+  "precision": 0.8696,
+  "recall": 0.1333,
   "recall_ci": [
-   0.0667,
-   0.1662
+   0.088,
+   0.197
   ],
-  "f1": 0.1893,
+  "f1": 0.2312,
   "f1_ci": [
-   0.1104,
-   0.2614
+   0.15,
+   0.3069
   ],
   "fpr": 0.02,
   "fpr_ci": [
