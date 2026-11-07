@@ -25,7 +25,7 @@
 | **FOX-Guard Lớp 2 — Luật phát hiện PI** | ✅ | 100% | 21 luật. Held-out độc lập: **bắt 64,6%, chặn nhầm 0%**. Đã merge `main` |
 | **FOX-Guard Lớp 3 — PII tiếng Việt + giả danh hoá** | ✅ | 100% | 14 loại PII. Held-out độc lập: **bắt 90,0%, bắt nhầm 2/40**. Đã merge `main` |
 | **FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit** | ✅ | 100% | Guard bắt đầu **chặn thật**. Held-out độc lập (OpenCode, 140 câu): **bot đòi bí mật 90%, link 100%, câu hợp lệ cho qua 97%**. Bộ kiểm hệ thống S1–S5: 0 lỗi. Đã merge `main` (PR #2) |
-| FOX-Guard Lớp 5 — Classifier + khoanh vùng | ⛔ | 0% | Cần bạn chấp nhận license Prompt Guard 2 + tập dev của Phần C |
+| FOX-Guard Lớp 5 — Classifier + khoanh vùng | 🟡 | 50% | deberta gắn vào guard, ngưỡng chốt trên dev, gộp rủi ro B6.1; BIPIA bắt 5,7%, JBB 12,9%, nhưng chấm cao câu tiếng Việt hợp lệ nên **tắt mặc định**. Khoanh vùng cắt câu **tắt mặc định** (lọt payload tách câu, LOC-1); datamarking có, tắt mặc định (PR #7). **Còn chờ:** Prompt Guard 2 (bạn chấp nhận license trên HF) |
 | FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | ⏳ | 0% | |
 | Thực nghiệm (Phần C) | 🟡 | 45% | **C1 + C2 (arm R) xong.** Luật Lớp 1–4: BIPIA/JBB recall **0%**, chặn nhầm **0%** mọi bộ; PII VI F1 **0,95**; chuẩn hoá nâng recall PII biến dạng 0,52 → 0,91 (`eval/reports/detector_2026-11-07.md`). C2 cho arm M/H chờ Lớp 5 |
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
