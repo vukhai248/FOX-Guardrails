@@ -44,20 +44,21 @@ class NoNormGuard(Guard):
         return raw_view(text[: self.config.normalize.max_chars])
 
 
-ARMS = ["R", "R-noNorm", "M-deberta", "H-deberta"]
+ARMS = ["R", "R-noNorm", "M-deberta", "H-deberta", "M-pg2", "H-pg2"]
 
 
-def classifier_config(device: str) -> dict:
+def classifier_config(arm: str, device: str) -> dict:
     """Thresholds chosen on dev by eval/calibrate.py; the test split never sets them."""
-    t = json.loads((REPORTS / "thresholds_deberta.json").read_text("utf-8"))
-    return {"enabled": True, "use": "secondary", "device": device, "theta_low": t["theta_low"],
-            "theta_high": t["theta_high"]}
+    model = arm.split("-", 1)[1]
+    t = json.loads((REPORTS / f"thresholds_{model}.json").read_text("utf-8"))
+    return {"enabled": True, "use": "primary" if model == "pg2" else "secondary", "device": device,
+            "theta_low": t["theta_low"], "theta_high": t["theta_high"]}
 
 
 def make_guard(arm: str, device: str = "cpu") -> Guard:
     data = dict(CONFIG)
     if arm.startswith(("M-", "H-")):
-        data["classifier"] = classifier_config(device)
+        data["classifier"] = classifier_config(arm, device)
     if arm.startswith("M-"):
         data["rules"] = {"enabled": False}  # "model only": no Lớp 2 rules (Phần C §3.1, arm G3)
     config = GuardConfig.model_validate(data)
@@ -190,9 +191,13 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--split", choices=["dev", "test"], required=True)
     parser.add_argument("--arm", default="all", choices=[*ARMS, "all"])
-    parser.add_argument("--device", default="cpu", help="classifier device; latency in reports is per device")
+    parser.add_argument("--device", default="cpu", help="cpu|cuda|groq (groq = PG2 via API: network latency)")
     parser.add_argument("--tag", default="", help="suffix for the output file name")
     args = parser.parse_args()
+    if args.device == "groq":  # eval-only API backend for Prompt Guard 2 (eval/groq_pg2.py)
+        from .groq_pg2 import register
+
+        register()
     arms = ARMS if args.arm == "all" else [args.arm]
     out = {"date": date.today().isoformat(), "split": args.split, "device": args.device, "arms": {}}
     for arm in arms:

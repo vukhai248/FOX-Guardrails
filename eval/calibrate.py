@@ -5,7 +5,7 @@ theta_low : smallest threshold whose false-positive rate is <= 10%.
 Dev benign = VI CSKH dev (hard-benign + clean) + BIPIA dev clean contexts. Scores are computed the
 way the guard computes them (clean + hidden + decoded views, max over token windows).
 
-python -X utf8 -m eval.calibrate [--use secondary|primary] [--device cpu|cuda]
+python -X utf8 -m eval.calibrate [--use secondary|primary] [--device cpu|cuda|groq]
 Writes eval/reports/thresholds_<model>.json; the test split is never read here.
 """
 
@@ -46,6 +46,10 @@ def main() -> None:
     parser.add_argument("--use", default="secondary", choices=["primary", "secondary"])
     parser.add_argument("--device", default="cpu")
     args = parser.parse_args()
+    if args.device == "groq":  # eval-only API backend for Prompt Guard 2 (eval/groq_pg2.py)
+        from .groq_pg2 import register
+
+        register()
     model = get_classifier(ClassifierConfig(enabled=True, use=args.use, device=args.device))
     cskh = [c for c in read(ROOT / "eval/datasets/vi_cskh/cases.jsonl") if c["split"] == "dev"]
     bipia = read(ROOT / "data/processed/bipia/dev.jsonl")
