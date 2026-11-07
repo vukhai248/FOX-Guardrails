@@ -1,0 +1,1182 @@
+{
+ "date": "2026-11-07",
+ "split": "test",
+ "arms": {
+  "R": {
+   "bipia": {
+    "overall": {
+     "n_pos": 300,
+     "n_neg": 150,
+     "tp": 0,
+     "fp": 0,
+     "precision": 0.0,
+     "recall": 0.0,
+     "recall_ci": [
+      0.0,
+      0.0126
+     ],
+     "f1": 0.0,
+     "f1_ci": [
+      0.0,
+      0.0
+     ],
+     "fpr": 0.0,
+     "fpr_ci": [
+      0.0,
+      0.025
+     ]
+    },
+    "p50_ms": 11.24,
+    "p95_ms": 31.9,
+    "recall_by_position": {
+     "end": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "middle": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "start": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     }
+    },
+    "recall_by_task": {
+     "email": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "table": {
+      "n": 200,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0188
+      ]
+     }
+    },
+    "recall_by_attack_category": {
+     "Base Encoding": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Business Intelligence": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Conversational Agent": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Emoji Substitution": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Entertainment": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Information Dissemination": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Language Translation": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Marketing & Advertising": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Misinformation & Propaganda": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Research Assistance": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Reverse Text": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Scams & Fraud": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Sentiment Analysis": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Substitution Ciphers": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Task Automation": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     }
+    }
+   },
+   "cskh_vi": {
+    "p50_ms": 1.03,
+    "p95_ms": 2.13,
+    "fpr_hard_benign": {
+     "n": 84,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0437
+     ]
+    },
+    "fpr_hard_benign_by_source": {
+     "chat": {
+      "n": 34,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1015
+      ]
+     },
+     "order_note": {
+      "n": 22,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1487
+      ]
+     },
+     "review": {
+      "n": 28,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1206
+      ]
+     }
+    },
+    "fpr_clean": {
+     "n": 57,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0631
+     ]
+    },
+    "fpr_clean_by_source": {
+     "chat": {
+      "n": 35,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0989
+      ]
+     },
+     "review": {
+      "n": 22,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1487
+      ]
+     }
+    },
+    "false_positive_examples": []
+   },
+   "pii_synthetic": {
+    "by_entity": {
+     "ADDRESS": {
+      "tp": 21,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "BANK_ACCOUNT": {
+      "tp": 13,
+      "fp": 0,
+      "fn": 3,
+      "precision": 1.0,
+      "recall": 0.8125,
+      "f1": 0.8966
+     },
+     "BHYT": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "CARD": {
+      "tp": 14,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "CCCD": {
+      "tp": 12,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "CMND": {
+      "tp": 13,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.8667,
+      "f1": 0.9286
+     },
+     "EMAIL": {
+      "tp": 19,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "OTP": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 5,
+      "precision": 1.0,
+      "recall": 0.2857,
+      "f1": 0.4444
+     },
+     "PASSPORT": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.8889
+     },
+     "PASSWORD": {
+      "tp": 9,
+      "fp": 2,
+      "fn": 4,
+      "precision": 0.8182,
+      "recall": 0.6923,
+      "f1": 0.75
+     },
+     "PERSON": {
+      "tp": 36,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PHONE": {
+      "tp": 21,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PLATE": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "TAX_ID": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 3,
+      "precision": 1.0,
+      "recall": 0.7692,
+      "f1": 0.8696
+     },
+     "ALL": {
+      "tp": 196,
+      "fp": 2,
+      "fn": 19,
+      "precision": 0.9899,
+      "recall": 0.9116,
+      "f1": 0.9492
+     }
+    },
+    "obfuscated_T3_12": {
+     "tp": 30,
+     "fp": 0,
+     "fn": 3,
+     "precision": 1.0,
+     "recall": 0.9091,
+     "f1": 0.9524
+    },
+    "false_mask_rate_hard_negative": {
+     "n": 50,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0713
+     ]
+    },
+    "p50_ms": 0.64,
+    "p95_ms": 1.08
+   },
+   "jbb": {
+    "overall": {
+     "n_pos": 286,
+     "n_neg": 100,
+     "tp": 0,
+     "fp": 0,
+     "precision": 0.0,
+     "recall": 0.0,
+     "recall_ci": [
+      0.0,
+      0.0133
+     ],
+     "f1": 0.0,
+     "f1_ci": [
+      0.0,
+      0.0
+     ],
+     "fpr": 0.0,
+     "fpr_ci": [
+      0.0,
+      0.037
+     ]
+    },
+    "recall_jailbroken_only": {
+     "n": 152,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0246
+     ]
+    },
+    "flag_rate_harmful_bare": {
+     "n": 100,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.037
+     ]
+    },
+    "p50_ms": 1.86,
+    "p95_ms": 6.47,
+    "recall_by_method": {
+     "GCG/llama-2-7b-chat-hf": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "GCG/vicuna-13b-v1.5": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "PAIR/llama-2-7b-chat-hf": {
+      "n": 4,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.4899
+      ]
+     },
+     "PAIR/vicuna-13b-v1.5": {
+      "n": 82,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0448
+      ]
+     }
+    }
+   },
+   "openpii_vi": {
+    "by_entity": {
+     "ADDRESS": {
+      "tp": 168,
+      "fp": 0,
+      "fn": 1095,
+      "precision": 1.0,
+      "recall": 0.133,
+      "f1": 0.2348
+     },
+     "CARD": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 227,
+      "precision": 1.0,
+      "recall": 0.034,
+      "f1": 0.0658
+     },
+     "EMAIL": {
+      "tp": 431,
+      "fp": 0,
+      "fn": 150,
+      "precision": 1.0,
+      "recall": 0.7418,
+      "f1": 0.8518
+     },
+     "ID": {
+      "tp": 0,
+      "fp": 4,
+      "fn": 263,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+     },
+     "PASSPORT": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 151,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+     },
+     "PERSON": {
+      "tp": 134,
+      "fp": 168,
+      "fn": 882,
+      "precision": 0.4437,
+      "recall": 0.1319,
+      "f1": 0.2033
+     },
+     "PHONE": {
+      "tp": 76,
+      "fp": 6,
+      "fn": 367,
+      "precision": 0.9268,
+      "recall": 0.1716,
+      "f1": 0.2895
+     },
+     "TAX_ID": {
+      "tp": 0,
+      "fp": 1,
+      "fn": 219,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+     },
+     "ALL": {
+      "tp": 817,
+      "fp": 179,
+      "fn": 3354,
+      "precision": 0.8203,
+      "recall": 0.1959,
+      "f1": 0.3162
+     }
+    },
+    "note": "only entity types openpii also labels"
+   }
+  },
+  "R-noNorm": {
+   "bipia": {
+    "overall": {
+     "n_pos": 300,
+     "n_neg": 150,
+     "tp": 0,
+     "fp": 0,
+     "precision": 0.0,
+     "recall": 0.0,
+     "recall_ci": [
+      0.0,
+      0.0126
+     ],
+     "f1": 0.0,
+     "f1_ci": [
+      0.0,
+      0.0
+     ],
+     "fpr": 0.0,
+     "fpr_ci": [
+      0.0,
+      0.025
+     ]
+    },
+    "p50_ms": 3.37,
+    "p95_ms": 10.21,
+    "recall_by_position": {
+     "end": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "middle": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "start": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     }
+    },
+    "recall_by_task": {
+     "email": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "table": {
+      "n": 200,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0188
+      ]
+     }
+    },
+    "recall_by_attack_category": {
+     "Base Encoding": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Business Intelligence": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Conversational Agent": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Emoji Substitution": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Entertainment": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Information Dissemination": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Language Translation": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Marketing & Advertising": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Misinformation & Propaganda": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Research Assistance": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Reverse Text": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Scams & Fraud": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Sentiment Analysis": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Substitution Ciphers": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Task Automation": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     }
+    }
+   },
+   "cskh_vi": {
+    "p50_ms": 0.34,
+    "p95_ms": 0.78,
+    "fpr_hard_benign": {
+     "n": 84,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0437
+     ]
+    },
+    "fpr_hard_benign_by_source": {
+     "chat": {
+      "n": 34,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1015
+      ]
+     },
+     "order_note": {
+      "n": 22,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1487
+      ]
+     },
+     "review": {
+      "n": 28,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1206
+      ]
+     }
+    },
+    "fpr_clean": {
+     "n": 57,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0631
+     ]
+    },
+    "fpr_clean_by_source": {
+     "chat": {
+      "n": 35,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0989
+      ]
+     },
+     "review": {
+      "n": 22,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1487
+      ]
+     }
+    },
+    "false_positive_examples": []
+   },
+   "pii_synthetic": {
+    "by_entity": {
+     "ADDRESS": {
+      "tp": 21,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "BANK_ACCOUNT": {
+      "tp": 12,
+      "fp": 0,
+      "fn": 4,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1": 0.8571
+     },
+     "BHYT": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "CARD": {
+      "tp": 12,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.8571,
+      "f1": 0.9231
+     },
+     "CCCD": {
+      "tp": 11,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.9167,
+      "f1": 0.9565
+     },
+     "CMND": {
+      "tp": 11,
+      "fp": 0,
+      "fn": 4,
+      "precision": 1.0,
+      "recall": 0.7333,
+      "f1": 0.8462
+     },
+     "EMAIL": {
+      "tp": 19,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "OTP": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 5,
+      "precision": 1.0,
+      "recall": 0.2857,
+      "f1": 0.4444
+     },
+     "PASSPORT": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.8889
+     },
+     "PASSWORD": {
+      "tp": 9,
+      "fp": 2,
+      "fn": 4,
+      "precision": 0.8182,
+      "recall": 0.6923,
+      "f1": 0.75
+     },
+     "PERSON": {
+      "tp": 36,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "PHONE": {
+      "tp": 16,
+      "fp": 0,
+      "fn": 5,
+      "precision": 1.0,
+      "recall": 0.7619,
+      "f1": 0.8649
+     },
+     "PLATE": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "TAX_ID": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 5,
+      "precision": 1.0,
+      "recall": 0.6154,
+      "f1": 0.7619
+     },
+     "ALL": {
+      "tp": 183,
+      "fp": 2,
+      "fn": 32,
+      "precision": 0.9892,
+      "recall": 0.8512,
+      "f1": 0.915
+     }
+    },
+    "obfuscated_T3_12": {
+     "tp": 17,
+     "fp": 0,
+     "fn": 16,
+     "precision": 1.0,
+     "recall": 0.5152,
+     "f1": 0.68
+    },
+    "false_mask_rate_hard_negative": {
+     "n": 50,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0713
+     ]
+    },
+    "p50_ms": 0.11,
+    "p95_ms": 0.23
+   },
+   "jbb": {
+    "overall": {
+     "n_pos": 286,
+     "n_neg": 100,
+     "tp": 0,
+     "fp": 0,
+     "precision": 0.0,
+     "recall": 0.0,
+     "recall_ci": [
+      0.0,
+      0.0133
+     ],
+     "f1": 0.0,
+     "f1_ci": [
+      0.0,
+      0.0
+     ],
+     "fpr": 0.0,
+     "fpr_ci": [
+      0.0,
+      0.037
+     ]
+    },
+    "recall_jailbroken_only": {
+     "n": 152,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0246
+     ]
+    },
+    "flag_rate_harmful_bare": {
+     "n": 100,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.037
+     ]
+    },
+    "p50_ms": 0.52,
+    "p95_ms": 1.64,
+    "recall_by_method": {
+     "GCG/llama-2-7b-chat-hf": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "GCG/vicuna-13b-v1.5": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     },
+     "PAIR/llama-2-7b-chat-hf": {
+      "n": 4,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.4899
+      ]
+     },
+     "PAIR/vicuna-13b-v1.5": {
+      "n": 82,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0448
+      ]
+     }
+    }
+   },
+   "openpii_vi": {
+    "by_entity": {
+     "ADDRESS": {
+      "tp": 167,
+      "fp": 0,
+      "fn": 1096,
+      "precision": 1.0,
+      "recall": 0.1322,
+      "f1": 0.2336
+     },
+     "CARD": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 227,
+      "precision": 1.0,
+      "recall": 0.034,
+      "f1": 0.0658
+     },
+     "EMAIL": {
+      "tp": 431,
+      "fp": 0,
+      "fn": 150,
+      "precision": 1.0,
+      "recall": 0.7418,
+      "f1": 0.8518
+     },
+     "ID": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 263,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+     },
+     "PASSPORT": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 151,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+     },
+     "PERSON": {
+      "tp": 134,
+      "fp": 168,
+      "fn": 882,
+      "precision": 0.4437,
+      "recall": 0.1319,
+      "f1": 0.2033
+     },
+     "PHONE": {
+      "tp": 0,
+      "fp": 6,
+      "fn": 443,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+     },
+     "TAX_ID": {
+      "tp": 0,
+      "fp": 2,
+      "fn": 219,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+     },
+     "ALL": {
+      "tp": 740,
+      "fp": 176,
+      "fn": 3431,
+      "precision": 0.8079,
+      "recall": 0.1774,
+      "f1": 0.2909
+     }
+    },
+    "note": "only entity types openpii also labels"
+   }
+  }
+ }
+}

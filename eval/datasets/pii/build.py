@@ -69,6 +69,13 @@ BHYT_PREFIX = ["DN", "HC", "GD", "HS", "SV", "TE", "CN", "HT"]
 DIGIT_WORDS = "không một hai ba bốn năm sáu bảy tám chín".split()
 
 
+def _ascii(text: str) -> str:
+    import unicodedata
+
+    text = text.replace("đ", "d").replace("Đ", "D")
+    return "".join(ch for ch in unicodedata.normalize("NFD", text) if unicodedata.category(ch) != "Mn")
+
+
 def luhn_complete(prefix: str, length: int, rng: random.Random) -> str:
     body = prefix + "".join(rng.choice("0123456789") for _ in range(length - len(prefix) - 1))
     total = 0
@@ -95,7 +102,8 @@ def fake(token: str, rng: random.Random) -> str:
         case "PHONE":
             return rng.choice(PHONE_PREFIX) + digits(7)
         case "EMAIL":
-            return f"{rng.choice(GIVEN).lower()}.{digits(3)}@mail.example"
+            # Real addresses are ASCII: "bình.123@…" was not a valid email (fixed 07/11 after C2 run 1).
+            return f"{_ascii(rng.choice(GIVEN)).lower()}.{digits(3)}@mail.example"
         case "CCCD":
             return (
                 rng.choice(PROVINCE)
