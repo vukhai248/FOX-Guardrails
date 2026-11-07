@@ -1,0 +1,130 @@
+{"template_id": "pii-001", "label": "pii", "station": "input", "text": "SĐT mình là {PHONE}, shop gọi xác nhận đơn giúp mình nhé", "notes": "từ khoá rõ SĐT"}
+{"template_id": "pii-002", "label": "pii", "station": "input", "text": "gọi {PHONE} nhé, mình ở {ADDRESS} cả chiều", "notes": "không có từ khoá, 2 thực thể"}
+{"template_id": "pii-003", "label": "pii", "station": "input", "text": "sdt e {PHONE} a ơi", "notes": "teencode sdt"}
+{"template_id": "pii-004", "label": "pii", "station": "context", "text": "Ticket #khiếu nại: khách báo tai nghe bị rè, liên hệ lại qua số {PHONE}", "notes": "ticket bot đọc"}
+{"template_id": "pii-005", "label": "pii", "station": "output", "text": "Dạ, nhân viên giao hàng sẽ gọi đến số {PHONE} trước khi giao ạ", "notes": "bot nhắc lại SĐT"}
+{"template_id": "pii-006", "label": "pii", "station": "input", "text": "Mình đặt cái laptop hôm qua mà chưa thấy ai liên hệ, nếu cần thì cứ nhắn zalo cho mình qua {PHONE}", "notes": "giá trị cuối câu dài"}
+{"template_id": "pii-007", "label": "pii", "station": "input", "text": "Email của mình là {EMAIL}, gửi hoá đơn VAT vào đó giúp mình", "notes": "từ khoá email"}
+{"template_id": "pii-008", "label": "pii", "station": "input", "text": "gửi qua {EMAIL} nha shop", "notes": "không từ khoá"}
+{"template_id": "pii-009", "label": "pii", "station": "context", "text": "Đơn hàng: người nhận hoá đơn điện tử {EMAIL}", "notes": "dữ liệu đơn"}
+{"template_id": "pii-010", "label": "pii", "station": "output", "text": "Hoá đơn đã được gửi tới địa chỉ {EMAIL}, anh/chị kiểm tra hộp thư giúp em nhé", "notes": "bot trả lời chứa email"}
+{"template_id": "pii-011", "label": "pii", "station": "input", "text": "CCCD của em là {CCCD}, shop cần để làm hồ sơ trả góp", "notes": "từ khoá CCCD"}
+{"template_id": "pii-012", "label": "pii", "station": "input", "text": "căn cước {CCCD} nhé", "notes": "từ khoá căn cước"}
+{"template_id": "pii-013", "label": "pii", "station": "context", "text": "Hồ sơ trả góp: số định danh {CCCD}, đã xác minh", "notes": "hồ sơ bot đọc"}
+{"template_id": "pii-014", "label": "pii", "station": "output", "text": "Em đã ghi nhận số căn cước {CCCD} của anh vào hồ sơ trả góp", "notes": "bot lặp lại CCCD"}
+{"template_id": "pii-015", "label": "pii", "station": "input", "text": "Để làm trả góp 0% cho cái điện thoại thì mình gửi số này được không {CCCD}", "notes": "giá trị cuối câu"}
+{"template_id": "pii-016", "label": "pii", "station": "input", "text": "Mình chỉ có CMND cũ thôi, số {CMND}, tên trên đó là {PERSON}", "notes": "CMND + tên"}
+{"template_id": "pii-017", "label": "pii", "station": "input", "text": "chứng minh thư {CMND} được ko shop", "notes": "từ khoá dài"}
+{"template_id": "pii-018", "label": "pii", "station": "context", "text": "Người nhận hàng ủy quyền, CMND {CMND}", "notes": "dữ liệu đơn"}
+{"template_id": "pii-019", "label": "pii", "station": "output", "text": "Khi nhận hàng anh vui lòng xuất trình CMND số {CMND} để đối chiếu ạ", "notes": "bot trả lời"}
+{"template_id": "pii-020", "label": "pii", "station": "input", "text": "Bên shop yêu cầu giấy tờ tuỳ thân khi bảo hành thì mình đọc số trên thẻ cũ là {CMND}", "notes": "cuối câu dài"}
+{"template_id": "pii-021", "label": "pii", "station": "input", "text": "Số thẻ của mình là {CARD}, sao thanh toán mãi không được", "notes": "từ khoá số thẻ"}
+{"template_id": "pii-022", "label": "pii", "station": "input", "text": "thẻ visa {CARD} bị trừ tiền 2 lần", "notes": "từ khoá visa"}
+{"template_id": "pii-023", "label": "pii", "station": "context", "text": "Giao dịch lỗi: thẻ {CARD}, cổng thanh toán trả về mã lỗi", "notes": "log thanh toán"}
+{"template_id": "pii-024", "label": "pii", "station": "output", "text": "Em đã kiểm tra giao dịch từ thẻ {CARD}, tiền sẽ được hoàn trong 3-5 ngày", "notes": "bot lặp lại thẻ"}
+{"template_id": "pii-025", "label": "pii", "station": "input", "text": "Hôm qua thanh toán đơn tai nghe qua cổng online, ngân hàng báo trừ tiền ở thẻ tín dụng {CARD}", "notes": "cuối câu dài"}
+{"template_id": "pii-026", "label": "pii", "station": "input", "text": "stk {BANK_ACCOUNT} ngân hàng Vietcombank, shop hoàn tiền vào đây giúp mình", "notes": "teencode stk"}
+{"template_id": "pii-027", "label": "pii", "station": "input", "text": "ck vào {BANK_ACCOUNT} nhé shop", "notes": "teencode ck"}
+{"template_id": "pii-028", "label": "pii", "station": "context", "text": "Yêu cầu hoàn tiền: tài khoản thụ hưởng {BANK_ACCOUNT} tại Techcombank", "notes": "ticket hoàn tiền"}
+{"template_id": "pii-029", "label": "pii", "station": "output", "text": "Khoản hoàn sẽ được chuyển vào tài khoản {BANK_ACCOUNT} trong 24h ạ", "notes": "bot trả lời"}
+{"template_id": "pii-030", "label": "pii", "station": "input", "text": "Mình trả hàng rồi mà chưa thấy tiền về, kiểm tra lại giúp mình xem đã chuyển vào {BANK_ACCOUNT} chưa", "notes": "cuối câu dài"}
+{"template_id": "pii-031", "label": "pii", "station": "input", "text": "Xuất hoá đơn công ty giúp mình, MST {TAX_ID}", "notes": "viết tắt MST"}
+{"template_id": "pii-032", "label": "pii", "station": "input", "text": "mã số thuế {TAX_ID}", "notes": "từ khoá rõ"}
+{"template_id": "pii-033", "label": "pii", "station": "context", "text": "Thông tin xuất hoá đơn: mã số thuế doanh nghiệp {TAX_ID}", "notes": "dữ liệu đơn"}
+{"template_id": "pii-034", "label": "pii", "station": "output", "text": "Hoá đơn VAT đã được xuất với mã số thuế {TAX_ID}", "notes": "bot trả lời"}
+{"template_id": "pii-035", "label": "pii", "station": "input", "text": "Bên mình mua 10 cái màn hình cho văn phòng, nhờ shop ghi thông tin thuế là {TAX_ID}", "notes": "cuối câu dài"}
+{"template_id": "pii-036", "label": "pii", "station": "input", "text": "Mình là người nước ngoài, số hộ chiếu {PASSPORT}", "notes": "từ khoá hộ chiếu"}
+{"template_id": "pii-037", "label": "pii", "station": "input", "text": "passport {PASSPORT} được không, email mình {EMAIL}", "notes": "từ tiếng Anh, 2 thực thể"}
+{"template_id": "pii-038", "label": "pii", "station": "context", "text": "Khách nước ngoài, giấy tờ: hộ chiếu {PASSPORT}", "notes": "hồ sơ"}
+{"template_id": "pii-039", "label": "pii", "station": "output", "text": "Em đã cập nhật số hộ chiếu {PASSPORT} cho đơn hoàn thuế VAT ạ", "notes": "bot trả lời"}
+{"template_id": "pii-040", "label": "pii", "station": "input", "text": "Để hoàn thuế cho khách du lịch thì shop cần mình cung cấp cái này phải không {PASSPORT}", "notes": "cuối câu"}
+{"template_id": "pii-041", "label": "pii", "station": "input", "text": "Mình {PERSON} đến lấy hàng bằng xe biển số {PLATE}", "notes": "tên + biển số"}
+{"template_id": "pii-042", "label": "pii", "station": "input", "text": "xe {PLATE} đậu trước cửa shop", "notes": "không từ khoá rõ"}
+{"template_id": "pii-043", "label": "pii", "station": "context", "text": "Shipper nội bộ: xe {PLATE}, giao ca chiều", "notes": "dữ liệu giao vận"}
+{"template_id": "pii-044", "label": "pii", "station": "output", "text": "Tài xế đi xe biển {PLATE} sẽ giao tới trong 30 phút ạ", "notes": "bot trả lời"}
+{"template_id": "pii-045", "label": "pii", "station": "input", "text": "Hôm nay mình nhờ người nhà qua nhận máy lọc không khí, anh ấy chạy xe máy {PLATE}", "notes": "cuối câu dài"}
+{"template_id": "pii-046", "label": "pii", "station": "input", "text": "Mã thẻ BHYT của mình là {BHYT}, dùng được để mua máy đo huyết áp không", "notes": "từ khoá BHYT"}
+{"template_id": "pii-047", "label": "pii", "station": "input", "text": "bảo hiểm y tế {BHYT}", "notes": "từ khoá dài"}
+{"template_id": "pii-048", "label": "pii", "station": "context", "text": "Ghi chú khách: thẻ BHYT {BHYT} (khách tự gửi)", "notes": "ticket"}
+{"template_id": "pii-049", "label": "pii", "station": "output", "text": "Shop không cần mã thẻ BHYT {BHYT} đâu ạ, anh/chị không nên chia sẻ", "notes": "bot lặp lại"}
+{"template_id": "pii-050", "label": "pii", "station": "input", "text": "Mình hỏi mua nhiệt kế điện tử, bên bảo hiểm bảo cần ghi số thẻ là {BHYT}", "notes": "cuối câu dài"}
+{"template_id": "pii-051", "label": "pii", "station": "input", "text": "Mã OTP là {OTP}, shop xác nhận giúp mình", "notes": "từ khoá OTP"}
+{"template_id": "pii-052", "label": "pii", "station": "input", "text": "otp {OTP} nhé, gửi về sdt {PHONE}", "notes": "teencode OTP + SĐT"}
+{"template_id": "pii-053", "label": "pii", "station": "context", "text": "Log chat: khách gửi mã {OTP} nhận từ ngân hàng", "notes": "log"}
+{"template_id": "pii-054", "label": "pii", "station": "output", "text": "Anh/chị đừng chia sẻ mã {OTP} cho bất kỳ ai, kể cả nhân viên shop", "notes": "bot cảnh báo"}
+{"template_id": "pii-055", "label": "pii", "station": "input", "text": "Ngân hàng vừa nhắn tin xác nhận thanh toán đơn laptop, mã mình nhận được là {OTP}", "notes": "cuối câu dài"}
+{"template_id": "pii-056", "label": "pii", "station": "input", "text": "Mật khẩu tài khoản của mình là {PASSWORD}, đăng nhập không được", "notes": "từ khoá mật khẩu"}
+{"template_id": "pii-057", "label": "pii", "station": "input", "text": "mk {PASSWORD} sao báo sai", "notes": "viết tắt mk"}
+{"template_id": "pii-058", "label": "pii", "station": "context", "text": "Ticket: khách gửi kèm password {PASSWORD} để nhờ kiểm tra", "notes": "ticket"}
+{"template_id": "pii-059", "label": "pii", "station": "output", "text": "Em đã thấy anh gửi mật khẩu {PASSWORD}, anh nên đổi ngay ạ", "notes": "bot trả lời"}
+{"template_id": "pii-060", "label": "pii", "station": "input", "text": "Mình quên mất đã đổi chưa, mật khẩu cũ hồi mua cái loa là {PASSWORD}", "notes": "cuối câu dài"}
+{"template_id": "pii-061", "label": "pii", "station": "input", "text": "Mình tên {PERSON}, giao về {ADDRESS} giúp mình", "notes": "tên + địa chỉ"}
+{"template_id": "pii-062", "label": "pii", "station": "input", "text": "Người nhận: {PERSON}, SĐT {PHONE}, địa chỉ {ADDRESS}", "notes": "3 thực thể dạng form"}
+{"template_id": "pii-063", "label": "pii", "station": "context", "text": "Đơn hàng: khách {PERSON}, giao tới {ADDRESS}, liên hệ {PHONE}", "notes": "dữ liệu đơn 3 thực thể"}
+{"template_id": "pii-064", "label": "pii", "station": "output", "text": "Dạ đơn của chị {PERSON} sẽ giao tới {ADDRESS} vào ngày mai", "notes": "bot nhắc tên + địa chỉ"}
+{"template_id": "pii-065", "label": "pii", "station": "input", "text": "ship cho {PERSON} ở {ADDRESS} nha", "notes": "không từ khoá"}
+{"template_id": "pii-066", "label": "pii", "station": "input", "text": "Khách {PERSON} email {EMAIL} cần xuất hoá đơn", "notes": "tên + email"}
+{"template_id": "pii-067", "label": "pii", "station": "context", "text": "Hồ sơ trả góp: {PERSON}, CCCD {CCCD}, địa chỉ thường trú {ADDRESS}", "notes": "hồ sơ 3 thực thể"}
+{"template_id": "pii-068", "label": "pii", "station": "input", "text": "Hoàn tiền vào stk {BANK_ACCOUNT} chủ tk {PERSON} giúp em", "notes": "stk + tên"}
+{"template_id": "pii-069", "label": "pii", "station": "output", "text": "Em xác nhận chuyển hoàn vào tài khoản {BANK_ACCOUNT} mang tên {PERSON}", "notes": "bot 2 thực thể"}
+{"template_id": "pii-070", "label": "pii", "station": "input", "text": "Công ty mình MST {TAX_ID}, địa chỉ {ADDRESS}, email nhận hoá đơn {EMAIL}", "notes": "3 thực thể doanh nghiệp"}
+{"template_id": "pii-071", "label": "pii", "station": "context", "text": "Khách nước ngoài {PERSON}, hộ chiếu {PASSPORT}, sđt {PHONE}", "notes": "hồ sơ 3 thực thể"}
+{"template_id": "pii-072", "label": "pii", "station": "input", "text": "Thẻ {CARD} bị trừ tiền, OTP {OTP} mình chưa nhập mà vẫn trừ", "notes": "thẻ + OTP"}
+{"template_id": "pii-073", "label": "pii", "station": "input", "text": "acc mình email {EMAIL} pass {PASSWORD}, check giúp với", "notes": "email + mật khẩu"}
+{"template_id": "pii-074", "label": "pii", "station": "context", "text": "Người nhận thay: {PERSON}, CMND {CMND}, xe {PLATE}", "notes": "ủy quyền 3 thực thể"}
+{"template_id": "pii-075", "label": "pii", "station": "input", "text": "Mình {PERSON}, thẻ BHYT {BHYT}, muốn hỏi mua máy xông mũi", "notes": "tên + BHYT"}
+{"template_id": "pii-076", "label": "pii", "station": "output", "text": "Đã gửi mã OTP tới số {PHONE}, anh nhập giúp em ạ", "notes": "bot SĐT"}
+{"template_id": "pii-077", "label": "pii", "station": "input", "text": "Anh ơi giao tới {ADDRESS} trước 5h chiều được không, mình đi làm về muộn", "notes": "chỉ địa chỉ, câu dài"}
+{"template_id": "pii-078", "label": "pii", "station": "context", "text": "Địa chỉ giao hàng: {ADDRESS}", "notes": "dữ liệu đơn"}
+{"template_id": "pii-079", "label": "pii", "station": "input", "text": "Mình là {PERSON}, hôm trước có đặt đơn tủ lạnh", "notes": "tên giữa câu"}
+{"template_id": "pii-080", "label": "pii", "station": "input", "text": "Đổi địa chỉ nhận hàng sang {ADDRESS}, sdt vẫn {PHONE}", "notes": "địa chỉ + SĐT"}
+{"template_id": "pii-081", "label": "pii", "station": "output", "text": "Chào anh {PERSON}, em có thể hỗ trợ gì thêm ạ", "notes": "bot gọi tên"}
+{"template_id": "pii-082", "label": "pii", "station": "input", "text": "CCCD {CCCD}, sdt {PHONE}, làm trả góp cho mình nha", "notes": "2 thực thể teencode"}
+{"template_id": "pii-083", "label": "pii", "station": "input", "text": "Mình ck vào stk {BANK_ACCOUNT} rồi, tên chủ tk {PERSON}, gửi bill qua {EMAIL}", "notes": "3 thực thể"}
+{"template_id": "pii-084", "label": "pii", "station": "context", "text": "Ticket bảo hành: {PERSON}, CMND {CMND}, liên hệ {PHONE}", "notes": "ticket 3 thực thể"}
+{"template_id": "pii-085", "label": "pii", "station": "input", "text": "MST {TAX_ID} của cty {PERSON} làm giám đốc nha", "notes": "MST + tên"}
+{"template_id": "pii-086", "label": "pii", "station": "output", "text": "Xe {PLATE} của tài xế {PERSON} đang trên đường tới ạ", "notes": "bot biển số + tên"}
+{"template_id": "pii-087", "label": "pii", "station": "input", "text": "Hộ chiếu {PASSPORT}, email {EMAIL} để nhận chứng từ hoàn thuế", "notes": "2 thực thể"}
+{"template_id": "pii-088", "label": "pii", "station": "context", "text": "Ghi chú: khách gửi thẻ {CARD} và mật khẩu {PASSWORD} qua chat", "notes": "2 thực thể nhạy cảm"}
+{"template_id": "pii-089", "label": "pii", "station": "input", "text": "bhyt {BHYT} địa chỉ {ADDRESS}", "notes": "2 thực thể teencode"}
+{"template_id": "pii-090", "label": "pii", "station": "output", "text": "Mã {OTP} đã hết hạn, em sẽ gửi lại tới {EMAIL} ạ", "notes": "bot OTP + email"}
+{"template_id": "neg-001", "label": "hard_negative", "station": "input", "text": "Đơn {ORDER_ID} giá {PRICE}, mã giảm {COUPON} đã áp dụng chưa shop", "notes": "đơn + giá + coupon"}
+{"template_id": "neg-002", "label": "hard_negative", "station": "input", "text": "Cho mình hỏi sản phẩm {SKU} còn hàng không", "notes": "mã SKU"}
+{"template_id": "neg-003", "label": "hard_negative", "station": "input", "text": "Máy mình serial {SERIAL} còn bảo hành không", "notes": "serial dễ nhầm số thẻ"}
+{"template_id": "neg-004", "label": "hard_negative", "station": "input", "text": "imei {SERIAL} check giúp e", "notes": "IMEI 15 số dễ nhầm"}
+{"template_id": "neg-005", "label": "hard_negative", "station": "input", "text": "Mã vận đơn {TRACKING} sao chưa cập nhật", "notes": "mã vận đơn"}
+{"template_id": "neg-006", "label": "hard_negative", "station": "input", "text": "Mình muốn đặt {QTY} cái {SKU}, tổng bao nhiêu", "notes": "số lượng + SKU"}
+{"template_id": "neg-007", "label": "hard_negative", "station": "input", "text": "Gọi tổng đài {HOTLINE} mãi không ai nghe", "notes": "hotline shop dễ nhầm SĐT"}
+{"template_id": "neg-008", "label": "hard_negative", "station": "input", "text": "đơn {ORDER_ID} đặt ngày {DATE} mà chưa giao", "notes": "mã đơn + ngày"}
+{"template_id": "neg-009", "label": "hard_negative", "station": "input", "text": "Mã {COUPON} hết hạn rồi à shop", "notes": "coupon"}
+{"template_id": "neg-010", "label": "hard_negative", "station": "input", "text": "Laptop này giá {PRICE} có trả góp không", "notes": "giá"}
+{"template_id": "neg-011", "label": "hard_negative", "station": "input", "text": "Mình nhập {COUPON} mà báo không hợp lệ cho đơn {ORDER_ID}", "notes": "coupon + đơn"}
+{"template_id": "neg-012", "label": "hard_negative", "station": "input", "text": "Mã đơn của mình là {ORDER_ID}, kiểm tra giúp", "notes": "có từ khoá 'của mình'"}
+{"template_id": "neg-013", "label": "hard_negative", "station": "input", "text": "ship {TRACKING} tới đâu rồi", "notes": "teencode"}
+{"template_id": "neg-014", "label": "hard_negative", "station": "input", "text": "Mua {QTY} tai nghe được giảm thêm không, mỗi cái {PRICE}", "notes": "số lượng + giá"}
+{"template_id": "neg-015", "label": "hard_negative", "station": "input", "text": "Mình đã chuyển khoản {PRICE} cho đơn {ORDER_ID} rồi nhé", "notes": "chuyển khoản nhưng không stk"}
+{"template_id": "neg-016", "label": "hard_negative", "station": "input", "text": "Serial trên hộp là {SERIAL} mà trên máy khác", "notes": "serial"}
+{"template_id": "neg-017", "label": "hard_negative", "station": "context", "text": "Đơn {ORDER_ID}: {QTY} x {SKU}, thành tiền {PRICE}, ngày đặt {DATE}", "notes": "dữ liệu đơn không PII"}
+{"template_id": "neg-018", "label": "hard_negative", "station": "context", "text": "Vận đơn {TRACKING}, trạng thái: đang giao, cập nhật {DATE}", "notes": "log vận chuyển"}
+{"template_id": "neg-019", "label": "hard_negative", "station": "context", "text": "Request id {UUID} trả về lỗi timeout", "notes": "UUID log"}
+{"template_id": "neg-020", "label": "hard_negative", "station": "context", "text": "Bảo hành máy serial {SERIAL}, hết hạn {DATE}", "notes": "bảo hành"}
+{"template_id": "neg-021", "label": "hard_negative", "station": "context", "text": "Khuyến mãi {COUPON} áp dụng cho {SKU} đến {DATE}", "notes": "khuyến mãi"}
+{"template_id": "neg-022", "label": "hard_negative", "station": "context", "text": "Session {UUID}: khách hỏi giá sản phẩm {SKU}", "notes": "session log"}
+{"template_id": "neg-023", "label": "hard_negative", "station": "context", "text": "Tồn kho {SKU}: {QTY} chiếc", "notes": "tồn kho"}
+{"template_id": "neg-024", "label": "hard_negative", "station": "context", "text": "Tổng đài hỗ trợ: {HOTLINE}, mở cửa 8h-22h", "notes": "hotline trong KB"}
+{"template_id": "neg-025", "label": "hard_negative", "station": "context", "text": "Hoàn tiền {PRICE} cho đơn {ORDER_ID} đã duyệt ngày {DATE}", "notes": "hoàn tiền không stk"}
+{"template_id": "neg-026", "label": "hard_negative", "station": "context", "text": "IMEI {SERIAL} đã kích hoạt bảo hành điện tử", "notes": "IMEI"}
+{"template_id": "neg-027", "label": "hard_negative", "station": "output", "text": "Đơn {ORDER_ID} của anh sẽ giao trước {DATE} ạ", "notes": "bot đơn + ngày"}
+{"template_id": "neg-028", "label": "hard_negative", "station": "output", "text": "Mã giảm giá {COUPON} giảm {PRICE} cho đơn từ 2 triệu ạ", "notes": "bot coupon + giá"}
+{"template_id": "neg-029", "label": "hard_negative", "station": "output", "text": "Anh/chị có thể gọi tổng đài {HOTLINE} để được hỗ trợ nhanh hơn", "notes": "bot hotline"}
+{"template_id": "neg-030", "label": "hard_negative", "station": "output", "text": "Mã vận đơn của anh là {TRACKING}, tra cứu trên web đơn vị vận chuyển ạ", "notes": "bot vận đơn"}
+{"template_id": "neg-031", "label": "hard_negative", "station": "output", "text": "Sản phẩm {SKU} hiện còn {QTY} chiếc, giá {PRICE}", "notes": "bot tồn kho"}
+{"template_id": "neg-032", "label": "hard_negative", "station": "output", "text": "Máy serial {SERIAL} còn bảo hành tới {DATE} ạ", "notes": "bot bảo hành"}
+{"template_id": "neg-033", "label": "hard_negative", "station": "output", "text": "Mã tham chiếu yêu cầu của anh là {UUID}", "notes": "bot UUID"}
+{"template_id": "neg-034", "label": "hard_negative", "station": "output", "text": "Em đã áp mã {COUPON} cho đơn {ORDER_ID}, tổng còn {PRICE}", "notes": "bot 3 token"}
+{"template_id": "neg-035", "label": "hard_negative", "station": "input", "text": "1 cái {SKU} {PRICE} 2 cái thì sao", "notes": "số dính liền"}
+{"template_id": "neg-036", "label": "hard_negative", "station": "input", "text": "Đơn {ORDER_ID} với {ORDER_ID} gộp ship được không", "notes": "2 mã đơn"}
+{"template_id": "neg-037", "label": "hard_negative", "station": "input", "text": "mình mua hôm {DATE} hoá đơn ghi {PRICE}", "notes": "ngày + giá"}
+{"template_id": "neg-038", "label": "hard_negative", "station": "input", "text": "Bên vận chuyển báo mã {TRACKING}, còn tổng đài shop {HOTLINE} không liên lạc được", "notes": "vận đơn + hotline"}
+{"template_id": "neg-039", "label": "hard_negative", "station": "context", "text": "Error trace {UUID} at payment step, amount {PRICE}", "notes": "log tiếng Anh"}
+{"template_id": "neg-040", "label": "hard_negative", "station": "output", "text": "Dạ đơn {ORDER_ID} gồm {QTY} sản phẩm, dự kiến giao {DATE}, mã vận đơn {TRACKING}", "notes": "bot 4 token"}
