@@ -27,11 +27,11 @@
 | **FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit** | ✅ | 100% | Guard bắt đầu **chặn thật**. Held-out độc lập (OpenCode, 140 câu): **bot đòi bí mật 90%, link 100%, câu hợp lệ cho qua 97%**. Bộ kiểm hệ thống S1–S5: 0 lỗi. Đã merge `main` (PR #2) |
 | FOX-Guard Lớp 5 — Classifier + khoanh vùng | ⛔ | 0% | Cần bạn chấp nhận license Prompt Guard 2 + tập dev của Phần C |
 | FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | ⏳ | 0% | |
-| Thực nghiệm (Phần C) | 🟡 | 25% | **C1 xong** (PR #5): BIPIA, JBB, openpii vi, CSKH VI (chưa có ca tấn công tiếng Việt), PII VI; chia dev/test trong `eval/datasets/SPLIT_REPORT.md`. Tiếp theo: C2 (đo detector-level) |
+| Thực nghiệm (Phần C) | 🟡 | 45% | **C1 + C2 (arm R) xong.** Luật Lớp 1–4: BIPIA/JBB recall **0%**, chặn nhầm **0%** mọi bộ; PII VI F1 **0,95**; chuẩn hoá nâng recall PII biến dạng 0,52 → 0,91 (`eval/reports/detector_2026-11-07.md`). C2 cho arm M/H chờ Lớp 5 |
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
 | **Toàn đồ án (ước tính)** | 🟡 | **~50%** | Lịch: 03/11 → 07/12/2026 |
 
-**Việc tiếp theo:** (1) bạn đọc tài liệu học Lớp 4 và duyệt mẫu gốc của C1 (`eval/datasets/*/templates/`); (2) C2: đo FOX hiện tại (Lớp 1–4, arm R) trên dev/test; (3) Lớp 5 (classifier): cần bạn tự chấp nhận license Prompt Guard 2 trên Hugging Face.
+**Việc tiếp theo:** (1) **Lớp 5 (classifier)**: C2 cho thấy luật bắt 0% BIPIA/JBB, nên Lớp 5 là phần còn thiếu lớn nhất. Cần bạn tự bấm Agree license `meta-llama/Llama-Prompt-Guard-2-86M` trên Hugging Face; (2) bạn đọc tài liệu học Lớp 4, duyệt mẫu gốc C1.
 
 ---
 
@@ -879,7 +879,7 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 | ✓ | Gói | Việc | Điều kiện |
 | :---: | --- | --- | --- |
 | [x] | C1 | Tải BIPIA/JBB/openpii; `build.py` bộ CSKH + PII; chia dev/test; `SPLIT_REPORT.md` (PR #5, `9ea2858`). Mẫu gốc do tác tử độc lập viết. **Ca tấn công tiếng Việt hoãn**: bạn chọn tạm BIPIA + JBB | Bạn duyệt toàn bộ mẫu gốc (còn chờ) |
-| [ ] | C2 | `run_detectors.py` + `metrics.py`: bảng detector-level 3 bộ | Sau Lớp 2–5 |
+| [~] | C2 | `run_detectors.py` + `metrics.py`: bảng detector-level 3 bộ | Sau Lớp 2–5 |
 | [ ] | C3 | `run_e2e.py` + recorder + chấm canary + kiểm tay mẫu | Sau Lớp 6 |
 | [ ] | C4 | `SUMMARY.md`: bảng, biểu đồ, McNemar | |
 | [ ] | C5 ✂️ | garak/promptfoo qua proxy | Sau B8 |
