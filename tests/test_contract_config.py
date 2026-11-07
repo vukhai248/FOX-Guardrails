@@ -15,8 +15,9 @@ def test_load_sample_config():
     assert config.normalize.max_chars == 20000
     assert config.normalize.decode_max_depth == 2
     assert config.classifier.primary == "meta-llama/Llama-Prompt-Guard-2-86M"
-    assert config.classifier.theta_low is None
-    assert config.classifier.theta_high is None
+    # Lớp 5: thresholds chosen on dev (eval/reports/thresholds_deberta.json); classifier off by default.
+    assert config.classifier.enabled is False
+    assert 0 < config.classifier.theta_low <= config.classifier.theta_high <= 1
     assert config.links.allowlist == ['shop.example']
     assert config.audit.enabled is True
     assert config.audit.sqlite_path == "var/fox_guard.sqlite"

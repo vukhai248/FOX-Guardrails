@@ -134,10 +134,17 @@ class Guard:
         output_failed = False
         normalized = self._normalize(text)
         findings = list(normalized.signals)
-        try:
-            findings.extend(run_rules(normalized, station))
-        except Exception:  # B6.6: a failing detector degrades, it never blocks everything
-            degraded = True
+        if self.config.rules.enabled:
+            try:
+                findings.extend(run_rules(normalized, station))
+            except Exception:  # B6.6: a failing detector degrades, it never blocks everything
+                degraded = True
+        clf = self.config.classifier
+        if clf.enabled and station in clf.stations:
+            try:
+                findings.extend(self._classify(normalized))
+            except Exception:  # missing weights or a model error: degrade, never block (B6.6)
+                degraded = True
         working, link_edited = normalized.clean, False
         if station == "output":
             try:
@@ -171,12 +178,20 @@ class Guard:
                 masked = _fallback_mask(working)
                 pii_changed, working = masked != working, masked
         cfg = self.config.policy
+        if station == "context" and cfg.datamarking:
+            from .policy.localize import looks_like_delimiter
+
+            if looks_like_delimiter(normalized.vi_nodiac):  # data imitating our wrapper (T2.5)
+                findings.append(Finding(detector="datamark:delimiter", kind="injection", severity="medium",
+                                        evidence="delimiter-like text in untrusted data", technique="T2.5"))
         verdict = decide(station, findings, working, pii_changed, link_edited,
                          PolicyTexts(cfg.refusal_text, cfg.context_hidden_text, cfg.output_safe_text,
                                      cfg.solicitation_text))
         if output_failed:
             # Unchecked links/solicitation must never reach the customer.
             verdict.action, verdict.text = "block", cfg.output_safe_text
+        if station == "context":
+            self._localize_and_mark(verdict, working, ctx)
         reasons = {**_REASONS, **rule_reasons()}
         try:
             from .pii.policy import safe_evidence
@@ -201,6 +216,58 @@ class Guard:
         if self.audit is not None:
             self._audit(decision, ctx, station, normalized)
         return decision
+
+    def _sentence_is_injection(self, sentence: str) -> bool:
+        """B6.3: does this piece on its own raise an injection alarm (rule, concealed text, classifier)?"""
+        from .detectors.rules import run_rules
+
+        n = self._normalize(sentence)
+        found = [f for f in n.signals if f.severity == "high"]
+        if self.config.rules.enabled:
+            found += run_rules(n, "context")
+        clf = self.config.classifier
+        if clf.enabled and clf.theta_high is not None:
+            from .detectors.classifier import get_classifier
+
+            if get_classifier(clf).score(n.clean) >= clf.theta_high:
+                return True
+        return any(f.kind in ("injection", "unicode") and f.severity in ("medium", "high") for f in found)
+
+    def _localize_and_mark(self, verdict, working: str, ctx: GuardContext) -> None:
+        """CONTEXT: cut only the injected sentences (B6.3), then wrap what remains (B6.4)."""
+        from .policy.localize import datamark, localize
+
+        cfg = self.config.policy
+        if verdict.action == "block" and cfg.localize:
+            try:
+                result = localize(working, self._sentence_is_injection, cfg.localized_text,
+                                  cfg.localize_max_share)
+            except Exception:
+                result = None  # localization is an improvement, never a reason to leak: keep it hidden
+            if result is not None:
+                verdict.action, verdict.text = "mask", result[0]
+                verdict.flags = [*verdict.flags, "localized"]
+        if cfg.datamarking and verdict.action != "block":
+            verdict.text = datamark(verdict.text, ctx.source)
+
+    def _classify(self, normalized) -> list[Finding]:
+        """Lớp 5: score clean text plus any hidden/decoded text; thresholds come from the dev split.
+
+        >= theta_high → medium; [theta_low, theta_high) → low. A classifier finding alone never
+        exceeds medium; the policy raises it to high only together with a rule (B6.1)."""
+        from .detectors.classifier import get_classifier
+
+        cfg = self.config.classifier
+        if cfg.theta_low is None or cfg.theta_high is None:
+            raise ValueError("classifier enabled without calibrated theta_low/theta_high")
+        model = get_classifier(cfg)
+        texts = [normalized.clean, normalized.hidden_tags, *(child.clean for child in normalized.decoded)]
+        score = max(model.score(t) for t in texts if t)
+        if score < cfg.theta_low:
+            return []
+        severity = "medium" if score >= cfg.theta_high else "low"
+        return [Finding(detector=f"classifier:{model.short_name}", kind="injection", severity=severity,
+                        score=round(score, 4), evidence=f"score {score:.3f}")]
 
     def _audit(self, decision: Decision, ctx: GuardContext, station: str, normalized) -> None:
         from .pii.policy import redact_text

@@ -1,0 +1,388 @@
+{
+ "date": "2026-11-07",
+ "split": "test",
+ "device": "cuda",
+ "arms": {
+  "M-deberta": {
+   "bipia": {
+    "overall": {
+     "n_pos": 300,
+     "n_neg": 150,
+     "tp": 17,
+     "fp": 5,
+     "precision": 0.7727,
+     "recall": 0.0567,
+     "recall_ci": [
+      0.0357,
+      0.0889
+     ],
+     "f1": 0.1056,
+     "f1_ci": [
+      0.0592,
+      0.1538
+     ],
+     "fpr": 0.0333,
+     "fpr_ci": [
+      0.0143,
+      0.0757
+     ]
+    },
+    "p50_ms": 153.58,
+    "p95_ms": 521.54,
+    "recall_by_position": {
+     "end": {
+      "n": 100,
+      "k": 8,
+      "rate": 0.08,
+      "ci": [
+       0.0411,
+       0.15
+      ]
+     },
+     "middle": {
+      "n": 100,
+      "k": 9,
+      "rate": 0.09,
+      "ci": [
+       0.0481,
+       0.1623
+      ]
+     },
+     "start": {
+      "n": 100,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.037
+      ]
+     }
+    },
+    "recall_by_task": {
+     "email": {
+      "n": 100,
+      "k": 17,
+      "rate": 0.17,
+      "ci": [
+       0.1089,
+       0.2555
+      ]
+     },
+     "table": {
+      "n": 200,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0188
+      ]
+     }
+    },
+    "recall_by_attack_category": {
+     "Base Encoding": {
+      "n": 20,
+      "k": 2,
+      "rate": 0.1,
+      "ci": [
+       0.0279,
+       0.301
+      ]
+     },
+     "Business Intelligence": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Conversational Agent": {
+      "n": 20,
+      "k": 2,
+      "rate": 0.1,
+      "ci": [
+       0.0279,
+       0.301
+      ]
+     },
+     "Emoji Substitution": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Entertainment": {
+      "n": 20,
+      "k": 3,
+      "rate": 0.15,
+      "ci": [
+       0.0524,
+       0.3604
+      ]
+     },
+     "Information Dissemination": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Language Translation": {
+      "n": 20,
+      "k": 1,
+      "rate": 0.05,
+      "ci": [
+       0.0089,
+       0.2361
+      ]
+     },
+     "Marketing & Advertising": {
+      "n": 20,
+      "k": 1,
+      "rate": 0.05,
+      "ci": [
+       0.0089,
+       0.2361
+      ]
+     },
+     "Misinformation & Propaganda": {
+      "n": 20,
+      "k": 1,
+      "rate": 0.05,
+      "ci": [
+       0.0089,
+       0.2361
+      ]
+     },
+     "Research Assistance": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Reverse Text": {
+      "n": 20,
+      "k": 3,
+      "rate": 0.15,
+      "ci": [
+       0.0524,
+       0.3604
+      ]
+     },
+     "Scams & Fraud": {
+      "n": 20,
+      "k": 2,
+      "rate": 0.1,
+      "ci": [
+       0.0279,
+       0.301
+      ]
+     },
+     "Sentiment Analysis": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     },
+     "Substitution Ciphers": {
+      "n": 20,
+      "k": 2,
+      "rate": 0.1,
+      "ci": [
+       0.0279,
+       0.301
+      ]
+     },
+     "Task Automation": {
+      "n": 20,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1611
+      ]
+     }
+    }
+   },
+   "cskh_vi": {
+    "p50_ms": 53.31,
+    "p95_ms": 67.16,
+    "fpr_hard_benign": {
+     "n": 84,
+     "k": 2,
+     "rate": 0.0238,
+     "ci": [
+      0.0066,
+      0.0827
+     ]
+    },
+    "fpr_hard_benign_by_source": {
+     "chat": {
+      "n": 34,
+      "k": 1,
+      "rate": 0.0294,
+      "ci": [
+       0.0052,
+       0.1492
+      ]
+     },
+     "order_note": {
+      "n": 22,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1487
+      ]
+     },
+     "review": {
+      "n": 28,
+      "k": 1,
+      "rate": 0.0357,
+      "ci": [
+       0.0063,
+       0.1771
+      ]
+     }
+    },
+    "fpr_clean": {
+     "n": 57,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0631
+     ]
+    },
+    "fpr_clean_by_source": {
+     "chat": {
+      "n": 35,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.0989
+      ]
+     },
+     "review": {
+      "n": 22,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.1487
+      ]
+     }
+    },
+    "false_positive_examples": [
+     {
+      "case_id": "hb-rv-33-base",
+      "detectors": [
+       "classifier:deberta"
+      ]
+     },
+     {
+      "case_id": "hb-ch-21-base",
+      "detectors": [
+       "classifier:deberta"
+      ]
+     }
+    ]
+   },
+   "jbb": {
+    "overall": {
+     "n_pos": 286,
+     "n_neg": 100,
+     "tp": 37,
+     "fp": 0,
+     "precision": 1.0,
+     "recall": 0.1294,
+     "recall_ci": [
+      0.0953,
+      0.1732
+     ],
+     "f1": 0.2291,
+     "f1_ci": [
+      0.1678,
+      0.2891
+     ],
+     "fpr": 0.0,
+     "fpr_ci": [
+      0.0,
+      0.037
+     ]
+    },
+    "recall_jailbroken_only": {
+     "n": 152,
+     "k": 22,
+     "rate": 0.1447,
+     "ci": [
+      0.0976,
+      0.2094
+     ]
+    },
+    "flag_rate_harmful_bare": {
+     "n": 100,
+     "k": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.037
+     ]
+    },
+    "p50_ms": 62.09,
+    "p95_ms": 111.38,
+    "recall_by_method": {
+     "GCG/llama-2-7b-chat-hf": {
+      "n": 100,
+      "k": 14,
+      "rate": 0.14,
+      "ci": [
+       0.0853,
+       0.2214
+      ]
+     },
+     "GCG/vicuna-13b-v1.5": {
+      "n": 100,
+      "k": 14,
+      "rate": 0.14,
+      "ci": [
+       0.0853,
+       0.2214
+      ]
+     },
+     "PAIR/llama-2-7b-chat-hf": {
+      "n": 4,
+      "k": 0,
+      "rate": 0.0,
+      "ci": [
+       0.0,
+       0.4899
+      ]
+     },
+     "PAIR/vicuna-13b-v1.5": {
+      "n": 82,
+      "k": 9,
+      "rate": 0.1098,
+      "ci": [
+       0.0588,
+       0.1956
+      ]
+     }
+    }
+   }
+  }
+ }
+}

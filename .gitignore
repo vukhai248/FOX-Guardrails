@@ -48,3 +48,6 @@ hermess/
 # Bản build slide (file nặng, tạo lại được)
 docs/presentations/output/
 docs/presentations/.build*/
+
+# Lớp 5: model classifier tải về (không commit)
+models/
