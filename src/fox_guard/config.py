@@ -18,6 +18,15 @@ class NormalizeConfig(_ConfigModel):
 class ClassifierConfig(_ConfigModel):
     primary: str = "meta-llama/Llama-Prompt-Guard-2-86M"
     secondary: str = "protectai/deberta-v3-base-prompt-injection-v2"
+    # Lớp 5. Off by default: thresholds must be chosen on the dev split before use (Phần C §2.5).
+    enabled: bool = False
+    use: str = Field(default="secondary", pattern="^(primary|secondary)$")
+    # Local copies only (no network at runtime): <model_dir>/<model id with "/" → "-">.
+    model_dir: str = "models"
+    device: str = "cpu"
+    window_tokens: int = Field(default=512, ge=32, le=512)
+    overlap_tokens: int = Field(default=64, ge=0, le=256)
+    stations: list[str] = Field(default_factory=lambda: ["input", "context"])
     theta_low: float | None = Field(default=None, ge=0, le=1)
     theta_high: float | None = Field(default=None, ge=0, le=1)
 
@@ -26,6 +35,11 @@ class ClassifierConfig(_ConfigModel):
         if self.theta_low is not None and self.theta_high is not None and self.theta_low > self.theta_high:
             raise ValueError("theta_low must not exceed theta_high")
         return self
+
+
+class RulesConfig(_ConfigModel):
+    # Off only for the ablation arm M (classifier without Lớp 2 rules); always on in production.
+    enabled: bool = True
 
 
 class LinksConfig(_ConfigModel):
@@ -62,6 +76,7 @@ class GuardConfig(_ConfigModel):
     config_version: str = "0.1.0"
     normalize: NormalizeConfig = Field(default_factory=NormalizeConfig)
     classifier: ClassifierConfig = Field(default_factory=ClassifierConfig)
+    rules: RulesConfig = Field(default_factory=RulesConfig)
     pii: PiiConfig = Field(default_factory=PiiConfig)
     links: LinksConfig = Field(default_factory=LinksConfig)
     policy: PolicyConfig = Field(default_factory=PolicyConfig)

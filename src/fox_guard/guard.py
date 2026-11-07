@@ -134,10 +134,17 @@ class Guard:
         output_failed = False
         normalized = self._normalize(text)
         findings = list(normalized.signals)
-        try:
-            findings.extend(run_rules(normalized, station))
-        except Exception:  # B6.6: a failing detector degrades, it never blocks everything
-            degraded = True
+        if self.config.rules.enabled:
+            try:
+                findings.extend(run_rules(normalized, station))
+            except Exception:  # B6.6: a failing detector degrades, it never blocks everything
+                degraded = True
+        clf = self.config.classifier
+        if clf.enabled and station in clf.stations:
+            try:
+                findings.extend(self._classify(normalized))
+            except Exception:  # missing weights or a model error: degrade, never block (B6.6)
+                degraded = True
         working, link_edited = normalized.clean, False
         if station == "output":
             try:
@@ -201,6 +208,25 @@ class Guard:
         if self.audit is not None:
             self._audit(decision, ctx, station, normalized)
         return decision
+
+    def _classify(self, normalized) -> list[Finding]:
+        """Lớp 5: score clean text plus any hidden/decoded text; thresholds come from the dev split.
+
+        >= theta_high → medium; [theta_low, theta_high) → low. A classifier finding alone never
+        exceeds medium; the policy raises it to high only together with a rule (B6.1)."""
+        from .detectors.classifier import get_classifier
+
+        cfg = self.config.classifier
+        if cfg.theta_low is None or cfg.theta_high is None:
+            raise ValueError("classifier enabled without calibrated theta_low/theta_high")
+        model = get_classifier(cfg)
+        texts = [normalized.clean, normalized.hidden_tags, *(child.clean for child in normalized.decoded)]
+        score = max(model.score(t) for t in texts if t)
+        if score < cfg.theta_low:
+            return []
+        severity = "medium" if score >= cfg.theta_high else "low"
+        return [Finding(detector=f"classifier:{model.short_name}", kind="injection", severity=severity,
+                        score=round(score, 4), evidence=f"score {score:.3f}")]
 
     def _audit(self, decision: Decision, ctx: GuardContext, station: str, normalized) -> None:
         from .pii.policy import redact_text

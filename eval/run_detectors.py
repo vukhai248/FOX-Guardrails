@@ -44,8 +44,23 @@ class NoNormGuard(Guard):
         return raw_view(text[: self.config.normalize.max_chars])
 
 
-def make_guard(arm: str) -> Guard:
-    config = GuardConfig.model_validate(CONFIG)
+ARMS = ["R", "R-noNorm", "M-deberta", "H-deberta"]
+
+
+def classifier_config(device: str) -> dict:
+    """Thresholds chosen on dev by eval/calibrate.py; the test split never sets them."""
+    t = json.loads((REPORTS / "thresholds_deberta.json").read_text("utf-8"))
+    return {"enabled": True, "use": "secondary", "device": device, "theta_low": t["theta_low"],
+            "theta_high": t["theta_high"]}
+
+
+def make_guard(arm: str, device: str = "cpu") -> Guard:
+    data = dict(CONFIG)
+    if arm.startswith(("M-", "H-")):
+        data["classifier"] = classifier_config(device)
+    if arm.startswith("M-"):
+        data["rules"] = {"enabled": False}  # "model only": no Lớp 2 rules (Phần C §3.1, arm G3)
+    config = GuardConfig.model_validate(data)
     return NoNormGuard(config) if arm == "R-noNorm" else Guard(config)
 
 
@@ -174,21 +189,25 @@ def eval_openpii(arm: str) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--split", choices=["dev", "test"], required=True)
-    parser.add_argument("--arm", default="all", choices=["R", "R-noNorm", "all"])
+    parser.add_argument("--arm", default="all", choices=[*ARMS, "all"])
+    parser.add_argument("--device", default="cpu", help="classifier device; latency in reports is per device")
+    parser.add_argument("--tag", default="", help="suffix for the output file name")
     args = parser.parse_args()
-    arms = ["R", "R-noNorm"] if args.arm == "all" else [args.arm]
-    out = {"date": date.today().isoformat(), "split": args.split, "arms": {}}
+    arms = ARMS if args.arm == "all" else [args.arm]
+    out = {"date": date.today().isoformat(), "split": args.split, "device": args.device, "arms": {}}
     for arm in arms:
-        guard = make_guard(arm)
-        res = {"bipia": eval_bipia(guard, args.split), "cskh_vi": eval_cskh(guard, args.split),
-               "pii_synthetic": eval_pii(arm, args.split)}
+        guard = make_guard(arm, args.device)
+        res = {"bipia": eval_bipia(guard, args.split), "cskh_vi": eval_cskh(guard, args.split)}
+        if not arm.startswith(("M-", "H-")):  # PII does not depend on the classifier
+            res["pii_synthetic"] = eval_pii(arm, args.split)
         if args.split == "test":  # JBB and openpii are test-only
             res["jbb"] = eval_jbb(guard)
-            res["openpii_vi"] = eval_openpii(arm)
+            if not arm.startswith(("M-", "H-")):
+                res["openpii_vi"] = eval_openpii(arm)
         out["arms"][arm] = res
         print(f"{arm}: done")
     REPORTS.mkdir(parents=True, exist_ok=True)
-    target = REPORTS / f"detector_{out['date']}_{args.split}.json"
+    target = REPORTS / f"detector_{out['date']}_{args.split}{args.tag}.json"
     target.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print(target)
 

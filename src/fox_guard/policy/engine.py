@@ -1,9 +1,9 @@
 """Lớp 4 policy (plan B6.1–B6.2): merge findings into one risk, then pick an action per station.
 
 PII never drives blocking (it is masked by Lớp 3). Only injection-like signals, solicitation, links and
-unknown placeholders count towards risk. Without the Lớp 5 classifier, "two independent signals" from
-B6.1 cannot happen yet, so rule severity is used as is: structural/concealed rules are high, the rest
-medium.
+unknown placeholders count towards risk. Rule severity is used as is (structural/concealed rules are
+high, the rest medium); with the Lớp 5 classifier on, a medium rule plus a classifier score >= theta_low
+becomes high, and the classifier alone never exceeds medium (see merge_risk).
 """
 
 from dataclasses import dataclass, field
@@ -30,8 +30,17 @@ class Verdict:
 
 
 def merge_risk(findings: list[Finding]) -> str:
+    """Highest severity, plus the B6.1 combination (docs/DU-AN.md §4.4.3):
+
+    a medium rule AND a classifier score >= theta_low (any classifier finding) → high.
+    A classifier finding alone stays at its own level (medium at most): it never blocks alone."""
     risky = [f for f in findings if f.kind != "pii" or f.detector == "pii:unknown_placeholder"]
-    return max((f.severity for f in risky), key=_RANK.__getitem__, default="low")
+    risk = max((f.severity for f in risky), key=_RANK.__getitem__, default="low")
+    rule_medium = any(f.detector.startswith("rules:") and f.severity == "medium" for f in risky)
+    classifier_hit = any(f.detector.startswith("classifier:") for f in risky)
+    if rule_medium and classifier_hit:
+        return "high"
+    return risk
 
 
 def decide(station: str, findings: list[Finding], text: str, pii_changed: bool, link_edited: bool,
