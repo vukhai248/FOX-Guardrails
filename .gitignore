@@ -29,6 +29,7 @@ data/raw/
 data/processed/
 eval/reports/*.json
 eval/reports/*.md
+!eval/reports/SUMMARY.md
 
 # Notebook outputs ngoài ý muốn
 .ipynb_checkpoints/
