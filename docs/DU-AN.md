@@ -3,7 +3,7 @@
 
 > **File chính của đồ án.** Đọc file này trước. Ở đây có đủ: kiến trúc, công nghệ, danh sách tính năng, schema dữ liệu, mô hình tấn công, các lớp rào chắn, thực nghiệm, lộ trình và **bảng tick tiến độ**.
 > Các file trong `docs/plans/*` là đặc tả gốc cho agent đọc khi code. File này là bản tổng hợp cho bạn học và quản lý.
-> Cập nhật lần cuối: **08/11/2026** (sau C3, C3-3 và sửa test audit, FOX #12–#14). Người cập nhật: Claude, sau mỗi lần nghiệm thu.
+> Cập nhật lần cuối: **08/11/2026** (sau C4 tổng hợp kết quả). Người cập nhật: Claude, sau mỗi lần nghiệm thu.
 
 **Ký hiệu trạng thái dùng trong mọi bảng:**
 ✅ xong và đã nghiệm thu · 🟡 đang làm / xong nhưng chưa nghiệm thu · ⏳ đã lên kế hoạch, chưa làm · ⛔ bị chặn (chờ điều kiện) · ✂️ có thể cắt nếu trễ
@@ -27,11 +27,11 @@
 | **FOX-Guard Lớp 4 — Kiểm đầu ra + policy + audit** | ✅ | 100% | Guard bắt đầu **chặn thật**. Held-out độc lập (OpenCode, 140 câu): **bot đòi bí mật 90%, link 100%, câu hợp lệ cho qua 97%**. Bộ kiểm hệ thống S1–S5: 0 lỗi. Đã merge `main` (PR #2) |
 | FOX-Guard Lớp 5 — Classifier + khoanh vùng | 🟡 | 80% | **Prompt Guard 2 bật** trong `fox-guard.yaml` (PR #9): JBB bắt **83,6%** (deberta 12,9%), BIPIA **11,7%** (deberta 5,7%), chặn nhầm CSKH tiếng Việt **0%**; p95 ~280 ms trên GPU. Ngân sách 8 cửa sổ/lượt (tệ nhất 1,5 s GPU, 7 s CPU), bỏ chấm ROT13 vô nghĩa (số v1 có nhiễu, đã thay). Khoanh vùng, datamarking **tắt mặc định**. C3 (benchmark ngoài): LLMail recall **46,8%** (luật 26,2%), FPR email thật 0%, over-defence NotInject **15%** (chỉ `review`). Tài liệu học `docs/hoc/lop-5-classifier-khoanh-vung.md` (PR #11). **Còn:** B4.2/B4.3 tuỳ chọn; giảm over-defence (backlog C3-1) |
 | FOX-Guard Lớp 6 — Tích hợp web, sidecar, proxy, dashboard | 🟡 | 60% | **Plug-and-play đã merge** (FOX #10, web #1): `fox-guard serve` + `FOX_GUARD_MODE=off\|inproc\|sidecar`, fail-closed (kiểm thật khi sidecar tắt). Web dùng **TokenHarbor DeepSeek v4.1 Flash** làm LLM chính, Gemini dự phòng (web #2); OpenRouter (embedding/rerank) xoay 2 key — chỉ ở máy. Chạy thật: giá, so sánh, chính sách đúng; tấn công bị chặn trước LLM. `product_reviews` hết lặp với DeepSeek (web #3). Tài liệu học `docs/hoc/lop-6-tich-hop.md` (PR #11). **08/11:** tài khoản TokenHarbor đầu bị khoá (bộ lọc chặn prompt tấn công của C3) → đã thay key; web vẫn chạy được nhờ Gemini dự phòng. **Còn:** proxy (tuỳ chọn), dashboard |
-| Thực nghiệm (Phần C) | 🟡 | 80% | **C1 + C2 + C3 xong** (arm R, M/H-deberta, M/H-pg2). Luật Lớp 1–4: BIPIA/JBB 0%, chặn nhầm 0%; PII VI F1 **0,95**; PG2: JBB **83,6%**, BIPIA **11,7%**, chặn nhầm CSKH **0%** (`eval/reports/lop5-pg2_2026-11-07.md`). **C3** (`eval/reports/c3_2026-11-08.md`): CyberSecEval 301 ca trên Gemini 3.5 Flash-Lite — ASR G0 **21,6%** → G2 19,9% (p=0,38) → G4 **16,6%** (p=0,02); indirect 49→38%, tiếng Việt 24→12%; guard p50 135 ms. **C3-3:** OUTPUT chặn nhầm câu từ chối của bot (cả tiếng Việt "không được phép cung cấp mã OTP") → đã sửa, 26 → 11 ca, held-out không đổi. **Còn:** C4 tổng hợp; utility e2e (C3-4); bộ tấn công tiếng Việt (C1-OPEN) |
+| Thực nghiệm (Phần C) | 🟡 | 90% | **C4 xong:** `eval/reports/SUMMARY.md` sinh tự động từ dữ liệu (`eval/summary.py`), 5 biểu đồ PNG + SVG, McNemar từng cặp arm; test chặn lệch số. McNemar mới: PG2 hơn deberta có ý nghĩa (JBB p < 0,001, BIPIA p = 0,015) nhưng chặn nhầm JBB vô hại nhiều hơn (20 vs 0, p < 0,001); e2e G4 so với G2 p = 0,12 (không có ý nghĩa). **C1 + C2 + C3 xong** (arm R, M/H-deberta, M/H-pg2). Luật Lớp 1–4: BIPIA/JBB 0%, chặn nhầm 0%; PII VI F1 **0,95**; PG2: JBB **83,6%**, BIPIA **11,7%**, chặn nhầm CSKH **0%** (`eval/reports/lop5-pg2_2026-11-07.md`). **C3** (`eval/reports/c3_2026-11-08.md`): CyberSecEval 301 ca trên Gemini 3.5 Flash-Lite — ASR G0 **21,6%** → G2 19,9% (p=0,38) → G4 **16,6%** (p=0,02); indirect 49→38%, tiếng Việt 24→12%; guard p50 135 ms. **C3-3:** OUTPUT chặn nhầm câu từ chối của bot (cả tiếng Việt "không được phép cung cấp mã OTP") → đã sửa, 26 → 11 ca, held-out không đổi. **Còn:** utility e2e (C3-4); bộ tấn công tiếng Việt (C1-OPEN) |
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
-| **Toàn đồ án (ước tính)** | 🟡 | **~64%** | Lịch: 03/11 → 07/12/2026 |
+| **Toàn đồ án (ước tính)** | 🟡 | **~67%** | Lịch: 03/11 → 07/12/2026 |
 
-**Việc tiếp theo:** (1) **C4** `SUMMARY.md` gom C2 + C3 (bảng, biểu đồ, McNemar); (2) utility e2e trên câu CSKH vô hại (C3-4); (3) dashboard Streamlit cho demo; (4) báo cáo + slide từ cuối tháng 11.
+**Việc tiếp theo:** (1) utility e2e trên câu CSKH vô hại (C3-4); (2) dashboard Streamlit + chạy 5 kịch bản demo; (3) báo cáo + slide từ cuối tháng 11 (Chương 4 lấy từ `eval/reports/SUMMARY.md`).
 
 ---
 
@@ -888,7 +888,7 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 | [x] | C1 | Tải BIPIA/JBB/openpii; `build.py` bộ CSKH + PII; chia dev/test; `SPLIT_REPORT.md` (PR #5, `9ea2858`). Mẫu gốc do tác tử độc lập viết. **Ca tấn công tiếng Việt hoãn**: bạn chọn tạm BIPIA + JBB | Bạn duyệt toàn bộ mẫu gốc (còn chờ) |
 | [x] | C2 | `run_detectors.py` + `metrics.py`: bảng detector-level 3 bộ, đủ arm R, M/H-deberta, M/H-pg2 (PR #6, số PG2 trong `eval/reports/lop5-pg2_2026-11-07.md`) | Sau Lớp 2–5 |
 | [x] | C3 | `eval/c3_detectors.py` + `eval/c3_e2e.py` (CyberSecEval G0/G2/G4, judge + McNemar), NotInject/LLMail/MultiJail ở mức detector (`eval/reports/c3_2026-11-08.md`), PR #12. Sửa C3-3: OUTPUT không chặn câu từ chối của bot, 26 → 11 ca (PR #13). Test quét rò rỉ audit bỏ qua timestamp/hex id, hết chập chờn trên CI (PR #14) | Sau Lớp 6 |
-| [ ] | C4 | `SUMMARY.md`: bảng, biểu đồ, McNemar | |
+| [x] | C4 | `eval/reports/SUMMARY.md` sinh bởi `eval/summary.py` (bảng, 5 biểu đồ, McNemar); kết quả từng ca ở `eval/reports/cases/` (chạy lại test detector 08/11 chỉ để lưu từng ca, khớp 100% số v2); `tests/test_summary.py` chặn lệch số | |
 | [ ] | C5 ✂️ | garak/promptfoo qua proxy | Sau B8 |
 
 **Phần A — Web testbed** (chỉ còn phần đóng)

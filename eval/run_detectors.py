@@ -7,7 +7,10 @@ Arms available before Lớp 5:
 A case is "flagged" when the guard's action is `block` or `review` (for INPUT/CONTEXT: what reaches
 the LLM is refused or hardened). PII is measured on the recognizer itself (`detect_pii`).
 
-python -X utf8 -m eval.run_detectors --split dev|test [--arm R|R-noNorm|all]
+python -X utf8 -m eval.run_detectors --split dev|test [--arm R|R-noNorm|all] [--cases-out DIR]
+
+--cases-out writes one JSONL per arm with each case's id, set, label and decision, so paired tests
+(McNemar between arms, used by eval/summary.py) can be computed. It does not change any metric.
 """
 
 import argparse
@@ -28,6 +31,7 @@ from .metrics import binary, percentile, rate, span_prf
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS = ROOT / "eval" / "reports"
+CASE_LOG: list[dict] = []  # filled by eval_* when --cases-out is given; one row per scored case
 CONFIG = {"links": {"allowlist": ["shop.example"]}}
 
 
@@ -87,9 +91,15 @@ def latency(results: list[dict]) -> dict:
     return {"p50_ms": round(percentile(ms, 0.5), 2), "p95_ms": round(percentile(ms, 0.95), 2)}
 
 
+def log_cases(name: str, results: list[dict]) -> None:
+    CASE_LOG.extend({"set": name, "case_id": r["case_id"], "label": r["label"], "flagged": r["flagged"],
+                     "action": r["action"]} for r in results)
+
+
 def eval_bipia(guard: Guard, split: str) -> dict:
     results = run_cases(guard, read(ROOT / "data/processed/bipia" / f"{split}.jsonl"),
                         lambda c: "context", lambda c: c["text"])
+    log_cases("bipia", results)
     report = {"overall": binary([r["label"] == "attack" for r in results], [r["flagged"] for r in results]).as_dict(),
               **latency(results)}
     for key in ("position", "task", "attack_category"):
@@ -103,6 +113,7 @@ def eval_bipia(guard: Guard, split: str) -> dict:
 
 def eval_jbb(guard: Guard) -> dict:
     results = run_cases(guard, read(ROOT / "data/processed/jbb/test.jsonl"), lambda c: "input", lambda c: c["text"])
+    log_cases("jbb", results)
     main = [r for r in results if r["label"] in ("attack", "benign")]
     report = {"overall": binary([r["label"] == "attack" for r in main], [r["flagged"] for r in main]).as_dict(),
               "recall_jailbroken_only": rate([r["flagged"] for r in results if r["label"] == "attack" and r["jailbroken"]]),
@@ -120,6 +131,7 @@ def eval_cskh(guard: Guard, split: str) -> dict:
     cases = [c for c in read(ROOT / "eval/datasets/vi_cskh/cases.jsonl") if c["split"] == split]
     results = run_cases(guard, cases, lambda c: "input" if c["source"] == "chat" else "context",
                         lambda c: c["user_query"] if c["source"] == "chat" else c["carrier_text"])
+    log_cases("cskh_vi", results)
     report = {**latency(results)}
     for label in ("hard_benign", "clean", "attack"):
         subset = [r for r in results if r["label"] == label]
@@ -193,6 +205,7 @@ def main() -> None:
     parser.add_argument("--arm", default="all", choices=[*ARMS, "all"])
     parser.add_argument("--device", default="cpu", help="cpu|cuda|groq (groq = PG2 via API: network latency)")
     parser.add_argument("--tag", default="", help="suffix for the output file name")
+    parser.add_argument("--cases-out", type=Path, default=None, help="dir for per-case JSONL")
     args = parser.parse_args()
     if args.device == "groq":  # eval-only API backend for Prompt Guard 2 (eval/groq_pg2.py)
         from .groq_pg2 import register
@@ -210,6 +223,11 @@ def main() -> None:
             if not arm.startswith(("M-", "H-")):
                 res["openpii_vi"] = eval_openpii(arm)
         out["arms"][arm] = res
+        if args.cases_out:
+            args.cases_out.mkdir(parents=True, exist_ok=True)
+            path = args.cases_out / f"detector_{args.split}_{arm}.jsonl"
+            path.write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in CASE_LOG), "utf-8")
+        CASE_LOG.clear()
         print(f"{arm}: done")
     REPORTS.mkdir(parents=True, exist_ok=True)
     target = REPORTS / f"detector_{out['date']}_{args.split}{args.tag}.json"
