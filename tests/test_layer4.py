@@ -1,6 +1,7 @@
 """Lớp 4: solicitation, link guard, per-station policy, redacted audit, degraded mode, audit CLI."""
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -148,7 +149,11 @@ def test_audit_never_stores_raw_pii(tmp_path):
     # Values of 6+ chars: scan the raw bytes of both files. Shorter ones (4–5 digit OTPs) occur by
     # chance inside floats and hashes (seen: "2184" in latency 1.2917000021843705), so they are
     # scanned in every text-bearing field instead.
-    blobs = {"sqlite": db.read_bytes(), "jsonl": out.read_bytes()}
+    # Timestamps carry 6-digit microseconds and ids/hashes are long hex runs: a 6-digit OTP sample
+    # ("961426") matched one of them by chance on CI (~1 % of runs). They are not text the guard
+    # copied, so they are blanked before the scan; a leaked value sits in text, never inside them.
+    noise = re.compile(rb"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?(?:\+00:00|Z)?|[0-9a-f]{16,}")
+    blobs = {"sqlite": noise.sub(b" ", db.read_bytes()), "jsonl": noise.sub(b" ", out.read_bytes())}
     leaks = [(name, value) for name, blob in blobs.items() for value in values
              if len(value) >= 6 and value.encode("utf-8") in blob]
     rows = [json.loads(line) for line in out.read_text("utf-8").splitlines()]
