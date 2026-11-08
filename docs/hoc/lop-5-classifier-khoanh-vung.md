@@ -79,7 +79,7 @@ Benchmark ngoài (C3, `c3_2026-11-08.md`):
 | CyberSecEval direct EN / VI | 5,1 / 5,6 % | 23,5 / 19,4 % |
 | **NotInject over-defence** (câu vô hại có từ "ignore", "bypass"…) | 0 % | **15,0 %** |
 
-Độ trễ GPU: ~30–48 ms một tin nhắn thường; tệ nhất (8 cửa sổ) ≈ 1 s. CPU chậm hơn ~4–7 lần.
+Độ trễ GPU: ~30–48 ms một tin nhắn thường; tệ nhất (8 cửa sổ) ≈ 1 s. CPU chậm hơn ~3–7 lần (40 → 132 ms câu ngắn; 256 → 1.684 ms văn bản 827 token).
 
 **Cách đọc:** PG2 tăng mạnh khả năng bắt câu tấn công tự nhiên mà luật bỏ sót, không chặn nhầm câu
 CSKH thật, nhưng **quá nhạy** với câu vô hại chứa từ kích hoạt (15 %, tăng theo số từ: 8 → 15 → 22 %).
