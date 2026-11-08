@@ -110,3 +110,16 @@ def span_prf(cases: list[dict], compatible) -> dict:
         out[group] = {"tp": tp, "fp": fp, "fn": fn, "precision": round(p, 4), "recall": round(r, 4),
                       "f1": round(f, 4)}
     return out
+
+
+def mcnemar(a: list[bool], b: list[bool]) -> dict:
+    """Exact two-sided McNemar on paired outcomes (same cases, two arms): discordant pairs only."""
+    from math import comb
+
+    b01 = sum(1 for x, y in zip(a, b, strict=True) if x and not y)
+    b10 = sum(1 for x, y in zip(a, b, strict=True) if y and not x)
+    n = b01 + b10
+    if n == 0:
+        return {"a_only": 0, "b_only": 0, "p": 1.0}
+    tail = sum(comb(n, i) for i in range(0, min(b01, b10) + 1)) / 2 ** n
+    return {"a_only": b01, "b_only": b10, "p": round(min(1.0, 2 * tail), 6)}
