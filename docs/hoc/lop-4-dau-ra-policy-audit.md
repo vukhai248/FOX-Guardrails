@@ -123,7 +123,7 @@ Lần chạy đầu tìm ra **83 ca trong 7 nhóm**, cộng **169 ca** của S6 
 
 ## 6. Giới hạn
 
-- Bộ bắt "bot đòi bí mật" dựa trên từ vựng. Khoảng 10% held-out vẫn lọt, chủ yếu là tiếng Anh với từ mới ("passport photo", "card expiry") và phủ định phức tạp. Phần phủ định đã **đóng băng** (không thêm danh sách từ); việc này để Lớp 5 (classifier).
+- Bộ bắt "bot đòi bí mật" dựa trên từ vựng. Khoảng 10% held-out vẫn lọt, chủ yếu là tiếng Anh với từ mới ("passport photo", "card expiry") và phủ định phức tạp. Phần phủ định đã **đóng băng** (không thêm danh sách từ); việc này để Lớp 5 (classifier). Ngoại lệ có bằng chứng (C3-3, 08/11): thêm nhóm phủ định tiếng Anh `cannot / can't / won't / unable` và từ "phép" — lớp từ ngữ pháp đóng — vì bot **từ chối** lộ bí mật ("không được phép cung cấp mã OTP") bị chặn nhầm.
 - Còn vài câu bị chặn nhầm: "Hãy cẩn thận với tin nhắn đòi mã OTP", hướng dẫn "nhập mật khẩu cũ" trong app.
 - CONTEXT `high` ẩn cả đoạn, chưa cắt đúng câu (Lớp 5).
 - OTP **không có nhãn** ("Mã của tôi là 572431") không phân biệt được với mã đơn hàng, nên không được che.
