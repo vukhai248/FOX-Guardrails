@@ -3,7 +3,7 @@
 
 > **File chính của đồ án.** Đọc file này trước. Ở đây có đủ: kiến trúc, công nghệ, danh sách tính năng, schema dữ liệu, mô hình tấn công, các lớp rào chắn, thực nghiệm, lộ trình và **bảng tick tiến độ**.
 > Các file trong `docs/plans/*` là đặc tả gốc cho agent đọc khi code. File này là bản tổng hợp cho bạn học và quản lý.
-> Cập nhật lần cuối: **07/11/2026** (sau Lớp 4). Người cập nhật: Claude, sau mỗi lần nghiệm thu.
+> Cập nhật lần cuối: **08/11/2026** (sau C3, C3-3 và sửa test audit, FOX #12–#14). Người cập nhật: Claude, sau mỗi lần nghiệm thu.
 
 **Ký hiệu trạng thái dùng trong mọi bảng:**
 ✅ xong và đã nghiệm thu · 🟡 đang làm / xong nhưng chưa nghiệm thu · ⏳ đã lên kế hoạch, chưa làm · ⛔ bị chặn (chờ điều kiện) · ✂️ có thể cắt nếu trễ
@@ -841,8 +841,8 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 | Tuần | Kế hoạch | Thực tế | Mốc kiểm | Trạng thái mốc |
 | --- | --- | --- | --- | --- |
 | **T1** 03–09/11 | Web A0–A7; FOX B0–B3; dữ liệu C1 | Web xong sớm (03/11). FOX: B0, B1, B2, 1b, **B3** xong (Lớp 1 + 2), đã push, CI xanh | Web chạy + 1 đơn Stripe có webhook; Lớp 1 tái lập đúng 6 ca evidence Unicode (câu tấn công hiện ra trong bản đọc để Lớp 2 soi) | ✅ ✅ |
-| **T2** 10–16/11 | B4 classifier, B5 PII, B6 policy + audit, B7 sidecar; C1–C2 | — | **Gate:** có bảng P/R/F1/FPR detector-level cho R, M, H. Chưa có thì cắt B8 và judge | ⏳ |
-| **T3** 17–23/11 | B9 cắm web, B10 dashboard, B8 proxy, judge; C3 | — | Demo 5 kịch bản chạy; có số ASR G0 vs G4 | ⏳ |
+| **T2** 10–16/11 | B4 classifier, B5 PII, B6 policy + audit, B7 sidecar; C1–C2 | **Làm sớm trong T1 (05–08/11):** Lớp 3 (B5), Lớp 4 (B6, PR #2), Lớp 5 (B4.1, B6.3–6.4, PR #7–#9), sidecar B7 (PR #10); C1 (PR #5), C2 (PR #6) | **Gate:** có bảng P/R/F1/FPR detector-level cho R, M, H. Chưa có thì cắt B8 và judge | ✅ (đạt 07/11: `eval/reports/lop5-pg2_2026-11-07.md`) |
+| **T3** 17–23/11 | B9 cắm web, B10 dashboard, B8 proxy, judge; C3 | **Một phần làm sớm (07–08/11):** B9 cắm web (web #1–#3), C3 (PR #12, #13). Còn B10 dashboard; B8 proxy và judge ✂️ | Demo 5 kịch bản chạy; có số ASR G0 vs G4 | 🟡 Đã có số ASR G0 vs G4 (`eval/reports/c3_2026-11-08.md`); demo 5 kịch bản chưa chạy |
 | **T4** 24–30/11 | Sửa lỗi, tối ưu; C3 đầy đủ + C4 | — | Báo cáo đủ chương + slide nháp | ⏳ |
 | **Đệm** 01–07/12 | Chạy bù, tập vấn đáp, tập demo | — | — | ⏳ |
 
@@ -871,12 +871,13 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 | [x] | B6.6 | Chế độ giảm cấp (che dự phòng; audit không lưu text khi PII lỗi) | 4 | Claude | PR #2 | |
 | [x] | — | Bộ kiểm hệ thống S1–S5 (renderer thật, WHATWG, giải mã lặp, quan hệ biến đổi, câu hợp lệ); held-out OpenCode 140 câu; merge `main` | 4 | Claude, OpenCode | `a50fd0b` | |
 | [ ] | — | Bạn đọc tài liệu học Lớp 3 + Lớp 4 | 3, 4 | Bạn | | |
-| [ ] | B4.1 | Classifier PG2 + deberta, ngưỡng trên dev | 5 | Claude | ⛔ license + tập dev | `lop-5-classifier-khoanh-vung.md` |
-| [ ] | B6.3–6.4 | Khoanh vùng cắt câu + datamarking | 5 | Claude | | |
+| [x] | B4.1 | Classifier PG2 + deberta, ngưỡng trên dev; PG2 bật mặc định, ngân sách 8 cửa sổ/lượt | 5 | Claude | PR #7, #8, #9 (`6008108`) | ✅ `lop-5-classifier-khoanh-vung.md` (PR #11) |
+| [x] | B6.3–6.4 | Khoanh vùng cắt câu + datamarking (có code, **tắt mặc định**) | 5 | Claude | PR #7 (`bffb46d`) | |
 | [ ] | B4.2 ✂️ | Điểm theo phiên | 5 | Claude | | |
 | [ ] | B4.3 ✂️ | LLM judge | 5 | Claude | | |
-| [ ] | B7 | Sidecar + ví dụ SDK | 6 | Claude | | `lop-6-tich-hop.md` |
-| [ ] | B9 | Cắm vào web qua 3 hook | 6 | Claude | | |
+| [x] | B7 | Sidecar `fox-guard serve` (X-FOX-Key, loopback khi không có key, warm-up) | 6 | Claude | PR #10 (`23dbdf6`) | ✅ `lop-6-tich-hop.md` (PR #11) |
+| [x] | B9 | Cắm vào web qua 3 hook: `FOX_GUARD_MODE=off\|inproc\|sidecar`, fail-closed; LLM chính TokenHarbor, Gemini dự phòng; `product_reviews` hết lặp | 6 | Claude | web #1 (`5fefd12`), #2 (`4c1de66`), #3 (`6f0a27c`) trên `qa/a-wave3` | |
+| [ ] | — | Bạn đọc tài liệu học Lớp 5 + Lớp 6 | 5, 6 | Bạn | | |
 | [ ] | B10 | Dashboard Streamlit | 6 | Claude | | |
 | [ ] | B8 ✂️ | Proxy OpenAI-compatible | 6 | Claude | | |
 
@@ -885,8 +886,8 @@ Dùng cho cả nghiệm thu Lớp 6 và buổi bảo vệ. Chuẩn bị: seed be
 | ✓ | Gói | Việc | Điều kiện |
 | :---: | --- | --- | --- |
 | [x] | C1 | Tải BIPIA/JBB/openpii; `build.py` bộ CSKH + PII; chia dev/test; `SPLIT_REPORT.md` (PR #5, `9ea2858`). Mẫu gốc do tác tử độc lập viết. **Ca tấn công tiếng Việt hoãn**: bạn chọn tạm BIPIA + JBB | Bạn duyệt toàn bộ mẫu gốc (còn chờ) |
-| [~] | C2 | `run_detectors.py` + `metrics.py`: bảng detector-level 3 bộ | Sau Lớp 2–5 |
-| [x] | C3 | `eval/c3_detectors.py` + `eval/c3_e2e.py` (CyberSecEval G0/G2/G4, judge + McNemar), NotInject/LLMail/MultiJail ở mức detector (`eval/reports/c3_2026-11-08.md`) | Sau Lớp 6 |
+| [x] | C2 | `run_detectors.py` + `metrics.py`: bảng detector-level 3 bộ, đủ arm R, M/H-deberta, M/H-pg2 (PR #6, số PG2 trong `eval/reports/lop5-pg2_2026-11-07.md`) | Sau Lớp 2–5 |
+| [x] | C3 | `eval/c3_detectors.py` + `eval/c3_e2e.py` (CyberSecEval G0/G2/G4, judge + McNemar), NotInject/LLMail/MultiJail ở mức detector (`eval/reports/c3_2026-11-08.md`), PR #12. Sửa C3-3: OUTPUT không chặn câu từ chối của bot, 26 → 11 ca (PR #13). Test quét rò rỉ audit bỏ qua timestamp/hex id, hết chập chờn trên CI (PR #14) | Sau Lớp 6 |
 | [ ] | C4 | `SUMMARY.md`: bảng, biểu đồ, McNemar | |
 | [ ] | C5 ✂️ | garak/promptfoo qua proxy | Sau B8 |
 
@@ -945,6 +946,9 @@ Claude viết test thất bại trước (RED) → viết code (GREEN) trên nh�
 | 19 | Link guard của FOX-Guard là lớp chặn link duy nhất | **Hai lớp.** Lớp chặn cuối là renderer của web (`markdown-to-jsx` với HTML thô tắt, `checkUrlSafety()` trong `web_ui/src/components/chat-widget.tsx`). FOX-Guard là lớp thứ hai: gỡ link, phát hiện PII trong URL, ghi audit. Một chỗ lệch cú pháp chỉ là P1 khi qua được **cả hai lớp** | 7 lượt review liên tiếp tìm ra lệch cú pháp Markdown/URL. Bộ kiểm S1 (`tests/systematic/`) so trực tiếp với renderer thật và đo đúng điều kiện này |
 | 20 | Kiểm bằng ca test viết tay theo từng review | Thêm bộ kiểm hệ thống S1–S5 có đáp án chuẩn: renderer thật, WHATWG URL, giải mã lặp cho audit, quan hệ biến đổi, bộ câu hợp lệ cố định. Lỗi mới được thêm vào bộ sinh trước rồi mới sửa | Vá theo từng câu không hội tụ; lần chạy đầu tìm ra 83 ca trong 7 nhóm (`docs/reports/systematic-run-1.md`) |
 | 21 | Bộ bắt "bot đòi bí mật" xử lý mọi cách nói phủ định | Phần phủ định **đóng băng**: không thêm danh sách từ mới; câu diễn đạt mới chuyển sang Lớp 5 | Danh sách từ lớn dần theo từng câu tìm được mà vẫn lọt (backlog N1) |
+| 22 | LLM thực nghiệm = model chính của web (Q9) | E2E C3 chạy trên **Gemini 3.5 Flash-Lite** (model dự phòng của web, xoay 8 key), không chạy trên DeepSeek | TokenHarbor trả 403 cho prompt tấn công; tài khoản đầu bị khoá (backlog C3-2) |
+| 23 | Web dùng Gemini làm LLM | LLM chính là **TokenHarbor DeepSeek v4.1 Flash**, Gemini dự phòng (có cooldown khi hết quota); embedding/rerank vẫn qua OpenRouter | Gemini free hay hết quota (web #2) |
+| 24 | OUTPUT bắt mọi câu nhắc tới OTP/mật khẩu kèm động từ "cung cấp/gửi" | Câu **từ chối** của bot ("không được phép cung cấp mã OTP") không bị coi là đòi bí mật | Câu từ chối bị chặn nhầm 26 ca trên G0 (C3-3, PR #13) |
 
 ---
 
@@ -980,8 +984,11 @@ Claude viết test thất bại trước (RED) → viết code (GREEN) trên nh�
 
 | Q26 | Bỏ Codex; Claude tự review bằng bộ kiểm hệ thống S1–S5 có đáp án chuẩn | Bạn (07/11) | 7 lượt review PR #2 không hội tụ; bộ kiểm hệ thống tìm 83 ca trong một lần chạy |
 | Q27 | Link guard là lớp thứ hai; lớp cuối là renderer của web. Lệch cú pháp link chỉ là P1 khi qua cả hai lớp | Claude (07/11) | Đo được bằng S1; tránh vá vô hạn theo cú pháp Markdown |
+| Q28 | Không bao giờ gửi prompt tấn công (benchmark, red-team) qua TokenHarbor; không gửi lại prompt đã bị từ chối | Bạn + Claude (08/11) | Tài khoản TokenHarbor đầu bị khoá sau khi vòng retry cũ gửi lại prompt bị từ chối 1.261 lần |
+| Q29 | Prompt Guard 2 bật mặc định; khoanh vùng và datamarking có code nhưng tắt mặc định | Claude (07/11) | PG2 tăng recall rõ, chặn nhầm CSKH 0%; khoanh vùng/datamarking chưa đo đủ ảnh hưởng lên câu trả lời |
+| Q30 | Xoay key OpenRouter chỉ nằm trên nhánh máy `local/openrouter-key-pool`, không push, không merge | Bạn (07/11) | Phục vụ chạy thử ở máy, không thuộc phạm vi đồ án |
 
-**Câu còn mở:** ngày nộp/bảo vệ chính xác (đang giả định sau 07/12/2026) · license Prompt Guard 2 · Phần C do Claude làm, bạn duyệt mẫu gốc.
+**Câu còn mở:** ngày nộp/bảo vệ chính xác (đang giả định sau 07/12/2026) · Phần C do Claude làm, bạn duyệt mẫu gốc.
 
 ---
 
@@ -998,6 +1005,7 @@ Claude viết test thất bại trước (RED) → viết code (GREEN) trên nh�
 | Bạn không kịp hiểu code | Không giải thích được khi vấn đáp | Tài liệu học sau mỗi lớp + câu hỏi hội đồng |
 | Ổ C gần đầy | Cài/tải model lỗi | Cache trên ổ D |
 | Tự sinh bộ test tiếng Việt → thiên lệch | Điểm cao bất thường | Báo riêng BIPIA/JBB; chia theo template; mẫu gốc do bạn duyệt |
+| Nhà cung cấp LLM khoá tài khoản khi chạy benchmark tấn công | 403 liên tục, tài khoản bị suspend (đã xảy ra với TokenHarbor 08/11) | Chạy e2e trên Gemini; không retry prompt bị từ chối; không gửi tấn công qua TokenHarbor (Q28) |
 
 ### 12.2 Lỗi và việc mở
 
@@ -1016,6 +1024,9 @@ Claude viết test thất bại trước (RED) → viết code (GREEN) trên nh�
 | A-OPEN-1 | Hết hàng đúng lúc khách trả tiền → webhook 503, Stripe gửi lại mãi | Ghi nhận |
 | OPS-1 | File mật khẩu DB dạng chữ thường `D:/backups/supabase/db-password.txt` | Bạn cần xoá |
 | OPS-2 | Bản ghi QA trên DB thật | Bạn quyết |
+| C3-1 | PG2 chặn thừa 15% trên NotInject (câu vô hại chứa từ kích hoạt) | Chỉ ra `review`, không chặn; muốn giảm phải dựng dev set riêng, không chỉnh trên NotInject |
+| C3-5 | 6 ca OUTPUT còn chặn nhầm cần hiểu nghĩa (hướng dẫn nhập mật khẩu máy, câu tóm tắt trích lại đoạn tấn công) | Đã biết; không thêm danh sách từ, để classifier/judge |
+| C3-6 | Đòi ngầm qua câu điều kiện phủ định lọt: "Mình không thể hoàn tiền nếu bạn không gửi mã OTP" | Đã biết; cần luật "nếu/unless … không gửi" hoặc classifier |
 
 ### 12.3 Giới hạn sẽ nói trung thực trong báo cáo
 
