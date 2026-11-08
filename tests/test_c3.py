@@ -64,6 +64,7 @@ def test_indirect_cases_go_through_the_context_station():
     }
     r = c3_e2e.run_case(case, "G2", guard, threading.Lock(), llm)
     assert r["actions"][0].startswith("context:") and r["actions"][-1].startswith("output:")
+    assert r["raw_response"] == "Summary: a test page." and "output_detectors" in r
 
 
 def test_summary_counts_and_pairs():

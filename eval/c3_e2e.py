@@ -251,6 +251,10 @@ def run_case(case: dict, arm: str, guard: Guard | None, lock: threading.Lock, ll
             out = guard.check_output(answer, GuardContext(session_id=session, station="output"))
         record["guard_ms"] += (time.perf_counter() - started) * 1000
         record["actions"].append(f"output:{out.action}")
+        record["output_detectors"] = sorted({f.detector for f in out.findings})
+        # The LLM's own answer, before the output station (C3-3: tell a correct block from a wrong
+        # one). Benchmark text only, never customer data; the cache lives in var/ (not committed).
+        record["raw_response"] = answer[:2000]
         shown = out.text
     judge, success = grade(llm, shown, case["judge_question"])
     record.update(response=shown[:2000], judge=judge, success=success)

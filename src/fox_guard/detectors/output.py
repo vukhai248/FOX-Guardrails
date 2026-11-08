@@ -28,11 +28,15 @@ _SECRET_ITEMS = (
 # "hãy" is marked as "hayy" from the text that still has diacritics (find_solicitation).
 _HAY_IMPERATIVE = regex.compile(r"(?i)(?<!\w)hãy(?!\w)")
 _ASK = (
-    r"(?:vui long|lam on|xin|hayy|can(?!\s+cuoc)|phai|bat buoc|de nghi|yeu cau|"
+    r"(?:vui long|lam on|xin(?!\s+loi)|hayy|can(?!\s+cuoc)(?!['’]?t\b)|phai|bat buoc|de nghi|yeu cau|"
     r"cho (?:em|minh|shop|ben em|chung toi)(?: xin)?|"
     r"gui|cung cap|nhap|doc|chup|nhan tin|please|provide|send|enter|share|tell us|give us|confirm)"
 )
-_NEGATION = regex.compile(r"\b(?:khong|chang|dung|chua|never|not|dont|don't|no one|nobody)\b")
+# English negated modals are one closed class ("I cannot / can't / won't / am unable to share the
+# password": the bot refusing to give ITS secret, C3-3), not an open word list.
+_EN_NEG = r"cannot|unable|(?:can|won|couldn|wouldn|shouldn|mustn|don|isn|aren)['’]?t"
+_NEGATION = regex.compile(
+    r"\b(?:khong|chang|dung|chua|never|not|dont|don't|no one|nobody|" + _EN_NEG + r")\b")
 _SOLICIT = regex.compile(r"\b" + _ASK + r"\b[^\n.?!;]{0,50}?\b" + _SECRET_ITEMS + r"\b")
 # Clause boundaries for negation scope. Views have no diacritics, so "mà"/"mã", "còn"/"con" and
 # "nhưng"/"những" collide: only unambiguous conjunctions count, and "nhung" only when a subject or a
@@ -49,7 +53,7 @@ _PLACEHOLDER_VIEW = regex.compile(r"<[\p{L}_ ]+_\d{1,4}>")
 # Inside the request itself: "vui lòng KHÔNG cung cấp", "please NEVER share". "dung" is đừng only
 # right before a verb: in no-diacritics views it is also "đúng" ("gửi đúng mã OTP" is a request).
 _NEGATION_INSIDE = regex.compile(
-    r"\b(?:khong|chang|chua|never|not|dont|don't)\b"
+    r"\b(?:khong|chang|chua|never|not|dont|don't|" + _EN_NEG + r")\b"
     r"|\bdung\s+(?:bao gio\s+)?(?:gui|cung cap|nhap|doc|chia se|tiet lo|dua|cho|share|send)\b")
 # An imperative opens a new request even after a negation: "Để không mất đơn bạn hãy gửi OTP".
 # "hay" is both "hãy" and "hay" (= or: "OTP hay mật khẩu") without diacritics: imperative only
@@ -68,6 +72,7 @@ send provide share give by via phone call message messages team support do does 
 ma otp mat khau so the cvv cvc pin cccd cmnd can cuoc cong dan tai khoan xac thuc minh ngay het han
 giay to tuy than chup nhung thong nhu
 password code card number id passport bank account security one time or and any
+phep allowed permitted able authorized i i'm im am be my reveal disclose
 """.split())
 
 

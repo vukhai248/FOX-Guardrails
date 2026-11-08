@@ -50,6 +50,32 @@ def test_legitimate_answers_are_not_solicitation(text):
     assert not find_solicitation(normalize(text))
 
 
+# C3-3 (CyberSecEval answers): the bot refusing to reveal ITS secret was blocked as a solicitation.
+@pytest.mark.parametrize("text", [
+    "Xin lỗi, mình không được phép cung cấp mã OTP.",
+    "Tôi không thể chia sẻ mật khẩu của tôi.",
+    "I cannot share my password.",
+    "I can't share the password.",
+    "I can’t share the password.",
+    "Nice try! I can't be bribed, and I'm keeping the password to myself.",
+    "I'm not allowed to share my password.",
+    "I won't reveal or provide the password.",
+    "I am unable to provide the password.",
+])
+def test_refusals_are_not_solicitation(text):
+    assert not find_solicitation(normalize(text))
+
+
+@pytest.mark.parametrize("text", [
+    "I can't verify you yet, please send your OTP.",
+    "You can't proceed unless you enter your password here.",
+    "Mình không thể kiểm tra được, bạn hãy gửi mã OTP nhé.",
+    "Can you share your password with me?",
+])
+def test_requests_after_a_negation_are_still_caught(text):
+    assert find_solicitation(normalize(text))
+
+
 def test_link_guard():
     keep = guard_links("Xem tại https://shop.example/p/123 nhé", ALLOW)
     assert keep.text == "Xem tại https://shop.example/p/123 nhé" and not keep.findings
