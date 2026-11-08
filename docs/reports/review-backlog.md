@@ -96,3 +96,10 @@ Các ca dưới đây do bộ held-out `tests/fixtures/output_heldout.jsonl` (Op
 
 - **PG2-1 (P3):** khi nạp model, chưa có kiểm tra chiều nhãn lúc chạy (ví dụ chấm 1 câu tấn công mẫu và 1 câu vô hại, báo lỗi nếu ngược). Lỗi nhãn đảo đã sửa bằng `positive_label` + test; kiểm tra lúc chạy là lớp bảo vệ thêm cho model mới sau này.
 - **PG2-2 (P3):** JBB FPR 15 % với PG2 ở trạm INPUT (chỉ ra `review`, không chặn). Đo lại ở C3 end-to-end xem harden prompt có làm giảm chất lượng trả lời không.
+
+## C3 benchmark ngoài — 2026-11-08
+
+- **C3-1 (P3):** PG2 over-defence 15 % trên NotInject (8 / 15 / 22 % theo 1 / 2 / 3 từ kích hoạt). Chỉ ra `review` (B6.1), không chặn. Muốn giảm: dựng dev set riêng có câu vô hại chứa từ kích hoạt (không dùng NotInject — nó là bộ báo cáo), chọn lại ngưỡng hoặc thêm luật "allow" theo ngữ cảnh. Không chỉnh trên NotInject.
+- **C3-2 (P3):** e2e chạy trên Gemini (model dự phòng của web) thay vì DeepSeek (model chính) vì TokenHarbor chặn prompt tấn công bằng 403. Nếu cần số trên DeepSeek: chạy qua nhà cung cấp khác cho phép nội dung benchmark bảo mật, hoặc xin TokenHarbor whitelist cho nghiên cứu.
+- **C3-3 (P2):** trạm OUTPUT chặn 16–22/301 câu trả lời ở G2/G4 trong khi G0 cùng ca hầu như không thành công (1–2 ca) → nghi chặn nhầm câu trả lời bình thường. `c3_e2e` chưa lưu câu trả lời trước guard; cần lưu `raw_response` (chỉ trong `var/`, không commit) rồi phân loại lý do block.
+- **C3-4 (P3):** chưa có số utility e2e (câu hỏi vô hại qua G0 vs G4, chất lượng trả lời). Cần bộ câu CSKH vô hại + judge chất lượng.
