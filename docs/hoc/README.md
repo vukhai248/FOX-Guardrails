@@ -8,7 +8,7 @@ Mỗi lớp làm xong có một file ở đây. Đọc theo thứ tự. Mẫu n�
 | 2 — Luật phát hiện prompt injection | `lop-2-luat.md` | ✅ sẵn để đọc |
 | 3 — PII tiếng Việt + giả danh hoá | `lop-3-pii.md` | ✅ sẵn để đọc |
 | 4 — Kiểm đầu ra + policy + audit | `lop-4-dau-ra-policy-audit.md` | ✅ sẵn để đọc |
-| 5 — Classifier + khoanh vùng ngữ cảnh | `lop-5-classifier-khoanh-vung.md` | chưa làm |
-| 6 — Tích hợp web, sidecar, proxy, dashboard | `lop-6-tich-hop.md` | chưa làm |
+| 5 — Classifier + khoanh vùng ngữ cảnh | `lop-5-classifier-khoanh-vung.md` | ✅ sẵn để đọc |
+| 6 — Tích hợp web, sidecar, proxy, dashboard | `lop-6-tich-hop.md` | ✅ sẵn để đọc (proxy, dashboard chưa có) |
 
 Nền chung cho mọi lớp: `docs/plans/01-tan-cong-va-phong-thu.md` (các vụ tấn công, mã kỹ thuật) và `docs/plans/D-hoc-va-van-dap.md` (câu hỏi hội đồng).
