@@ -31,7 +31,7 @@
 | Báo cáo + slide + vấn đáp | ⏳ | 0% | |
 | **Toàn đồ án (ước tính)** | 🟡 | **~67%** | Lịch: 03/11 → 07/12/2026 |
 
-**Việc tiếp theo:** (1) utility e2e trên câu CSKH vô hại (C3-4); (2) dashboard Streamlit + chạy 5 kịch bản demo; (3) báo cáo + slide từ cuối tháng 11 (Chương 4 lấy từ `eval/reports/SUMMARY.md`).
+**Việc tiếp theo:** (1) **Phần G — fine-tune** (`docs/plans/G-finetune.md`, đề xuất 09/11, chờ bạn chốt 4 câu ở §7): dựng bộ FOX-VI (injection tiếng Việt CSKH), M1 classifier VI–EN, M2 kiểm đầu ra, so với PG2 / deberta / PIGuard; (2) utility e2e trên câu CSKH vô hại (C3-4, gộp vào G); (3) dashboard Streamlit + chạy 5 kịch bản demo; (4) báo cáo + slide từ cuối tháng 11 (Chương 4 lấy từ `eval/reports/SUMMARY.md`).
 
 ---
 
