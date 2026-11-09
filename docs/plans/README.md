@@ -8,6 +8,7 @@
 4. [`B-guardrails.md`](B-guardrails.md): Phần B, FOX-Guard (agent B).
 5. [`C-du-lieu-va-thuc-nghiem.md`](C-du-lieu-va-thuc-nghiem.md): dữ liệu, arm, chỉ số, quy trình chạy (agent C).
 6. [`D-hoc-va-van-dap.md`](D-hoc-va-van-dap.md): lộ trình hiểu, câu hỏi hội đồng, kịch bản demo (chủ đồ án).
+7. [`G-finetune.md`](G-finetune.md): fine-tune model (M1 injection VI–EN, M2 kiểm đầu ra), dữ liệu có sẵn + bộ FOX-VI tự dựng, chỉ số (đề xuất 09/11).
 
 Plan v1 (18/10/2026) đã được thay thế, lưu ở `../archive/plan-v1-2026-10-18.md` để tra cứu.
 
