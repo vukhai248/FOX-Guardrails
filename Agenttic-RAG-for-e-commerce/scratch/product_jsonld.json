@@ -1,0 +1,169 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "iPhone 17 Pro Max 256GB | Chính hãng",
+  "image": "https://cdn2.cellphones.com.vn/200x/media/catalog/product/i/p/iphone-17-pro-max_3.jpg",
+  "description": "iPhone 17 Pro Max chính hãng đủ dung lượng từ 256GB - 2TB, giá chỉ từ 35990tr - mua online điện thoại Apple iPhone 17 Pro Max giảm 5% tại CellphoneS",
+  "offers": {
+    "@type": "Offer",
+    "url": "https://cellphones.com.vn/iphone-17-pro-max.html",
+    "priceCurrency": "VND",
+    "price": "35990000",
+    "itemCondition": "https://schema.org/NewCondition",
+    "availability": "https://schema.org/InStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "CELLPHONES"
+    }
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "Hệ điều hành khi ra mắt",
+      "value": "iOS 26"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Chipset",
+      "value": "Chip A19 Pro"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Bộ nhớ trong",
+      "value": "256 GB"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Loại CPU",
+      "value": "CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm điện"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "GPU",
+      "value": "GPU 6 lõi với Neural Accelerator"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Kích thước màn hình",
+      "value": "6.9 inches"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Công nghệ màn hình",
+      "value": "Super Retina XDR"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Độ phân giải màn hình",
+      "value": "2868 x 1320 pixels"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Tính năng màn hình",
+      "value": "Màn hình Luôn Bật, ProMotion 120Hz, HDR, True Tone, Dải màu rộng (P3), Haptic Touch, Tỷ lệ tương phản 2.000.000:1, Độ sáng 1000 nit (tiêu chuẩn), 1600 nit (HDR), 3000 nit (ngoài trời) / tối thiểu 1 nit, Lớp phủ kháng dầu, Chống phản chiếu, Hỗ trợ đa ngôn "
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Camera sau",
+      "value": "Chính: 48MP khẩu độ ƒ/1.6 OIS hỗ trợ chụp 24MP hoặc 48MPGóc Siêu Rộng: 48MP khẩu độ ƒ/2.2 góc nhìn 120°Telephoto: 48MP khẩu độ ƒ/2.8 OIS zoom quang học lên đến 8x"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Camera trước",
+      "value": "Camera 18MP Center Stage Khẩu độ ƒ/1.9"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Hỗ trợ mạng",
+      "value": "5G"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Thẻ SIM",
+      "value": "Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Công nghệ NFC",
+      "value": "Có"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Thời điểm ra mắt",
+      "value": "09/2025"
+    }
+  ],
+  "brand": {
+    "@type": "Brand",
+    "name": "Apple"
+  },
+  "sku": "iphone-17-pro-max",
+  "mpn": "iphone-17-pro-max",
+  "review": [
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Nguyen Dinh Thin"
+      }
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Quân"
+      }
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "BN"
+      }
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Phước Tứ"
+      }
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Manh"
+      }
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "37"
+  }
+}

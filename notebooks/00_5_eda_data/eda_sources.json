@@ -1,0 +1,992 @@
+{
+  "files": [
+    {
+      "key": "deepset",
+      "repo": "deepset/prompt-injections",
+      "rev": "4f61ecb038e9c3fb77e21034b22511b523772cdd",
+      "license": "Apache-2.0",
+      "purpose": "INPUT/CONTEXT · nhãn injection",
+      "path": "data/train-00000-of-00001-9564e8b05b4757ab.parquet",
+      "host": "hf",
+      "bytes": 40323,
+      "digest": "2e10bc7ab30f542c97e4e83e2a5683000b5057d25ec10908784c631d44124c04",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "spml",
+      "repo": "reshabhs/SPML_Chatbot_Prompt_Injection",
+      "rev": "02ce8084e979bc7d4c24ee35d22ecb7f2db96ff5",
+      "license": "MIT (thẻ nguồn)",
+      "purpose": "INPUT · cần hiểu nhãn gốc",
+      "path": "spml_prompt_injection.csv",
+      "host": "hf",
+      "bytes": 29051327,
+      "digest": "4ca6590cd8ec10832fcebee5e243acb32be5c3e79b7a260f8638eed738c784f8",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "gandalf",
+      "repo": "Lakera/gandalf_ignore_instructions",
+      "rev": "04737b65e90a6794ec227012e4a255a7def6344b",
+      "license": "MIT",
+      "purpose": "INPUT · nhãn nguồn",
+      "path": "data/train-00000-of-00001-ded53be747ff55cd.parquet",
+      "host": "hf",
+      "bytes": 36715,
+      "digest": "5b6acf3e5a5998d21f8e1222bb45bbdec25a14408747b1cd63bebef4a75fa439",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "mosscap",
+      "repo": "Lakera/mosscap_prompt_injection",
+      "rev": "b7e495ff63373ff7f7dabc1e9390cf62b5838570",
+      "license": "MIT",
+      "purpose": "INPUT · tín hiệu thắng/thua không phải nhãn injection",
+      "path": "data/train-00000-of-00001-07ae0ed17fa07cc1.parquet",
+      "host": "hf",
+      "bytes": 49606158,
+      "digest": "a3c354dd1457c0125243ed107a4cc3eafdc09b2c60eb7ce3e3854a2fbb12a4b2",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "jackhhao",
+      "repo": "jackhhao/jailbreak-classification",
+      "rev": "2f2ceeb39658696fd3f462403562b6eea5306287",
+      "license": "Apache-2.0",
+      "purpose": "INPUT · jailbreak và benign",
+      "path": "balanced/jailbreak_dataset_train_balanced.csv",
+      "host": "hf",
+      "bytes": 1309507,
+      "digest": "635b5d4bcc57df3217cfed057587392aceb52285",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "trustairlab",
+      "repo": "TrustAIRLab/in-the-wild-jailbreak-prompts",
+      "rev": "a10aab8eff1c73165a442d4464dce192bd28b9c5",
+      "license": "MIT (thẻ nguồn)",
+      "purpose": "INPUT · nhãn theo cấu hình; rà PII",
+      "path": "jailbreak_2023_12_25/train-00000-of-00001.parquet",
+      "host": "hf",
+      "bytes": 1871641,
+      "digest": "55bbc5e2be771ee16ed67aed4edb5ecef5f44ac69cea317a67e5405c5c6057a4",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "trustairlab",
+      "repo": "TrustAIRLab/in-the-wild-jailbreak-prompts",
+      "rev": "a10aab8eff1c73165a442d4464dce192bd28b9c5",
+      "license": "MIT (thẻ nguồn)",
+      "purpose": "INPUT · nhãn theo cấu hình; rà PII",
+      "path": "regular_2023_12_25/train-00000-of-00001.parquet",
+      "host": "hf",
+      "bytes": 12560543,
+      "digest": "23e90010ccbc85574bf46678528cddce5b02abc86d9a047209218af65cb37c68",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "aegis",
+      "repo": "nvidia/Aegis-AI-Content-Safety-Dataset-2.0",
+      "rev": "d86bb8bedff51d25ac834ab7838f1cc61acb7a2c",
+      "license": "CC-BY-4.0",
+      "purpose": "OUTPUT · nhãn moderation cần ánh xạ",
+      "path": "train.json",
+      "host": "hf",
+      "bytes": 22705956,
+      "digest": "154fba82c71d9fa73abd2ca5588a198e693ddc816c83444df180a22f613e02f6",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "aegis",
+      "repo": "nvidia/Aegis-AI-Content-Safety-Dataset-2.0",
+      "rev": "d86bb8bedff51d25ac834ab7838f1cc61acb7a2c",
+      "license": "CC-BY-4.0",
+      "purpose": "OUTPUT · nhãn moderation cần ánh xạ",
+      "path": "refusals_train.json",
+      "host": "hf",
+      "bytes": 2758729,
+      "digest": "ff948d3696c9da94cf2523f5d4ae7f16cad7b3c0fd3cb46a331dad0ed717fbe2",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "nemotron",
+      "repo": "nvidia/Nemotron-RL-Agentic-Indirect-Prompt-Injection-v1",
+      "rev": "d738d4f361cc38bb4d7a42b9066776dade5332f5",
+      "license": "CC-BY-4.0",
+      "purpose": "CONTEXT · dấu vết công cụ, EDA cấu trúc",
+      "path": "train.jsonl",
+      "host": "hf",
+      "bytes": 11703379,
+      "digest": "3329da17564a7eb287e2730fc7d6956e1f4fe51e8950ac4f110b3c37e78cf3b9",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "llmail",
+      "repo": "microsoft/llmail-inject-challenge",
+      "rev": "1063bdf01ec8762b812d5e06ee768a06faa5a6f7",
+      "license": "MIT",
+      "purpose": "CONTEXT · Phase 1 unique, chưa gán nhãn M1",
+      "path": "data/labelled_unique_submissions_phase1.json",
+      "host": "hf",
+      "bytes": 448194111,
+      "digest": "691dfa1595d2bd0e731069f233bd5448f7af1c0ebd9732bc6f12dd6cee446586",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "5cd",
+      "repo": "5CD-AI/Vietnamese-Ecommerce-Multi-turn-Chat",
+      "rev": "d797fca0a49900334b7e726d7e2f70bbcfb03e31",
+      "license": "Apache-2.0",
+      "purpose": "VI · hội thoại TMĐT, cần xác nhận benign",
+      "path": "ecommerce_multiturn.json",
+      "host": "hf",
+      "bytes": 8783064,
+      "digest": "1b41ec4a90c3c8ac7932af92da4d9b64b7ff47f4",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "beavertails",
+      "repo": "PKU-Alignment/BeaverTails",
+      "rev": "8401fe609d288129cc684a9b3be6a93e41cfe678",
+      "license": "CC-BY-NC-4.0",
+      "purpose": "OUTPUT · moderation, phi thương mại",
+      "path": "round0/330k/train.jsonl.xz",
+      "host": "hf",
+      "bytes": 31061396,
+      "digest": "12f04c9200000929ebbc616c29cb53331f6df36e7341d73e4a12cffac0eb1c08",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "neuralchemy",
+      "repo": "neuralchemy/Prompt-injection-dataset",
+      "rev": "7d70432dfcf47a821612cbf9d34e9d9e3ad20e75",
+      "license": "Apache-2.0 (card); nguồn thành phần có điều khoản khác",
+      "purpose": "EDA riêng · chưa duyệt quyền sử dụng bản gộp",
+      "path": "core/train-00000-of-00001.parquet",
+      "host": "hf",
+      "bytes": 387456,
+      "digest": "c0724f8e00eebb65c001be9ba94291d1608e5da0374012e53dfd4077c5f92558",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "piguard",
+      "repo": "leolee99/PIGuard",
+      "rev": "1b5751e88bf7475acbedfc8eda795ce060307c84",
+      "license": "MIT (repo); kiểm license từng thành phần",
+      "purpose": "INPUT/CONTEXT · chỉ train.json, giữ cách ly",
+      "path": "datasets/train.json",
+      "host": "gh",
+      "bytes": 43398735,
+      "digest": "c237dbe9b972cbd8f55e28d378e819173a59737c",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "injecagent",
+      "repo": "uiuc-kang-lab/InjecAgent",
+      "rev": "f19c9f2c79a41046eb13c03c51a24c567a8ffa07",
+      "license": "MIT (repo)",
+      "purpose": "E ứng viên · chỉ dữ liệu ca test",
+      "path": "data/test_cases_dh_base.json",
+      "host": "gh",
+      "bytes": 672918,
+      "digest": "976ad4e2108a553a3b885951e8eb119aa91f9445",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "injecagent",
+      "repo": "uiuc-kang-lab/InjecAgent",
+      "rev": "f19c9f2c79a41046eb13c03c51a24c567a8ffa07",
+      "license": "MIT (repo)",
+      "purpose": "E ứng viên · chỉ dữ liệu ca test",
+      "path": "data/test_cases_ds_base.json",
+      "host": "gh",
+      "bytes": 765370,
+      "digest": "16f82d8a34349182eba883871333e569bafc6b93",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "injecagent",
+      "repo": "uiuc-kang-lab/InjecAgent",
+      "rev": "f19c9f2c79a41046eb13c03c51a24c567a8ffa07",
+      "license": "MIT (repo)",
+      "purpose": "E ứng viên · chỉ dữ liệu ca test",
+      "path": "data/test_cases_dh_enhanced.json",
+      "host": "gh",
+      "bytes": 721878,
+      "digest": "803bd383695faaaeb2a03863aafc83d8b46a7e78",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "injecagent",
+      "repo": "uiuc-kang-lab/InjecAgent",
+      "rev": "f19c9f2c79a41046eb13c03c51a24c567a8ffa07",
+      "license": "MIT (repo)",
+      "purpose": "E ứng viên · chỉ dữ liệu ca test",
+      "path": "data/test_cases_ds_enhanced.json",
+      "host": "gh",
+      "bytes": 817594,
+      "digest": "f4580cb98e195d3a77ec92149294cc1bf37c0f5d",
+      "digest_type": "git-blob-sha1"
+    }
+  ],
+  "benchmark": [
+    [
+      "BIPIA · dev",
+      "data/processed/bipia/dev.jsonl",
+      "dev khóa",
+      [
+        "text",
+        "attack"
+      ],
+      [
+        "label",
+        "task",
+        "position"
+      ]
+    ],
+    [
+      "BIPIA · test",
+      "data/processed/bipia/test.jsonl",
+      "test khóa",
+      [
+        "text",
+        "attack"
+      ],
+      [
+        "label",
+        "task",
+        "position"
+      ]
+    ],
+    [
+      "JailbreakBench",
+      "data/processed/jbb/test.jsonl",
+      "test khóa",
+      [
+        "text"
+      ],
+      [
+        "label"
+      ]
+    ],
+    [
+      "CSKH VI",
+      "eval/datasets/vi_cskh/cases.jsonl",
+      "dev/test khóa",
+      [
+        "user_query",
+        "carrier_text"
+      ],
+      [
+        "split",
+        "label",
+        "source"
+      ]
+    ],
+    [
+      "PII tổng hợp VI",
+      "eval/datasets/pii/cases.jsonl",
+      "dev/test khóa",
+      [
+        "text"
+      ],
+      [
+        "split",
+        "label"
+      ]
+    ],
+    [
+      "OpenPII VI C1",
+      "data/processed/openpii/test.jsonl",
+      "test khóa",
+      [
+        "text"
+      ],
+      [
+        "label"
+      ]
+    ],
+    [
+      "CyberSecEval EN",
+      "data/raw/cyberseceval/prompt_injection.json",
+      "test khóa",
+      [
+        "user_input"
+      ],
+      [
+        "speaking_language",
+        "injection_type",
+        "injection_variant"
+      ]
+    ],
+    [
+      "CyberSecEval VI",
+      "data/raw/cyberseceval/prompt_injection_multilingual_machine_translated.json",
+      "test khóa",
+      [
+        "user_input"
+      ],
+      [
+        "speaking_language",
+        "injection_type",
+        "injection_variant"
+      ]
+    ],
+    [
+      "LLMail Phase 2",
+      "data/raw/llmail/phase2_sample.jsonl",
+      "test khóa",
+      [
+        "subject",
+        "body",
+        "@mail"
+      ],
+      []
+    ],
+    [
+      "NotInject · one",
+      "data/raw/notinject/NotInject_one-00000-of-00001.parquet",
+      "test khóa",
+      [
+        "prompt"
+      ],
+      [
+        "category"
+      ]
+    ],
+    [
+      "NotInject · two",
+      "data/raw/notinject/NotInject_two-00000-of-00001.parquet",
+      "test khóa",
+      [
+        "prompt"
+      ],
+      [
+        "category"
+      ]
+    ],
+    [
+      "NotInject · three",
+      "data/raw/notinject/NotInject_three-00000-of-00001.parquet",
+      "test khóa",
+      [
+        "prompt"
+      ],
+      [
+        "category"
+      ]
+    ],
+    [
+      "MultiJail",
+      "data/raw/multijail/MultiJail.csv",
+      "test khóa",
+      [
+        "en",
+        "vi"
+      ],
+      [
+        "source"
+      ]
+    ]
+  ],
+  "fields": {
+    "deepset": [
+      [
+        "text"
+      ],
+      [
+        "label"
+      ]
+    ],
+    "spml": [
+      [
+        "User Prompt"
+      ],
+      [
+        "Prompt injection",
+        "Degree"
+      ]
+    ],
+    "gandalf": [
+      [
+        "text"
+      ],
+      []
+    ],
+    "mosscap": [
+      [
+        "prompt"
+      ],
+      [
+        "level"
+      ]
+    ],
+    "jackhhao": [
+      [
+        "prompt"
+      ],
+      [
+        "type"
+      ]
+    ],
+    "trustairlab": [
+      [
+        "prompt"
+      ],
+      [
+        "jailbreak"
+      ]
+    ],
+    "aegis": [
+      [
+        "prompt",
+        "response"
+      ],
+      [
+        "prompt_label",
+        "response_label"
+      ]
+    ],
+    "nemotron": [
+      [
+        "injection.injection_text"
+      ],
+      [
+        "domain",
+        "attack_category"
+      ]
+    ],
+    "llmail": [
+      [
+        "@key"
+      ],
+      [
+        "attack_attempt"
+      ]
+    ],
+    "5cd": [
+      [
+        "conversations.value"
+      ],
+      [
+        "conversations.from"
+      ]
+    ],
+    "beavertails": [
+      [
+        "prompt",
+        "response"
+      ],
+      [
+        "is_safe"
+      ]
+    ],
+    "neuralchemy": [
+      [
+        "text"
+      ],
+      [
+        "label"
+      ]
+    ],
+    "piguard": [
+      [
+        "prompt"
+      ],
+      [
+        "label",
+        "source"
+      ]
+    ],
+    "injecagent": [
+      [
+        "User Instruction",
+        "Attacker Instruction",
+        "Tool Response"
+      ],
+      [
+        "Attack Type"
+      ]
+    ]
+  },
+  "pending": [
+    [
+      "xTRam1/safe-guard-prompt-injection",
+      "Chờ xác minh",
+      "Card thiếu license rõ ràng."
+    ],
+    [
+      "allenai/wildjailbreak",
+      "Gated",
+      "Cần người dùng chấp nhận điều khoản ở nguồn."
+    ],
+    [
+      "allenai/wildguardmix",
+      "Gated",
+      "Cần người dùng chấp nhận điều khoản ở nguồn."
+    ],
+    [
+      "hackaprompt/hackaprompt-dataset",
+      "Gated",
+      "Cần người dùng chấp nhận điều khoản ở nguồn."
+    ],
+    [
+      "ura-hcmut/Vietnamese-Customer-Support-QA",
+      "Gated",
+      "Nguồn chính thức yêu cầu chấp nhận điều khoản."
+    ],
+    [
+      "uitnlp/vihsd",
+      "Gated",
+      "Nguồn chính thức gated, bản sao có khai báo license khác. Nhãn toxic độc lập với nhãn injection."
+    ],
+    [
+      "ai4privacy/open-pii-masking-500k-ai4privacy",
+      "Chờ xác minh",
+      "Tên repo đã được sửa. Card ghi CC-BY-4.0, nhưng mục điều khoản bổ sung Llama và hạn chế sử dụng/phân phối. Dùng OpenPII VI C1 hiện có cho EDA benchmark."
+    ],
+    [
+      "microsoft/TaskTracker",
+      "Chờ chọn vai trò",
+      "Các JSON có sẵn gồm index tái dựng và tập poisoned test. Cần xác minh nguồn và quyền của corpus trước khi nhập train."
+    ],
+    [
+      "liu00222/Open-Prompt-Injection",
+      "Chờ chọn vai trò",
+      "Repo chủ yếu là framework và cấu hình, có dữ liệu phụ thuộc nguồn khác. Chưa xác nhận một corpus train riêng."
+    ],
+    [
+      "PINT",
+      "Chờ quyền truy cập",
+      "Plan dành cho benchmark tùy chọn. Phần dùng để so sánh ở đây giữ theo tập đã có."
+    ],
+    [
+      "FOX-VI",
+      "Chưa có",
+      "Cần chuẩn bị và kiểm nhãn dữ liệu tiếng Việt cho INPUT, CONTEXT và OUTPUT."
+    ]
+  ],
+  "samples": {
+    "BIPIA": {
+      "BIPIA · dev": [
+        {
+          "case_id": "bipia-dev-email0-clean"
+        },
+        {
+          "case_id": "bipia-dev-email33-clean"
+        },
+        {
+          "case_id": "bipia-dev-email33-a0-start"
+        }
+      ],
+      "BIPIA · test": []
+    },
+    "CSKH VI": {
+      "*": [
+        {
+          "case_id": "cl-ch-01-base"
+        },
+        {
+          "case_id": "hb-rv-01-base"
+        },
+        {
+          "case_id": "hb-on-01-base"
+        }
+      ]
+    },
+    "5cd": {
+      "*": [
+        {
+          "id": "0"
+        },
+        {
+          "id": "1"
+        },
+        {
+          "id": "2"
+        }
+      ]
+    },
+    "CyberSecEval": {
+      "CyberSecEval EN": [],
+      "CyberSecEval VI": [
+        {
+          "injection_type": "direct"
+        },
+        {
+          "injection_type": "indirect"
+        },
+        {
+          "injection_type": "indirect",
+          "injection_variant": "persuasion"
+        }
+      ]
+    },
+    "PII tổng hợp VI": {
+      "*": [
+        {
+          "case_id": "pii-001-0"
+        },
+        {
+          "case_id": "pii-001-1"
+        },
+        {
+          "label": "hard_negative"
+        }
+      ]
+    },
+    "OpenPII VI C1": {
+      "*": [
+        {
+          "label": "pii"
+        },
+        {
+          "label": "none"
+        }
+      ]
+    },
+    "JailbreakBench": {
+      "*": [
+        {
+          "label": "attack"
+        },
+        {
+          "label": "benign"
+        },
+        {
+          "label": "harmful_bare"
+        }
+      ]
+    },
+    "NotInject": {
+      "*": [
+        {}
+      ]
+    },
+    "deepset": {
+      "*": [
+        {
+          "label": 0
+        },
+        {
+          "label": 1
+        }
+      ]
+    },
+    "spml": {
+      "*": [
+        {
+          "Prompt injection": "0"
+        },
+        {
+          "Prompt injection": "1",
+          "Degree": "1"
+        },
+        {
+          "Prompt injection": "1",
+          "Degree": "3"
+        }
+      ]
+    },
+    "jackhhao": {
+      "*": [
+        {
+          "type": "benign"
+        },
+        {
+          "type": "jailbreak"
+        }
+      ]
+    },
+    "trustairlab": {
+      "*": [
+        {}
+      ]
+    },
+    "aegis": {
+      "train.json": [
+        {
+          "response_label": "unsafe"
+        },
+        {
+          "response_label": "safe"
+        },
+        {
+          "response": null
+        }
+      ],
+      "refusals_train.json": []
+    },
+    "nemotron": {
+      "*": [
+        {
+          "attack_category": "unauthorized_action"
+        },
+        {
+          "attack_category": "exfiltration"
+        }
+      ]
+    },
+    "beavertails": {
+      "*": [
+        {
+          "is_safe": false
+        },
+        {
+          "is_safe": true
+        }
+      ]
+    },
+    "neuralchemy": {
+      "*": [
+        {
+          "label": 0
+        },
+        {
+          "label": 1
+        }
+      ]
+    },
+    "piguard": {
+      "*": [
+        {
+          "label": 0
+        },
+        {
+          "label": 1
+        }
+      ]
+    },
+    "injecagent": {
+      "data/test_cases_dh_base.json": [
+        {}
+      ],
+      "data/test_cases_ds_base.json": [
+        {}
+      ],
+      "data/test_cases_dh_enhanced.json": [
+        {}
+      ],
+      "data/test_cases_ds_enhanced.json": []
+    }
+  },
+  "vietnamese": [
+    {
+      "key": "secai",
+      "splits": "train",
+      "repo": "secai1999/secai-chat-sanitization",
+      "rev": "aab353fcb7e33838fe8b06df5d8afa45b7a03e54",
+      "host": "hf",
+      "license": "Apache-2.0 (card nguồn)",
+      "purpose": "INPUT có nhãn injection/jailbreak và PII",
+      "path": "data/train.jsonl",
+      "bytes": 182635,
+      "digest": "366b4e852075529d89f036a64f01744135a60799",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "secai",
+      "splits": "test",
+      "repo": "secai1999/secai-chat-sanitization",
+      "rev": "aab353fcb7e33838fe8b06df5d8afa45b7a03e54",
+      "host": "hf",
+      "license": "Apache-2.0 (card nguồn)",
+      "purpose": "INPUT có nhãn injection/jailbreak và PII",
+      "path": "data/test.jsonl",
+      "bytes": 69241,
+      "digest": "dc5e99b40365ba1f0e4887584b0f6536de54c749",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "vi_en",
+      "splits": "train",
+      "repo": "tmdeptrai3012/prompt-injection-dataset-vi-en",
+      "rev": "2afeb49278455c0e17efbc76acd2581237fb6f27",
+      "host": "hf",
+      "license": "Apache-2.0 (card nguồn)",
+      "purpose": "INPUT có nhãn nhị phân, dữ liệu tổng hợp",
+      "path": "train.jsonl",
+      "bytes": 154588,
+      "digest": "7c6132d5809da9ca41ae2cc9dcc6a81d52d9fa16",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "vi_en",
+      "splits": "test",
+      "repo": "tmdeptrai3012/prompt-injection-dataset-vi-en",
+      "rev": "2afeb49278455c0e17efbc76acd2581237fb6f27",
+      "host": "hf",
+      "license": "Apache-2.0 (card nguồn)",
+      "purpose": "INPUT có nhãn nhị phân, dữ liệu tổng hợp",
+      "path": "test.jsonl",
+      "bytes": 43775,
+      "digest": "71f6434c5094fb1bcfb6ac0db4464a060bad8219",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "guardspec",
+      "splits": "train",
+      "repo": "guard-spec/guard-spec",
+      "rev": "c81d88c991406e7029c9945a9350f0f58f6ea220",
+      "host": "github",
+      "license": "Apache-2.0 cho mẫu dự án; giữ license từng dòng",
+      "purpose": "Nhiều nhãn; ứng viên INPUT, indirect cần rà ranh giới",
+      "path": "train/data/train.jsonl",
+      "bytes": 10967050,
+      "digest": "31aa7805fcb317e423e8d40d37535e7c28f4ffaf",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "guardspec",
+      "splits": "val",
+      "repo": "guard-spec/guard-spec",
+      "rev": "c81d88c991406e7029c9945a9350f0f58f6ea220",
+      "host": "github",
+      "license": "Apache-2.0 cho mẫu dự án; giữ license từng dòng",
+      "purpose": "Nhiều nhãn; ứng viên INPUT, indirect cần rà ranh giới",
+      "path": "train/data/val.jsonl",
+      "bytes": 1755361,
+      "digest": "9187d259d9bad8d0e9c86a5fbfaa8321d953aec4",
+      "digest_type": "git-blob-sha1"
+    },
+    {
+      "key": "vi_alpaca",
+      "splits": "train",
+      "repo": "bkai-foundation-models/vi-alpaca",
+      "rev": "77fd8f9466d6354ea4ce48a7bd722cee1bf6f5c5",
+      "host": "hf",
+      "license": "Chưa thấy license bản phát hành",
+      "purpose": "Ứng viên mẫu âm INPUT sau audit và xác minh quyền",
+      "path": "data/train-00000-of-00001-b0855b79e84114ca.parquet",
+      "bytes": 26279260,
+      "digest": "329f8bbab53602f7153c4480fbf6bd607f07498546644b33e97e6a37d35f71e8",
+      "digest_type": "sha256"
+    },
+    {
+      "key": "phoatis",
+      "splits": "train",
+      "repo": "VinAIResearch/JointIDSF",
+      "rev": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+      "host": "github",
+      "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+      "purpose": "Ứng viên lát cắt chặn nhầm nội bộ, nhãn intent/slot",
+      "path": "PhoATIS/syllable-level/train/seq.in",
+      "bytes": 416739,
+      "digest": "8ed04056366f6e73d8620a3cc16bc21c28856d06",
+      "digest_type": "git-blob-sha1",
+      "local": "PhoATIS/syllable-level/train/seq.in.txt"
+    },
+    {
+      "key": "phoatis",
+      "splits": "train",
+      "repo": "VinAIResearch/JointIDSF",
+      "rev": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+      "host": "github",
+      "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+      "purpose": "Ứng viên lát cắt chặn nhầm nội bộ, nhãn intent/slot",
+      "path": "PhoATIS/syllable-level/train/label",
+      "bytes": 35606,
+      "digest": "8e021989d1ebef5f79bca1370575ea50bc40ea29",
+      "digest_type": "git-blob-sha1",
+      "local": "PhoATIS/syllable-level/train/label.txt"
+    },
+    {
+      "key": "phoatis",
+      "splits": "train",
+      "repo": "VinAIResearch/JointIDSF",
+      "rev": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+      "host": "github",
+      "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+      "purpose": "Ứng viên lát cắt chặn nhầm nội bộ, nhãn intent/slot",
+      "path": "PhoATIS/syllable-level/train/seq.out",
+      "bytes": 671542,
+      "digest": "79bcaf447ff7725ac4ba34d942ae790dc2cf9b5d",
+      "digest_type": "git-blob-sha1",
+      "local": "PhoATIS/syllable-level/train/seq.out.txt"
+    },
+    {
+      "key": "phoatis",
+      "splits": "dev",
+      "repo": "VinAIResearch/JointIDSF",
+      "rev": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+      "host": "github",
+      "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+      "purpose": "Ứng viên lát cắt chặn nhầm nội bộ, nhãn intent/slot",
+      "path": "PhoATIS/syllable-level/dev/seq.in",
+      "bytes": 45301,
+      "digest": "5c5db063c8b4428c71da589c32cf33b929b3e7bf",
+      "digest_type": "git-blob-sha1",
+      "local": "PhoATIS/syllable-level/dev/seq.in.txt"
+    },
+    {
+      "key": "phoatis",
+      "splits": "dev",
+      "repo": "VinAIResearch/JointIDSF",
+      "rev": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+      "host": "github",
+      "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+      "purpose": "Ứng viên lát cắt chặn nhầm nội bộ, nhãn intent/slot",
+      "path": "PhoATIS/syllable-level/dev/label",
+      "bytes": 4090,
+      "digest": "234b8337c5477dc61eab80f162fc4b971262cce8",
+      "digest_type": "git-blob-sha1",
+      "local": "PhoATIS/syllable-level/dev/label.txt"
+    },
+    {
+      "key": "phoatis",
+      "splits": "dev",
+      "repo": "VinAIResearch/JointIDSF",
+      "rev": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+      "host": "github",
+      "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+      "purpose": "Ứng viên lát cắt chặn nhầm nội bộ, nhãn intent/slot",
+      "path": "PhoATIS/syllable-level/dev/seq.out",
+      "bytes": 72326,
+      "digest": "156d34a10a91dee2a746ece7cb39ba4a500846bb",
+      "digest_type": "git-blob-sha1",
+      "local": "PhoATIS/syllable-level/dev/seq.out.txt"
+    },
+    {
+      "key": "phoatis",
+      "splits": "test",
+      "repo": "VinAIResearch/JointIDSF",
+      "rev": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+      "host": "github",
+      "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+      "purpose": "Ứng viên lát cắt chặn nhầm nội bộ, nhãn intent/slot",
+      "path": "PhoATIS/syllable-level/test/seq.in",
+      "bytes": 78207,
+      "digest": "4c4ca45c9ddb84cded74edee341d84cec47f3894",
+      "digest_type": "git-blob-sha1",
+      "local": "PhoATIS/syllable-level/test/seq.in.txt"
+    },
+    {
+      "key": "phoatis",
+      "splits": "test",
+      "repo": "VinAIResearch/JointIDSF",
+      "rev": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+      "host": "github",
+      "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+      "purpose": "Ứng viên lát cắt chặn nhầm nội bộ, nhãn intent/slot",
+      "path": "PhoATIS/syllable-level/test/label",
+      "bytes": 7243,
+      "digest": "88a12ddc3bc5405a474a105f5bf855740d8d6c4b",
+      "digest_type": "git-blob-sha1",
+      "local": "PhoATIS/syllable-level/test/label.txt"
+    },
+    {
+      "key": "phoatis",
+      "splits": "test",
+      "repo": "VinAIResearch/JointIDSF",
+      "rev": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+      "host": "github",
+      "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+      "purpose": "Ứng viên lát cắt chặn nhầm nội bộ, nhãn intent/slot",
+      "path": "PhoATIS/syllable-level/test/seq.out",
+      "bytes": 124649,
+      "digest": "a129f401a1f00214d61b8783f97c3cf2e30542cc",
+      "digest_type": "git-blob-sha1",
+      "local": "PhoATIS/syllable-level/test/seq.out.txt"
+    }
+  ]
+}

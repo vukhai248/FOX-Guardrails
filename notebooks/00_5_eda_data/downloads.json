@@ -1,0 +1,311 @@
+{
+  "pulled_utc": "2026-11-14T14:24:45.039832+00:00",
+  "raw_dir": "data/raw/eda05",
+  "sources": [
+    {
+      "id": "aya",
+      "repo": "CohereLabs/aya_dataset",
+      "card": "https://huggingface.co/datasets/CohereLabs/aya_dataset",
+      "revision": "f9ea04583f02a8f86404ff6c58bf75fe637df8a2",
+      "last_modified": "2025-04-15T08:51:55.000Z",
+      "license": "apache-2.0",
+      "gated": false,
+      "files": [
+        {
+          "file": "README.md",
+          "url": "https://huggingface.co/datasets/CohereLabs/aya_dataset/resolve/f9ea04583f02a8f86404ff6c58bf75fe637df8a2/README.md",
+          "bytes": 13659,
+          "sha256": "3ac54f63eec84100c155571945da01c7c18cd8ec97ea94639e2b94a6860e8573",
+          "official_digest": "747dd0d82a799808c9b7369a58e96d5b6d2d163a",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        },
+        {
+          "file": "data/test-00000-of-00001.parquet",
+          "url": "https://huggingface.co/datasets/CohereLabs/aya_dataset/resolve/f9ea04583f02a8f86404ff6c58bf75fe637df8a2/data/test-00000-of-00001.parquet",
+          "bytes": 977517,
+          "sha256": "52bbb79461bff9887c9987a5737d9a06f5ec6c78c08d770828c37fc182ce2cca",
+          "official_digest": "52bbb79461bff9887c9987a5737d9a06f5ec6c78c08d770828c37fc182ce2cca",
+          "digest_type": "sha256",
+          "status": "verified"
+        },
+        {
+          "file": "data/train-00000-of-00001.parquet",
+          "url": "https://huggingface.co/datasets/CohereLabs/aya_dataset/resolve/f9ea04583f02a8f86404ff6c58bf75fe637df8a2/data/train-00000-of-00001.parquet",
+          "bytes": 137195800,
+          "sha256": "51baa85043b569ba117f41516b32d1b0e4e2647fb203a08933f98a556fb1fb06",
+          "official_digest": "51baa85043b569ba117f41516b32d1b0e4e2647fb203a08933f98a556fb1fb06",
+          "digest_type": "sha256",
+          "status": "verified"
+        }
+      ]
+    },
+    {
+      "id": "oasst2",
+      "repo": "OpenAssistant/oasst2",
+      "card": "https://huggingface.co/datasets/OpenAssistant/oasst2",
+      "revision": "179dd21fc55192153d94adb0e0ce8f69e222bf75",
+      "last_modified": "2024-01-11T06:09:29.000Z",
+      "license": "apache-2.0",
+      "gated": false,
+      "files": [
+        {
+          "file": "README.md",
+          "url": "https://huggingface.co/datasets/OpenAssistant/oasst2/resolve/179dd21fc55192153d94adb0e0ce8f69e222bf75/README.md",
+          "bytes": 10606,
+          "sha256": "52bd472cf3cae04a4b21ecd5316f929741c47d991d4763b041c3a94de072dc31",
+          "official_digest": "ce94775b146d09acf5c5ea31992a9f322e12de76",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        },
+        {
+          "file": "data/train-00000-of-00001-88ba0162028a73fc.parquet",
+          "url": "https://huggingface.co/datasets/OpenAssistant/oasst2/resolve/179dd21fc55192153d94adb0e0ce8f69e222bf75/data/train-00000-of-00001-88ba0162028a73fc.parquet",
+          "bytes": 63494018,
+          "sha256": "9638227b41b0a4fb69afa5d5c4b52e3fb6abfd56c9870d81bae32c9981e769b1",
+          "official_digest": "9638227b41b0a4fb69afa5d5c4b52e3fb6abfd56c9870d81bae32c9981e769b1",
+          "digest_type": "sha256",
+          "status": "verified"
+        },
+        {
+          "file": "data/validation-00000-of-00001-1deeef95c3248fe0.parquet",
+          "url": "https://huggingface.co/datasets/OpenAssistant/oasst2/resolve/179dd21fc55192153d94adb0e0ce8f69e222bf75/data/validation-00000-of-00001-1deeef95c3248fe0.parquet",
+          "bytes": 3180111,
+          "sha256": "fd46c63babc0756909a957ee40975bcf5610d58c5d1ab5ff2c57c0f57be1f273",
+          "official_digest": "fd46c63babc0756909a957ee40975bcf5610d58c5d1ab5ff2c57c0f57be1f273",
+          "digest_type": "sha256",
+          "status": "verified"
+        }
+      ]
+    },
+    {
+      "id": "nailyk",
+      "repo": "Nailyk14/prompt-safety-multilingual-v2",
+      "card": "https://huggingface.co/datasets/Nailyk14/prompt-safety-multilingual-v2",
+      "revision": "c89c611f0a28211088661cadc8d4c4e13ce3b418",
+      "last_modified": "2026-10-22T11:11:07.000Z",
+      "license": "other",
+      "gated": false,
+      "files": [
+        {
+          "file": "README.md",
+          "url": "https://huggingface.co/datasets/Nailyk14/prompt-safety-multilingual-v2/resolve/c89c611f0a28211088661cadc8d4c4e13ce3b418/README.md",
+          "bytes": 17828,
+          "sha256": "7ea0577ce7cadb87a01a95019342a06017ed1b93169defaa1bfa4415690c51c0",
+          "official_digest": "b77fb753e05748001a1cee82bfe9b55409a29e62",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        },
+        {
+          "file": "data/test-00000-of-00001.parquet",
+          "url": "https://huggingface.co/datasets/Nailyk14/prompt-safety-multilingual-v2/resolve/c89c611f0a28211088661cadc8d4c4e13ce3b418/data/test-00000-of-00001.parquet",
+          "bytes": 12758466,
+          "sha256": "192b8453d87a0a6ae0cb2d41d9eb2720fa57e22d2c94550b240c08947649a0ac",
+          "official_digest": "192b8453d87a0a6ae0cb2d41d9eb2720fa57e22d2c94550b240c08947649a0ac",
+          "digest_type": "sha256",
+          "status": "verified"
+        },
+        {
+          "file": "data/test_translated-00000-of-00001.parquet",
+          "url": "https://huggingface.co/datasets/Nailyk14/prompt-safety-multilingual-v2/resolve/c89c611f0a28211088661cadc8d4c4e13ce3b418/data/test_translated-00000-of-00001.parquet",
+          "bytes": 1937060,
+          "sha256": "46f350f1cb944e619ef0925c31a4f55b2902b7a2a3d6a8689761a6448b573a14",
+          "official_digest": "46f350f1cb944e619ef0925c31a4f55b2902b7a2a3d6a8689761a6448b573a14",
+          "digest_type": "sha256",
+          "status": "verified"
+        },
+        {
+          "file": "data/train-00000-of-00003.parquet",
+          "url": "https://huggingface.co/datasets/Nailyk14/prompt-safety-multilingual-v2/resolve/c89c611f0a28211088661cadc8d4c4e13ce3b418/data/train-00000-of-00003.parquet",
+          "bytes": 105421917,
+          "sha256": "2bbd9839b0440db97fc05b431a5dc7e7e596ebfc7f4a4cbb97503f2b0e8352fd",
+          "official_digest": "2bbd9839b0440db97fc05b431a5dc7e7e596ebfc7f4a4cbb97503f2b0e8352fd",
+          "digest_type": "sha256",
+          "status": "verified"
+        },
+        {
+          "file": "data/train-00001-of-00003.parquet",
+          "url": "https://huggingface.co/datasets/Nailyk14/prompt-safety-multilingual-v2/resolve/c89c611f0a28211088661cadc8d4c4e13ce3b418/data/train-00001-of-00003.parquet",
+          "bytes": 89281090,
+          "sha256": "9e038e0a6164eda2ab1985fc3ebb151826e54d3acd66f2675ba78fd8343155c5",
+          "official_digest": "9e038e0a6164eda2ab1985fc3ebb151826e54d3acd66f2675ba78fd8343155c5",
+          "digest_type": "sha256",
+          "status": "verified"
+        },
+        {
+          "file": "data/train-00002-of-00003.parquet",
+          "url": "https://huggingface.co/datasets/Nailyk14/prompt-safety-multilingual-v2/resolve/c89c611f0a28211088661cadc8d4c4e13ce3b418/data/train-00002-of-00003.parquet",
+          "bytes": 109188304,
+          "sha256": "8d0230027d76b144d512db2c03d532bed9914626994d3f03f758efda0312f5c7",
+          "official_digest": "8d0230027d76b144d512db2c03d532bed9914626994d3f03f758efda0312f5c7",
+          "digest_type": "sha256",
+          "status": "verified"
+        },
+        {
+          "file": "data/validation-00000-of-00001.parquet",
+          "url": "https://huggingface.co/datasets/Nailyk14/prompt-safety-multilingual-v2/resolve/c89c611f0a28211088661cadc8d4c4e13ce3b418/data/validation-00000-of-00001.parquet",
+          "bytes": 15102783,
+          "sha256": "0d931366336f90514651ba5400489d2787a0abd1ea8ac4f7a569509020353be5",
+          "official_digest": "0d931366336f90514651ba5400489d2787a0abd1ea8ac4f7a569509020353be5",
+          "digest_type": "sha256",
+          "status": "verified"
+        }
+      ]
+    },
+    {
+      "id": "zn",
+      "repo": "usezn/zn-prompt-injection-bench",
+      "card": "https://huggingface.co/datasets/usezn/zn-prompt-injection-bench",
+      "revision": "60b3a1825955976af25c9a28f6f960ffd0823f3b",
+      "last_modified": "2026-10-31T17:55:40.000Z",
+      "license": "cc-by-4.0",
+      "gated": false,
+      "files": [
+        {
+          "file": "README.md",
+          "url": "https://huggingface.co/datasets/usezn/zn-prompt-injection-bench/resolve/60b3a1825955976af25c9a28f6f960ffd0823f3b/README.md",
+          "bytes": 12265,
+          "sha256": "b91072e90a991cd8780e6d71a8ecfd2b73e6c2616862050b09d2b101fec8b98a",
+          "official_digest": "bd0d72307417de6185b4fc9d248894b8be7a5f9c",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        },
+        {
+          "file": "data/test.parquet",
+          "url": "https://huggingface.co/datasets/usezn/zn-prompt-injection-bench/resolve/60b3a1825955976af25c9a28f6f960ffd0823f3b/data/test.parquet",
+          "bytes": 1794021,
+          "sha256": "a05ee4f52121a963bc84cab1a79414b50f7c2be4699ed96ca56defc73347c330",
+          "official_digest": "a05ee4f52121a963bc84cab1a79414b50f7c2be4699ed96ca56defc73347c330",
+          "digest_type": "sha256",
+          "status": "verified"
+        },
+        {
+          "file": "data/train.parquet",
+          "url": "https://huggingface.co/datasets/usezn/zn-prompt-injection-bench/resolve/60b3a1825955976af25c9a28f6f960ffd0823f3b/data/train.parquet",
+          "bytes": 8084713,
+          "sha256": "0345776ce2ae728f83d252402d632a724ecbb44216553c28068666a21a7fa913",
+          "official_digest": "0345776ce2ae728f83d252402d632a724ecbb44216553c28068666a21a7fa913",
+          "digest_type": "sha256",
+          "status": "verified"
+        },
+        {
+          "file": "data/validation.parquet",
+          "url": "https://huggingface.co/datasets/usezn/zn-prompt-injection-bench/resolve/60b3a1825955976af25c9a28f6f960ffd0823f3b/data/validation.parquet",
+          "bytes": 1761723,
+          "sha256": "96aaf82547703293b6d2f7e9fe306c975c26d7aa39725991a229b9cc0f2e0f35",
+          "official_digest": "96aaf82547703293b6d2f7e9fe306c975c26d7aa39725991a229b9cc0f2e0f35",
+          "digest_type": "sha256",
+          "status": "verified"
+        }
+      ]
+    },
+    {
+      "id": "wildjailbreak",
+      "repo": "allenai/wildjailbreak",
+      "card": "https://huggingface.co/datasets/allenai/wildjailbreak",
+      "revision": "5ddc12a7894f842b0619b8e1c7ee496b198af009",
+      "last_modified": "2024-08-08T05:39:06.000Z",
+      "license": "odc-by",
+      "gated": "auto",
+      "files": [
+        {
+          "file": "README.md",
+          "url": "https://huggingface.co/datasets/allenai/wildjailbreak/resolve/5ddc12a7894f842b0619b8e1c7ee496b198af009/README.md",
+          "bytes": 16230,
+          "sha256": "8261b7c07c2d8da292e546d2223560d679d4debb10667e28184ce989ac7d7b1a",
+          "official_digest": "a8ec6923278a9398c7b24029d5952c253e459d4b",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        },
+        {
+          "file": "eval/eval.tsv",
+          "url": "https://huggingface.co/datasets/allenai/wildjailbreak/resolve/5ddc12a7894f842b0619b8e1c7ee496b198af009/eval/eval.tsv",
+          "bytes_expected": 1742350,
+          "status": "blocked",
+          "error": "HTTP 403"
+        },
+        {
+          "file": "train/train.tsv",
+          "url": "https://huggingface.co/datasets/allenai/wildjailbreak/resolve/5ddc12a7894f842b0619b8e1c7ee496b198af009/train/train.tsv",
+          "bytes_expected": 530920110,
+          "status": "blocked",
+          "error": "HTTP 403"
+        }
+      ]
+    },
+    {
+      "id": "hackaprompt",
+      "repo": "hackaprompt/hackaprompt-dataset",
+      "card": "https://huggingface.co/datasets/hackaprompt/hackaprompt-dataset",
+      "revision": "25b87fbedfb86840abaf8cd09af7a029208a971a",
+      "last_modified": "2024-01-24T16:32:38.000Z",
+      "license": "mit",
+      "gated": "auto",
+      "files": [
+        {
+          "file": "README.md",
+          "url": "https://huggingface.co/datasets/hackaprompt/hackaprompt-dataset/resolve/25b87fbedfb86840abaf8cd09af7a029208a971a/README.md",
+          "bytes": 5555,
+          "sha256": "627ac0ec7ebfcb5baf93bbc9b80c72a73443846debf06196803aee1138486d2a",
+          "official_digest": "63bdb779825fc7b25fa8a4a347b1a0e0dfb2a89b",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        },
+        {
+          "file": "hackaprompt.parquet",
+          "url": "https://huggingface.co/datasets/hackaprompt/hackaprompt-dataset/resolve/25b87fbedfb86840abaf8cd09af7a029208a971a/hackaprompt.parquet",
+          "bytes_expected": 150419795,
+          "status": "blocked",
+          "error": "HTTP 403"
+        }
+      ]
+    },
+    {
+      "id": "tensor_trust",
+      "repo": "HumanCompatibleAI/tensor-trust-data",
+      "card": "https://tensortrust.ai/paper/",
+      "revision": "747a75e096761ebc01bd3970158827326b4add23",
+      "last_modified": "2024-03-17T22:47:26Z",
+      "license": "check raw data terms",
+      "gated": false,
+      "files": [
+        {
+          "file": "README.md",
+          "url": "https://raw.githubusercontent.com/HumanCompatibleAI/tensor-trust-data/747a75e096761ebc01bd3970158827326b4add23/README.md",
+          "bytes": 693,
+          "sha256": "f9d84aee43137dbeed87a97330d6035468ea8cc0e5aaa58b7f0bdef2ba911c09",
+          "official_digest": "d03f84e27e6be22fed176fb7c937cf4f3cfade93",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        },
+        {
+          "file": "Using the Tensor Trust dataset.ipynb",
+          "url": "https://raw.githubusercontent.com/HumanCompatibleAI/tensor-trust-data/747a75e096761ebc01bd3970158827326b4add23/Using%20the%20Tensor%20Trust%20dataset.ipynb",
+          "bytes": 50732,
+          "sha256": "ecc4eddecb76ccae41be1a40cf91e85f49f20e4b957f40821dc48f5d206b169e",
+          "official_digest": "283cd660d89a64dcd1cfff585e9c338d21889bf9",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        },
+        {
+          "file": "raw-data/v2/raw_dump_attacks.jsonl.bz2",
+          "url": "https://raw.githubusercontent.com/HumanCompatibleAI/tensor-trust-data/747a75e096761ebc01bd3970158827326b4add23/raw-data/v2/raw_dump_attacks.jsonl.bz2",
+          "bytes": 98978449,
+          "sha256": "87853cc8065a22156d15c4bdec777a8d35758749beb79769147d63a9644a73ce",
+          "official_digest": "3d8e42efce1b8ea9a7a36e3a78832b95e16b8c7b",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        },
+        {
+          "file": "raw-data/v2/raw_dump_defenses.jsonl.bz2",
+          "url": "https://raw.githubusercontent.com/HumanCompatibleAI/tensor-trust-data/747a75e096761ebc01bd3970158827326b4add23/raw-data/v2/raw_dump_defenses.jsonl.bz2",
+          "bytes": 7479653,
+          "sha256": "cbdf52c469b2a57db61f885562bae1725cd56174cc201979e7bc042a680a5166",
+          "official_digest": "de746815f5ab96e1f0594f6f8e8021e5acf430f7",
+          "digest_type": "git-blob-sha1",
+          "status": "verified"
+        }
+      ]
+    }
+  ]
+}

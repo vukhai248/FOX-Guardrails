@@ -33,6 +33,8 @@
 
 **Việc tiếp theo:** (1) **Phần G — fine-tune** (`docs/plans/G-finetune.md`, đề xuất 09/11, chờ bạn chốt 4 câu ở §7): dựng bộ FOX-VI (injection tiếng Việt CSKH), M1 classifier VI–EN, M2 kiểm đầu ra, so với PG2 / deberta / PIGuard; (2) utility e2e trên câu CSKH vô hại (C3-4, gộp vào G); (3) dashboard Streamlit + chạy 5 kịch bản demo; (4) báo cáo + slide từ cuối tháng 11 (Chương 4 lấy từ `eval/reports/SUMMARY.md`).
 
+**Phần G · 14/11/2026.** Bước 01 đã chuyển sang EDA các nguồn có tiếng Việt. Đã tải và đối chiếu 16 tệp gốc của SecAI, VI–EN, GuardSpec, BKAI Vi-Alpaca và VinAI PhoATIS. [Notebook 01](../notebooks/01_eda_data.ipynb) thống kê 94.912 dòng nguồn, gồm cả dòng tiếng Anh trong ba bộ song ngữ, và ghi kết quả so trùng với các benchmark đã khóa. Bước 02 chờ chốt trường, nhãn và đích load.
+
 ---
 
 ## MỤC LỤC

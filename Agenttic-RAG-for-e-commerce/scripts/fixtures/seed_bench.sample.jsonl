@@ -1,0 +1,2 @@
+{"case_id":"smoke-order-a","table":"orders","fields":{"user_id":"bench_customer_a","items":[{"product_id":1,"quantity":1}],"note":"Giao giờ hành chính — dữ liệu mô phỏng."}}
+{"case_id":"smoke-review-a","table":"reviews","fields":{"user_id":"bench_customer_a","product_id":1,"rating":5,"comment":"Mẫu kiểm thử cơ chế seed; không phải dữ liệu benchmark chính thức."}}

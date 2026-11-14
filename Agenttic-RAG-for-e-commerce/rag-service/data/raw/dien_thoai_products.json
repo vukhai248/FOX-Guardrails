@@ -1,0 +1,957 @@
+[
+  {
+    "name": "iPhone 17 Pro 256GB | Chính hãng",
+    "url": "https://cellphones.com.vn/iphone-17-pro.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 33890000,
+    "old_price": 34990000,
+    "discount": "Giảm 3%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-17-pro-256-gb.png",
+    "specs": {
+      "Màn hình": "6.3 inches",
+      "RAM": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:06.104589"
+  },
+  {
+    "name": "Samsung Galaxy Z Fold7 12GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-z-fold-7.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 40990000,
+    "old_price": 46990000,
+    "discount": "Giảm \n13%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-z-fold-7.jpg",
+    "specs": {
+      "Màn hình": "Chính 8.0 inches, Phụ 6.5 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:06.271214"
+  },
+  {
+    "name": "iPhone 17 Pro Max 256GB | Chính hãng",
+    "url": "https://cellphones.com.vn/iphone-17-pro-max.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 35990000,
+    "old_price": 37990000,
+    "discount": "Giảm \n5%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-17-pro-max_3.jpg",
+    "specs": {
+      "Màn hình": "6.9 inches",
+      "RAM": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:06.549207"
+  },
+  {
+    "name": "iPhone 17 256GB | Chính hãng",
+    "url": "https://cellphones.com.vn/iphone-17-256gb.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 24290000,
+    "old_price": 24990000,
+    "discount": "Giảm \n3%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_17_256gb-3_2.jpg",
+    "specs": {
+      "Màn hình": "6.3 inches",
+      "RAM": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:06.680717"
+  },
+  {
+    "name": "OPPO Reno16 F 5G 8GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-oppo-reno16-f.html",
+    "category": "dien_thoai",
+    "brand": "OPPO",
+    "price": 15990000,
+    "old_price": null,
+    "discount": "",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-reno16f-pop-white-9.jpg",
+    "specs": {
+      "Màn hình": "Hàng mới về",
+      "RAM": "6.57 inches",
+      "Bộ nhớ": "8 GB",
+      "Pin": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:06.795714"
+  },
+  {
+    "name": "Samsung Galaxy A17 5G 8GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-a17-5g.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 6090000,
+    "old_price": 7090000,
+    "discount": "Giảm \n14%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a17-5g-back.jpg",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:06.900970"
+  },
+  {
+    "name": "Nubia Neo 5 5G 8GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-nubia-neo-5-5g.html",
+    "category": "dien_thoai",
+    "brand": "Unknown",
+    "price": 6990000,
+    "old_price": 7490000,
+    "discount": "Giảm \n7%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-nubia-neo-5-5g-den.jpg",
+    "specs": {
+      "Màn hình": "6.8 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:07.044854"
+  },
+  {
+    "name": "Samsung Galaxy S26 5G 12GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s26.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 21490000,
+    "old_price": 25990000,
+    "discount": "Giảm \n17%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-s26-10.jpg",
+    "specs": {
+      "Màn hình": "6.3 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:07.153849"
+  },
+  {
+    "name": "OPPO Find X9s 12GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-oppo-find-x9s.html",
+    "category": "dien_thoai",
+    "brand": "OPPO",
+    "price": 23990000,
+    "old_price": 24990000,
+    "discount": "Giảm \n4%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-find-x9s-25.jpg",
+    "specs": {
+      "Màn hình": "6.59 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:07.351882"
+  },
+  {
+    "name": "Samsung Galaxy A57 5G 8GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-a57.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 11490000,
+    "old_price": 12490000,
+    "discount": "Giảm \n8%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-a57-2.jpg",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:07.459916"
+  },
+  {
+    "name": "iPhone Air 256GB | Chính hãng",
+    "url": "https://cellphones.com.vn/iphone-air-256gb.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 22990000,
+    "old_price": 31990000,
+    "discount": "Giảm \n28%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_air-3_2.jpg",
+    "specs": {
+      "Màn hình": "6.5 inches",
+      "RAM": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:07.566138"
+  },
+  {
+    "name": "OPPO Reno15 F 5G 8GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-oppo-reno15-f.html",
+    "category": "dien_thoai",
+    "brand": "OPPO",
+    "price": 11990000,
+    "old_price": null,
+    "discount": "",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-reno15f-5g.jpg",
+    "specs": {
+      "Màn hình": "6.57 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:07.639465"
+  },
+  {
+    "name": "Samsung Galaxy S25 Ultra 12GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s25-ultra.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 27990000,
+    "old_price": 33380000,
+    "discount": "Giảm \n16%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-s25-ultra_3__3.png",
+    "specs": {
+      "Màn hình": "6.9 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:07.727819"
+  },
+  {
+    "name": "Xiaomi Redmi Note 14 Pro Plus 5G 8GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-xiaomi-redmi-note-14-pro-plus.html",
+    "category": "dien_thoai",
+    "brand": "Xiaomi",
+    "price": 8490000,
+    "old_price": 10800000,
+    "discount": "Giảm \n21%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-14-pro-plus.jpg",
+    "specs": {
+      "Màn hình": "6.67 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:07.819200"
+  },
+  {
+    "name": "HONOR 600 5G 8GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-honor-600.html",
+    "category": "dien_thoai",
+    "brand": "Honor",
+    "price": 17590000,
+    "old_price": 17990000,
+    "discount": "Giảm \n2%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/h/o/honor-600_1.jpg",
+    "specs": {
+      "Màn hình": "6.57 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:07.930367"
+  },
+  {
+    "name": "Điện thoại iPhone 16 Pro Max 256GB",
+    "url": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 30990000,
+    "old_price": 34990000,
+    "discount": "Giảm \n11%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max.png",
+    "specs": {
+      "Màn hình": "Sắp về hàng",
+      "RAM": "6.9 inches",
+      "Bộ nhớ": "8 GB",
+      "Pin": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:08.033592"
+  },
+  {
+    "name": "POCO X8 Pro Max 12GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-xiaomi-poco-x8-pro-max.html",
+    "category": "dien_thoai",
+    "brand": "Unknown",
+    "price": 13690000,
+    "old_price": 16990000,
+    "discount": "Giảm \n19%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-poco-x8-pro-max_2.jpg",
+    "specs": {
+      "Màn hình": "6.83 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:08.121991"
+  },
+  {
+    "name": "Samsung Galaxy S25 Plus 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s25-plus.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 19990000,
+    "old_price": 26500000,
+    "discount": "Giảm \n25%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-s25-plus_3_.png",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:08.208192"
+  },
+  {
+    "name": "Samsung Galaxy A07 5G 4GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-a07-5g.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 4590000,
+    "old_price": 5090000,
+    "discount": "Giảm \n10%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a07-5g-2_3.jpg",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "4 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:08.341302"
+  },
+  {
+    "name": "Samsung Galaxy S26 Ultra 5G 12GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s26-ultra.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 30890000,
+    "old_price": 36990000,
+    "discount": "Giảm \n16%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-s26-ultra-1.jpg",
+    "specs": {
+      "Màn hình": "6.9 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:17.176403"
+  },
+  {
+    "name": "HONOR X9d 5G 12GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-honor-x9d-12gb-256gb.html",
+    "category": "dien_thoai",
+    "brand": "Honor",
+    "price": 11190000,
+    "old_price": 11990000,
+    "discount": "Giảm \n7%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-honor-x9d-3_1_6.jpg",
+    "specs": {
+      "Màn hình": "6.79 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.054843"
+  },
+  {
+    "name": "Xiaomi 17T Pro 5G 12GB 512GB",
+    "url": "https://cellphones.com.vn/dien-thoai-xiaomi-17t-pro.html",
+    "category": "dien_thoai",
+    "brand": "Xiaomi",
+    "price": 22990000,
+    "old_price": 24990000,
+    "discount": "Giảm \n8%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-17t-pro-1_4.jpg",
+    "specs": {
+      "Màn hình": "6.83 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.149129"
+  },
+  {
+    "name": "OPPO Find N6 16GB 512GB",
+    "url": "https://cellphones.com.vn/dien-thoai-oppo-find-n6.html",
+    "category": "dien_thoai",
+    "brand": "OPPO",
+    "price": 64990000,
+    "old_price": null,
+    "discount": "",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-find-n6-0.jpg",
+    "specs": {
+      "Màn hình": "Chính 8.12 inches - Phụ 6.62 inches",
+      "RAM": "16 GB",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.231023"
+  },
+  {
+    "name": "HONOR 400 Pro 5G 12GB 512GB",
+    "url": "https://cellphones.com.vn/dien-thoai-honor-400-pro-5g.html",
+    "category": "dien_thoai",
+    "brand": "Honor",
+    "price": 15490000,
+    "old_price": 18660000,
+    "discount": "Giảm \n17%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/h/o/honor_400_pro_5g_12gb_512gb-2_1.jpg",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.337140"
+  },
+  {
+    "name": "Xiaomi 17T 5G 12GB 512GB",
+    "url": "https://cellphones.com.vn/dien-thoai-xiaomi-17t.html",
+    "category": "dien_thoai",
+    "brand": "Xiaomi",
+    "price": 18990000,
+    "old_price": 20990000,
+    "discount": "Giảm \n10%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-17t_2.jpg",
+    "specs": {
+      "Màn hình": "6.59 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.429642"
+  },
+  {
+    "name": "iPhone 16 Pro Max 512GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-16-pro-max-512gb.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 37990000,
+    "old_price": 40990000,
+    "discount": "Giảm \n7%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max_1.png",
+    "specs": {
+      "Màn hình": "Sắp về hàng",
+      "RAM": "6.9 inches",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.520383"
+  },
+  {
+    "name": "iPhone 15 128GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-15.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 17990000,
+    "old_price": 19990000,
+    "discount": "Giảm \n10%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png",
+    "specs": {
+      "Màn hình": "6.1 inches",
+      "RAM": "6 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.608808"
+  },
+  {
+    "name": "Xiaomi Redmi Note 15 6GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-xiaomi-redmi-note-15.html",
+    "category": "dien_thoai",
+    "brand": "Xiaomi",
+    "price": 5490000,
+    "old_price": 5990000,
+    "discount": "Giảm \n8%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/r/e/redmi-note-15-series-1_3.jpg",
+    "specs": {
+      "Màn hình": "6.77 inches",
+      "RAM": "6 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.696090"
+  },
+  {
+    "name": "Samsung Galaxy A07 4GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-a07.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 3390000,
+    "old_price": 4190000,
+    "discount": "Giảm \n19%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-a07-black.jpg",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "4 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.788622"
+  },
+  {
+    "name": "iPhone 17 Pro Max 512GB | Chính hãng",
+    "url": "https://cellphones.com.vn/iphone-17-pro-max-512gb.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 42990000,
+    "old_price": 44490000,
+    "discount": "Giảm \n3%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-17-pro-cam_3.jpg",
+    "specs": {
+      "Màn hình": "6.9 inches",
+      "RAM": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.884961"
+  },
+  {
+    "name": "Samsung Galaxy A37 5G 8GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-a37.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 10090000,
+    "old_price": 10790000,
+    "discount": "Giảm \n6%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-a37-2_2.jpg",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:19.976287"
+  },
+  {
+    "name": "Samsung Galaxy S25 FE 8GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s25-fe.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 13590000,
+    "old_price": 16690000,
+    "discount": "Giảm \n19%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-s25-fe-1.jpg",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:20.066526"
+  },
+  {
+    "name": "Xiaomi 17 Ultra 5G 16GB 512GB",
+    "url": "https://cellphones.com.vn/dien-thoai-xiaomi-17-ultra.html",
+    "category": "dien_thoai",
+    "brand": "Xiaomi",
+    "price": 31190000,
+    "old_price": 39990000,
+    "discount": "Giảm \n22%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-xiaomi-17-ultra-den.jpg",
+    "specs": {
+      "Màn hình": "6.9 inches",
+      "RAM": "16 GB",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:20.306165"
+  },
+  {
+    "name": "Samsung Galaxy A06 5G 4GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-a06-5g.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 2590000,
+    "old_price": 3920000,
+    "discount": "Giảm \n34%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-a06-5g_1__1.png",
+    "specs": {
+      "Màn hình": "Sắp về hàng",
+      "RAM": "6.7 inches",
+      "Bộ nhớ": "4 GB",
+      "Pin": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:20.425044"
+  },
+  {
+    "name": "Nubia Neo 5 GT 8GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-nubia-neo-5-gt.html",
+    "category": "dien_thoai",
+    "brand": "Unknown",
+    "price": 8990000,
+    "old_price": 9990000,
+    "discount": "Giảm \n10%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-nubia-neo-5-gt-den.jpg",
+    "specs": {
+      "Màn hình": "6.8 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:20.512834"
+  },
+  {
+    "name": "HONOR X8d 8GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-honor-x8d.html",
+    "category": "dien_thoai",
+    "brand": "Honor",
+    "price": 7590000,
+    "old_price": 8090000,
+    "discount": "Giảm \n6%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/h/o/honor-x8d-2.jpg",
+    "specs": {
+      "Màn hình": "6.77 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:20.594654"
+  },
+  {
+    "name": "iPhone 16e 128GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-16e.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 13690000,
+    "old_price": null,
+    "discount": "",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16e-128gb.png",
+    "specs": {
+      "Màn hình": "6.1 inches",
+      "RAM": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:20.665610"
+  },
+  {
+    "name": "TECNO CAMON 40 8GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-tecno-camon-40.html",
+    "category": "dien_thoai",
+    "brand": "TECNO",
+    "price": 5190000,
+    "old_price": 5890000,
+    "discount": "Giảm \n12%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-tecno-camon-40_1_.png",
+    "specs": {
+      "Màn hình": "6.78 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:20.758928"
+  },
+  {
+    "name": "iPhone 13 128GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-13.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 13490000,
+    "old_price": 13990000,
+    "discount": "Giảm \n4%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_2.jpg",
+    "specs": {
+      "Màn hình": "6.1 inches",
+      "RAM": "4 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:20.841587"
+  },
+  {
+    "name": "iPhone 14 Pro Max 128GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-14-pro-max.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 25590000,
+    "old_price": 29990000,
+    "discount": "Giảm \n15%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__5.png",
+    "specs": {
+      "Màn hình": "Sắp về hàng",
+      "RAM": "6.7 inches",
+      "Bộ nhớ": "6 GB",
+      "Pin": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:20.915789"
+  },
+  {
+    "name": "iPhone 17e 256GB | Chính hãng",
+    "url": "https://cellphones.com.vn/iphone-17e.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 17390000,
+    "old_price": 17990000,
+    "discount": "Giảm \n3%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_17e_pink_1.png",
+    "specs": {
+      "Màn hình": "6.1 inches",
+      "RAM": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:33.900900"
+  },
+  {
+    "name": "Điện thoại Meizu Mblu Note 21 Pro NFC 8GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-meizu-mblu-note-21-pro.html",
+    "category": "dien_thoai",
+    "brand": "Unknown",
+    "price": 3990000,
+    "old_price": null,
+    "discount": "",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/e/meizu-mblu-note-21-pro.jpg",
+    "specs": {
+      "Màn hình": "6.78 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:34.005483"
+  },
+  {
+    "name": "iPhone 15 256GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-15-256gb.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 20790000,
+    "old_price": 22990000,
+    "discount": "Giảm \n10%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus-256gb_3.png",
+    "specs": {
+      "Màn hình": "6.1 inches",
+      "RAM": "6 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:34.120264"
+  },
+  {
+    "name": "iPhone 16 Pro 128GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-16-pro.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 23990000,
+    "old_price": 28990000,
+    "discount": "Giảm \n17%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro_1.png",
+    "specs": {
+      "Màn hình": "Sắp về hàng",
+      "RAM": "6.3 inches",
+      "Bộ nhớ": "8 GB",
+      "Pin": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:34.306165"
+  },
+  {
+    "name": "OPPO Find X9 Ultra 12GB 512GB",
+    "url": "https://cellphones.com.vn/dien-thoai-oppo-find-x9-ultra.html",
+    "category": "dien_thoai",
+    "brand": "OPPO",
+    "price": 48990000,
+    "old_price": 49990000,
+    "discount": "Giảm \n2%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-find-x9-ultra-cam-8.jpg",
+    "specs": {
+      "Màn hình": "6.82 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:34.417831"
+  },
+  {
+    "name": "iPhone 17 512GB | Chính hãng",
+    "url": "https://cellphones.com.vn/iphone-17-512gb.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 29790000,
+    "old_price": 31490000,
+    "discount": "Giảm \n5%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_17_256gb-3_3.jpg",
+    "specs": {
+      "Màn hình": "6.3 inches",
+      "RAM": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:34.521277"
+  },
+  {
+    "name": "ZTE Nubia Z60S Pro 16GB 512GB",
+    "url": "https://cellphones.com.vn/dien-thoai-zte-nubia-z60s-pro-16gb-512gb.html",
+    "category": "dien_thoai",
+    "brand": "Unknown",
+    "price": 10990000,
+    "old_price": 12000000,
+    "discount": "Giảm \n8%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-zte-nubia-z60s-pro_4__1.png",
+    "specs": {
+      "Màn hình": "6.78 inches",
+      "RAM": "16 GB",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:34.631690"
+  },
+  {
+    "name": "iPhone 14 128GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-14.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 15490000,
+    "old_price": 15990000,
+    "discount": "Giảm \n3%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_2_1.jpg",
+    "specs": {
+      "Màn hình": "6.1 inches",
+      "RAM": "6 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:34.733625"
+  },
+  {
+    "name": "iPhone 16 128GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-16.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 20990000,
+    "old_price": 22990000,
+    "discount": "Giảm \n9%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-1.png",
+    "specs": {
+      "Màn hình": "6.1 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:34.867246"
+  },
+  {
+    "name": "Samsung Galaxy Z Fold7 12GB 512GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-z-fold-7-12gb-512gb.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 42290000,
+    "old_price": 52990000,
+    "discount": "Giảm \n20%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-z-fold-7_2.jpg",
+    "specs": {
+      "Màn hình": "Chính 8.0 inches, Phụ 6.5 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:34.985781"
+  },
+  {
+    "name": "iPhone 17 Pro Max 1TB | Chính hãng",
+    "url": "https://cellphones.com.vn/iphone-17-pro-max-1tb.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 48990000,
+    "old_price": 50990000,
+    "discount": "Giảm \n4%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-17-pro-cam_4.jpg",
+    "specs": {
+      "Màn hình": "6.9 inches",
+      "RAM": "1 TB"
+    },
+    "scraped_at": "2026-07-14T22:17:35.112326"
+  },
+  {
+    "name": "Samsung Galaxy S24 Plus 12GB 256GB",
+    "url": "https://cellphones.com.vn/samsung-galaxy-s24-plus.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 16490000,
+    "old_price": 18650000,
+    "discount": "Giảm \n12%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-s24-plus-tim.png",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "12 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:35.236763"
+  },
+  {
+    "name": "Nubia V80 Max 8GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-nubia-v80-max.html",
+    "category": "dien_thoai",
+    "brand": "Unknown",
+    "price": 4690000,
+    "old_price": 4990000,
+    "discount": "Giảm \n6%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-nubia-v80-max-8gb-128gb_1.jpg",
+    "specs": {
+      "Màn hình": "6.9 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:35.383016"
+  },
+  {
+    "name": "iPhone 17 Pro 512GB | Chính hãng",
+    "url": "https://cellphones.com.vn/iphone-17-pro-512gb.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 39890000,
+    "old_price": 41490000,
+    "discount": "Giảm \n4%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_17_pro_512gb.jpg",
+    "specs": {
+      "Màn hình": "6.3 inches",
+      "RAM": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:35.484554"
+  },
+  {
+    "name": "Samsung Galaxy A56 5G 8GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-a56.html",
+    "category": "dien_thoai",
+    "brand": "Samsung",
+    "price": 8990000,
+    "old_price": 9810000,
+    "discount": "Giảm \n8%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-a56.1_1.png",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:35.587351"
+  },
+  {
+    "name": "HONOR Magic V5 16GB 512GB",
+    "url": "https://cellphones.com.vn/dien-thoai-honor-magic-v5.html",
+    "category": "dien_thoai",
+    "brand": "Honor",
+    "price": 42990000,
+    "old_price": 44990000,
+    "discount": "Giảm \n4%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/h/o/honor-magic-v5_1.jpg",
+    "specs": {
+      "Màn hình": "6.43 inches",
+      "RAM": "16 GB",
+      "Bộ nhớ": "512 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:35.740998"
+  },
+  {
+    "name": "Tecno Pova 7 8GB 128GB",
+    "url": "https://cellphones.com.vn/dien-thoai-tecno-pova-7.html",
+    "category": "dien_thoai",
+    "brand": "TECNO",
+    "price": 4490000,
+    "old_price": 4990000,
+    "discount": "Giảm \n10%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-tecno-pova-7_8_.png",
+    "specs": {
+      "Màn hình": "6.78 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:35.836476"
+  },
+  {
+    "name": "iPhone 16 Plus 128GB | Chính hãng VN/A",
+    "url": "https://cellphones.com.vn/iphone-16-plus.html",
+    "category": "dien_thoai",
+    "brand": "iPhone",
+    "price": 24490000,
+    "old_price": 25990000,
+    "discount": "Giảm \n6%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-plus-1.png",
+    "specs": {
+      "Màn hình": "6.7 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "128 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:35.926421"
+  },
+  {
+    "name": "Xiaomi Redmi Note 14 5G 8GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-xiaomi-redmi-note-14-5g.html",
+    "category": "dien_thoai",
+    "brand": "Xiaomi",
+    "price": 6490000,
+    "old_price": 7160000,
+    "discount": "Giảm \n9%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-xiaomi-redmi-note-14-5g.1.png",
+    "specs": {
+      "Màn hình": "6.67 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:36.023120"
+  },
+  {
+    "name": "HONOR X7d 8GB 256GB",
+    "url": "https://cellphones.com.vn/dien-thoai-honor-x7d.html",
+    "category": "dien_thoai",
+    "brand": "Honor",
+    "price": 6290000,
+    "old_price": 6690000,
+    "discount": "Giảm \n6%",
+    "image_url": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-honor-x7d-12.jpg",
+    "specs": {
+      "Màn hình": "6.77 inches",
+      "RAM": "8 GB",
+      "Bộ nhớ": "256 GB"
+    },
+    "scraped_at": "2026-07-14T22:17:36.167425"
+  }
+]

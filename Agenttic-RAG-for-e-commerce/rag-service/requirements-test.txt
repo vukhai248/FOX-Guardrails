@@ -1,0 +1,2 @@
+# Install alongside requirements.txt; tests do not need live service credentials.
+pytest>=8.0,<9

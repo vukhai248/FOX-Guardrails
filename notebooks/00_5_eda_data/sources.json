@@ -1,0 +1,1312 @@
+{
+  "secai": {
+    "id": "secai",
+    "name": "SecAI",
+    "text": [
+      "text"
+    ],
+    "label": "injection",
+    "language": "lang",
+    "group": [
+      "group"
+    ],
+    "profile": [
+      "injection",
+      "lang",
+      "intent",
+      "pii"
+    ],
+    "origin": "",
+    "decision": "Giữ ứng viên INPUT",
+    "reason": "Cả hai lớp có nhãn injection nguồn. Giữ group skeleton và kiểm phần jailbreak. Intent và PII phục vụ tác vụ riêng.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/secai1999/secai-chat-sanitization",
+    "revision": "aab353fcb7e33838fe8b06df5d8afa45b7a03e54",
+    "license": "Apache-2.0 (card nguồn)",
+    "files": [
+      {
+        "path": "data/raw/eda01_vi/secai/data/train.jsonl",
+        "bytes": 182635,
+        "digest": "366b4e852075529d89f036a64f01744135a60799",
+        "digest_type": "git-blob-sha1",
+        "split": "train"
+      },
+      {
+        "path": "data/raw/eda01_vi/secai/data/test.jsonl",
+        "bytes": 69241,
+        "digest": "dc5e99b40365ba1f0e4887584b0f6536de54c749",
+        "digest_type": "git-blob-sha1",
+        "split": "test"
+      }
+    ]
+  },
+  "vi_en": {
+    "id": "vi_en",
+    "name": "VI–EN",
+    "text": [
+      "text"
+    ],
+    "label": "label",
+    "language": "primary_language",
+    "group": [],
+    "profile": [
+      "label",
+      "primary_language",
+      "attack_type"
+    ],
+    "origin": "",
+    "decision": "Giữ ứng viên INPUT",
+    "reason": "Có nhãn nhị phân và phần trộn VI–EN. Rà Refusal Bypass, source split và cụm template vì thiếu ID gốc. Train có 75 dòng gắn Mixed, gồm 53 INJECTION và 22 BENIGN. Giữ dòng Mixed phù hợp trước và bổ sung cả mẫu âm; không nhân bản để đủ chỉ tiêu.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/tmdeptrai3012/prompt-injection-dataset-vi-en",
+    "revision": "2afeb49278455c0e17efbc76acd2581237fb6f27",
+    "license": "Apache-2.0 (card nguồn)",
+    "files": [
+      {
+        "path": "data/raw/eda01_vi/vi_en/train.jsonl",
+        "bytes": 154588,
+        "digest": "7c6132d5809da9ca41ae2cc9dcc6a81d52d9fa16",
+        "digest_type": "git-blob-sha1",
+        "split": "train"
+      },
+      {
+        "path": "data/raw/eda01_vi/vi_en/test.jsonl",
+        "bytes": 43775,
+        "digest": "71f6434c5094fb1bcfb6ac0db4464a060bad8219",
+        "digest_type": "git-blob-sha1",
+        "split": "test"
+      }
+    ]
+  },
+  "guardspec": {
+    "id": "guardspec",
+    "name": "GuardSpec",
+    "text": [
+      "text"
+    ],
+    "label": "labels",
+    "language": "lang",
+    "group": [
+      "group"
+    ],
+    "profile": [
+      "labels",
+      "lang",
+      "variant",
+      "source",
+      "license"
+    ],
+    "origin": "source",
+    "decision": "Giữ một phần",
+    "reason": "Chọn direct và mẫu âm khó theo nhãn đã rà. Giữ license từng dòng, giới hạn biến thể và tách indirect sang CONTEXT. Train có 6.468 dòng VI gắn variant=orig. Trong đó 1.298 dòng có tag direct/jailbreak/prompt_extraction và không có indirect/tool_poisoning; 4.116 dòng chỉ có tag benign. Đây là số ứng viên theo tag, cần soát nhãn. Hai blob train/val tại HEAD c3fd2723983b7abc7fa9527f158f7606453768bd vẫn khớp bản đang có.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://github.com/guard-spec/guard-spec",
+    "revision": "c81d88c991406e7029c9945a9350f0f58f6ea220",
+    "license": "Apache-2.0 cho mẫu dự án; giữ license từng dòng",
+    "files": [
+      {
+        "path": "data/raw/eda01_vi/guardspec/train/data/train.jsonl",
+        "bytes": 10967050,
+        "digest": "31aa7805fcb317e423e8d40d37535e7c28f4ffaf",
+        "digest_type": "git-blob-sha1",
+        "split": "train"
+      },
+      {
+        "path": "data/raw/eda01_vi/guardspec/train/data/val.jsonl",
+        "bytes": 1755361,
+        "digest": "9187d259d9bad8d0e9c86a5fbfaa8321d953aec4",
+        "digest_type": "git-blob-sha1",
+        "split": "val"
+      }
+    ]
+  },
+  "aya": {
+    "id": "aya",
+    "name": "Aya Dataset",
+    "text": [
+      "inputs"
+    ],
+    "label": "",
+    "language": "language_code",
+    "group": [],
+    "profile": [
+      "language_code",
+      "annotation_type"
+    ],
+    "origin": "",
+    "decision": "Giữ một phần",
+    "reason": "Ưu tiên inputs VI/EN do người viết hoặc chỉnh sửa, chọn nguồn âm sau gán nhãn; targets và demographics ngoài phạm vi. Train có 8.676 dòng VI và 3.942 dòng EN theo language_code. Toàn nguồn có 503 nội dung trùng train/test. Ưu tiên phần VI đã rà nhãn và lọc trùng.",
+    "unit": "inputs; subset mục tiêu gồm vie/eng",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/CohereLabs/aya_dataset",
+    "revision": "f9ea04583f02a8f86404ff6c58bf75fe637df8a2",
+    "license": "apache-2.0",
+    "updated": "2025-04-15T08:51:55.000Z",
+    "blocked": [],
+    "files": [
+      {
+        "path": "data/raw/eda05/aya/data/test-00000-of-00001.parquet",
+        "bytes": 977517,
+        "digest_type": "sha256",
+        "digest": "52bbb79461bff9887c9987a5737d9a06f5ec6c78c08d770828c37fc182ce2cca",
+        "split": "test"
+      },
+      {
+        "path": "data/raw/eda05/aya/data/train-00000-of-00001.parquet",
+        "bytes": 137195800,
+        "digest_type": "sha256",
+        "digest": "51baa85043b569ba117f41516b32d1b0e4e2647fb203a08933f98a556fb1fb06",
+        "split": "train"
+      }
+    ]
+  },
+  "oasst2": {
+    "id": "oasst2",
+    "name": "OpenAssistant OASST2",
+    "text": [
+      "text"
+    ],
+    "label": "",
+    "language": "lang",
+    "group": [
+      "message_tree_id"
+    ],
+    "profile": [
+      "lang",
+      "role",
+      "deleted",
+      "review_result",
+      "synthetic"
+    ],
+    "origin": "",
+    "decision": "Giữ một phần",
+    "reason": "Chọn prompter VI/EN đã duyệt, chưa xóa, không synthetic. Rà nhãn, giữ nhóm hội thoại và lọc phần trùng GuardSpec. Có 21.654 lượt train VI/EN qua bộ lọc prompter, đã review, chưa xóa và không synthetic. Chỉ 55 lượt VI. Trong tập con này có 30 dòng khớp văn bản LLMail Phase 2 và 514 nội dung trùng GuardSpec train.",
+    "unit": "lượt prompter; subset mục tiêu VI/EN qua các cờ review",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/OpenAssistant/oasst2",
+    "revision": "179dd21fc55192153d94adb0e0ce8f69e222bf75",
+    "license": "apache-2.0",
+    "updated": "2024-01-11T06:09:29.000Z",
+    "blocked": [],
+    "files": [
+      {
+        "path": "data/raw/eda05/oasst2/data/train-00000-of-00001-88ba0162028a73fc.parquet",
+        "bytes": 63494018,
+        "digest_type": "sha256",
+        "digest": "9638227b41b0a4fb69afa5d5c4b52e3fb6abfd56c9870d81bae32c9981e769b1",
+        "split": "train"
+      },
+      {
+        "path": "data/raw/eda05/oasst2/data/validation-00000-of-00001-1deeef95c3248fe0.parquet",
+        "bytes": 3180111,
+        "digest_type": "sha256",
+        "digest": "fd46c63babc0756909a957ee40975bcf5610d58c5d1ab5ff2c57c0f57be1f273",
+        "split": "validation"
+      }
+    ]
+  },
+  "nailyk": {
+    "id": "nailyk",
+    "name": "Prompt Safety Multilingual v2",
+    "text": [
+      "prompt"
+    ],
+    "label": "label",
+    "language": "language",
+    "group": [
+      "group_id"
+    ],
+    "profile": [
+      "label",
+      "language",
+      "source_dataset",
+      "source_split",
+      "source_license",
+      "attack_method",
+      "synthetic",
+      "prompt_harmful",
+      "prompt_adversarial",
+      "augmentation"
+    ],
+    "origin": "source_dataset",
+    "decision": "Tạm giữ để lọc",
+    "reason": "Có VI/EN và provenance theo dòng. Soát source_split, license thành phần, bản dịch, độ chính xác nhãn và dữ liệu chồng lặp trước khi giữ từng lát cắt. Tạm giữ ngoài pool chính. Trong 6.929 dòng VI ở train, 5.919 mang source_dataset Necent, 2.120 có translation_of_id và 90 khai báo source_split=test. Toàn nguồn có 1.302 lượt khớp benchmark. Chỉ xét lát cắt có lineage và quyền dùng rõ ràng.",
+    "unit": "prompt; subset mục tiêu gồm metadata vi/en",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/Nailyk14/prompt-safety-multilingual-v2",
+    "revision": "c89c611f0a28211088661cadc8d4c4e13ce3b418",
+    "license": "other",
+    "updated": "2026-10-22T11:11:07.000Z",
+    "blocked": [],
+    "files": [
+      {
+        "path": "data/raw/eda05/nailyk/data/test-00000-of-00001.parquet",
+        "bytes": 12758466,
+        "digest_type": "sha256",
+        "digest": "192b8453d87a0a6ae0cb2d41d9eb2720fa57e22d2c94550b240c08947649a0ac",
+        "split": "test"
+      },
+      {
+        "path": "data/raw/eda05/nailyk/data/test_translated-00000-of-00001.parquet",
+        "bytes": 1937060,
+        "digest_type": "sha256",
+        "digest": "46f350f1cb944e619ef0925c31a4f55b2902b7a2a3d6a8689761a6448b573a14",
+        "split": "test_translated"
+      },
+      {
+        "path": "data/raw/eda05/nailyk/data/train-00000-of-00003.parquet",
+        "bytes": 105421917,
+        "digest_type": "sha256",
+        "digest": "2bbd9839b0440db97fc05b431a5dc7e7e596ebfc7f4a4cbb97503f2b0e8352fd",
+        "split": "train"
+      },
+      {
+        "path": "data/raw/eda05/nailyk/data/train-00001-of-00003.parquet",
+        "bytes": 89281090,
+        "digest_type": "sha256",
+        "digest": "9e038e0a6164eda2ab1985fc3ebb151826e54d3acd66f2675ba78fd8343155c5",
+        "split": "train"
+      },
+      {
+        "path": "data/raw/eda05/nailyk/data/train-00002-of-00003.parquet",
+        "bytes": 109188304,
+        "digest_type": "sha256",
+        "digest": "8d0230027d76b144d512db2c03d532bed9914626994d3f03f758efda0312f5c7",
+        "split": "train"
+      },
+      {
+        "path": "data/raw/eda05/nailyk/data/validation-00000-of-00001.parquet",
+        "bytes": 15102783,
+        "digest_type": "sha256",
+        "digest": "0d931366336f90514651ba5400489d2787a0abd1ea8ac4f7a569509020353be5",
+        "split": "validation"
+      }
+    ]
+  },
+  "zn": {
+    "id": "zn",
+    "name": "ZN Prompt-Injection Bench",
+    "text": [
+      "text"
+    ],
+    "label": "label",
+    "language": "lang",
+    "group": [],
+    "profile": [
+      "label",
+      "lang",
+      "family",
+      "source",
+      "license"
+    ],
+    "origin": "source",
+    "decision": "Loại khỏi pilot",
+    "reason": "Nhãn ataque chứa dòng lấy theo Aegis unsafe. Có thể khảo sát riêng hard-negative từ nguồn gốc, thay vì dùng nhãn cả tập. Thêm 1.729 dòng ataque từ Aegis và 2.794 dòng ataque từ InjecAgent trong split train. Tên lớp không đủ để suy ra tương thích với FOX INPUT. Bỏ khỏi pilot; chỉ cân nhắc lấy mẫu âm từ nguồn gốc.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/usezn/zn-prompt-injection-bench",
+    "revision": "60b3a1825955976af25c9a28f6f960ffd0823f3b",
+    "license": "cc-by-4.0",
+    "updated": "2026-10-31T17:55:40.000Z",
+    "blocked": [],
+    "files": [
+      {
+        "path": "data/raw/eda05/zn/data/test.parquet",
+        "bytes": 1794021,
+        "digest_type": "sha256",
+        "digest": "a05ee4f52121a963bc84cab1a79414b50f7c2be4699ed96ca56defc73347c330",
+        "split": "test"
+      },
+      {
+        "path": "data/raw/eda05/zn/data/train.parquet",
+        "bytes": 8084713,
+        "digest_type": "sha256",
+        "digest": "0345776ce2ae728f83d252402d632a724ecbb44216553c28068666a21a7fa913",
+        "split": "train"
+      },
+      {
+        "path": "data/raw/eda05/zn/data/validation.parquet",
+        "bytes": 1761723,
+        "digest_type": "sha256",
+        "digest": "96aaf82547703293b6d2f7e9fe306c975c26d7aa39725991a229b9cc0f2e0f35",
+        "split": "validation"
+      }
+    ]
+  },
+  "tensor_trust": {
+    "id": "tensor_trust",
+    "name": "Tensor Trust v2",
+    "text": [
+      "attacker_input"
+    ],
+    "label": "output_is_access_granted",
+    "language": "",
+    "group": [
+      "defense_id"
+    ],
+    "profile": [
+      "output_is_access_granted",
+      "llm_choice",
+      "is_self_attack"
+    ],
+    "origin": "",
+    "decision": "Tạm giữ",
+    "reason": "Corpus game do người chơi tạo. Outcome thắng/thua không đo nhãn attack; thống kê tách attacks và defenses. Cần làm rõ điều khoản áp dụng tới raw dump. Raw v2 có 563.349 lượt attack và 118.377 defense. 561.771 lượt attack có text, rút còn 271.348 nội dung khác nhau sau chuẩn hóa. Quyền dùng raw chưa rõ; bản dump chốt 2024-02-16 nên chỉ phù hợp khảo sát bổ sung.",
+    "unit": "attacker_input cho attacks; opening/closing_defense cho defenses",
+    "status": "local",
+    "url": "https://tensortrust.ai/paper/",
+    "revision": "747a75e096761ebc01bd3970158827326b4add23",
+    "license": "check raw data terms",
+    "updated": "2024-03-17T22:47:26Z",
+    "blocked": [],
+    "files": [
+      {
+        "path": "data/raw/eda05/tensor_trust/raw-data/v2/raw_dump_attacks.jsonl.bz2",
+        "bytes": 98978449,
+        "digest_type": "git-blob-sha1",
+        "digest": "3d8e42efce1b8ea9a7a36e3a78832b95e16b8c7b",
+        "split": "attacks"
+      },
+      {
+        "path": "data/raw/eda05/tensor_trust/raw-data/v2/raw_dump_defenses.jsonl.bz2",
+        "bytes": 7479653,
+        "digest_type": "git-blob-sha1",
+        "digest": "de746815f5ab96e1f0594f6f8e8021e5acf430f7",
+        "split": "defenses",
+        "text": [
+          "opening_defense",
+          "closing_defense"
+        ]
+      }
+    ]
+  },
+  "wildjailbreak": {
+    "id": "wildjailbreak",
+    "name": "WildJailbreak",
+    "text": [
+      "adversarial",
+      "vanilla"
+    ],
+    "label": "data_type",
+    "language": "",
+    "group": [],
+    "profile": [
+      "data_type",
+      "tactics"
+    ],
+    "origin": "",
+    "decision": "Chờ quyền truy cập",
+    "reason": "Tệp TSV trả 403. Khi có dữ liệu, xem text adversarial, tactics và nhóm vanilla, gán lại nhãn phù hợp FOX.",
+    "unit": "adversarial vanilla",
+    "status": "blocked",
+    "url": "https://huggingface.co/datasets/allenai/wildjailbreak",
+    "revision": "5ddc12a7894f842b0619b8e1c7ee496b198af009",
+    "license": "odc-by",
+    "updated": "2024-08-08T05:39:06.000Z",
+    "blocked": [
+      {
+        "file": "eval/eval.tsv",
+        "url": "https://huggingface.co/datasets/allenai/wildjailbreak/resolve/5ddc12a7894f842b0619b8e1c7ee496b198af009/eval/eval.tsv",
+        "bytes_expected": 1742350,
+        "status": "blocked",
+        "error": "HTTP 403"
+      },
+      {
+        "file": "train/train.tsv",
+        "url": "https://huggingface.co/datasets/allenai/wildjailbreak/resolve/5ddc12a7894f842b0619b8e1c7ee496b198af009/train/train.tsv",
+        "bytes_expected": 530920110,
+        "status": "blocked",
+        "error": "HTTP 403"
+      }
+    ],
+    "files": []
+  },
+  "hackaprompt": {
+    "id": "hackaprompt",
+    "name": "HackAPrompt",
+    "text": [
+      "user_input"
+    ],
+    "label": "correct",
+    "language": "",
+    "group": [],
+    "profile": [
+      "correct",
+      "level",
+      "model",
+      "dataset"
+    ],
+    "origin": "",
+    "decision": "Chờ quyền truy cập",
+    "reason": "Tệp Parquet trả 403. Khi có dữ liệu, phân biệt user_input với full prompt và kết quả correct.",
+    "unit": "user_input",
+    "status": "blocked",
+    "url": "https://huggingface.co/datasets/hackaprompt/hackaprompt-dataset",
+    "revision": "25b87fbedfb86840abaf8cd09af7a029208a971a",
+    "license": "mit",
+    "updated": "2024-01-24T16:32:38.000Z",
+    "blocked": [
+      {
+        "file": "hackaprompt.parquet",
+        "url": "https://huggingface.co/datasets/hackaprompt/hackaprompt-dataset/resolve/25b87fbedfb86840abaf8cd09af7a029208a971a/hackaprompt.parquet",
+        "bytes_expected": 150419795,
+        "status": "blocked",
+        "error": "HTTP 403"
+      }
+    ],
+    "files": []
+  },
+  "deepset": {
+    "id": "deepset",
+    "name": "deepset Prompt Injections",
+    "text": [
+      "text"
+    ],
+    "label": "label",
+    "language": "",
+    "group": [],
+    "profile": [
+      "label"
+    ],
+    "origin": "",
+    "decision": "Giữ một phần",
+    "reason": "Có text/label nhưng corpus nhỏ và xuất hiện ở nguồn gộp. Chọn nguồn gốc một lần và rà ca đổi tác vụ hợp lệ.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/deepset/prompt-injections",
+    "revision": "4f61ecb038e9c3fb77e21034b22511b523772cdd",
+    "license": "Apache-2.0",
+    "files": [
+      {
+        "path": "data/raw/eda01/deepset/data/train-00000-of-00001-9564e8b05b4757ab.parquet",
+        "bytes": 40323,
+        "digest": "2e10bc7ab30f542c97e4e83e2a5683000b5057d25ec10908784c631d44124c04",
+        "digest_type": "sha256",
+        "split": "train"
+      }
+    ]
+  },
+  "spml": {
+    "id": "spml",
+    "name": "SPML",
+    "text": [
+      "User Prompt"
+    ],
+    "label": "Prompt injection",
+    "language": "",
+    "group": [
+      "System Prompt"
+    ],
+    "profile": [
+      "Prompt injection",
+      "Degree",
+      "Source"
+    ],
+    "origin": "",
+    "decision": "Tạm giữ để rà",
+    "reason": "Nhãn phụ thuộc cặp system và user. Chọn ca có dấu hiệu rõ khi chỉ nhìn user; Degree đo vi phạm quy tắc nguồn.",
+    "unit": "User Prompt; System Prompt dùng để đọc nhãn",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/reshabhs/SPML_Chatbot_Prompt_Injection",
+    "revision": "02ce8084e979bc7d4c24ee35d22ecb7f2db96ff5",
+    "license": "MIT (thẻ nguồn)",
+    "files": [
+      {
+        "path": "data/raw/eda01/spml/spml_prompt_injection.csv",
+        "bytes": 29051327,
+        "digest": "4ca6590cd8ec10832fcebee5e243acb32be5c3e79b7a260f8638eed738c784f8",
+        "digest_type": "sha256",
+        "split": "train"
+      }
+    ]
+  },
+  "gandalf": {
+    "id": "gandalf",
+    "name": "Lakera Gandalf",
+    "text": [
+      "text"
+    ],
+    "label": "",
+    "language": "",
+    "group": [],
+    "profile": [],
+    "origin": "",
+    "decision": "Tạm giữ",
+    "reason": "Nguồn game dương tiềm năng nhưng thiếu lớp âm và nhãn theo dòng. Đã nằm trong GuardSpec; dùng nguồn gốc một lần.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/Lakera/gandalf_ignore_instructions",
+    "revision": "04737b65e90a6794ec227012e4a255a7def6344b",
+    "license": "MIT",
+    "files": [
+      {
+        "path": "data/raw/eda01/gandalf/data/train-00000-of-00001-ded53be747ff55cd.parquet",
+        "bytes": 36715,
+        "digest": "5b6acf3e5a5998d21f8e1222bb45bbdec25a14408747b1cd63bebef4a75fa439",
+        "digest_type": "sha256",
+        "split": "train"
+      }
+    ]
+  },
+  "mosscap": {
+    "id": "mosscap",
+    "name": "Lakera Mosscap",
+    "text": [
+      "prompt"
+    ],
+    "label": "",
+    "language": "",
+    "group": [
+      "level"
+    ],
+    "profile": [
+      "level"
+    ],
+    "origin": "",
+    "decision": "Tạm giữ",
+    "reason": "Nhiều lượt chơi trong cùng khuôn. Level là cấp chơi; response và kết quả thử không dùng làm nhãn INPUT.",
+    "unit": "prompt",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/Lakera/mosscap_prompt_injection",
+    "revision": "b7e495ff63373ff7f7dabc1e9390cf62b5838570",
+    "license": "MIT",
+    "files": [
+      {
+        "path": "data/raw/eda01/mosscap/data/train-00000-of-00001-07ae0ed17fa07cc1.parquet",
+        "bytes": 49606158,
+        "digest": "a3c354dd1457c0125243ed107a4cc3eafdc09b2c60eb7ce3e3854a2fbb12a4b2",
+        "digest_type": "sha256",
+        "split": "train"
+      }
+    ]
+  },
+  "jackhhao": {
+    "id": "jackhhao",
+    "name": "jackhhao Jailbreak Classification",
+    "text": [
+      "prompt"
+    ],
+    "label": "type",
+    "language": "",
+    "group": [],
+    "profile": [
+      "type"
+    ],
+    "origin": "",
+    "decision": "Giữ một phần",
+    "reason": "Có jailbreak/benign. Truy upstream và chỉ giữ một bản khi đã có hàng tương ứng ở PIGuard hoặc GuardSpec. Trùng 1.031 nội dung với PIGuard train và 748 với GuardSpec train. Ưu tiên truy về bản upstream và tính mỗi họ prompt một lần.",
+    "unit": "prompt",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/jackhhao/jailbreak-classification",
+    "revision": "2f2ceeb39658696fd3f462403562b6eea5306287",
+    "license": "Apache-2.0",
+    "files": [
+      {
+        "path": "data/raw/eda01/jackhhao/balanced/jailbreak_dataset_train_balanced.csv",
+        "bytes": 1309507,
+        "digest": "635b5d4bcc57df3217cfed057587392aceb52285",
+        "digest_type": "git-blob-sha1",
+        "split": "train"
+      }
+    ]
+  },
+  "trustairlab": {
+    "id": "trustairlab",
+    "name": "TrustAIRLab In-the-Wild",
+    "text": [
+      "prompt"
+    ],
+    "label": "jailbreak",
+    "language": "",
+    "group": [],
+    "profile": [
+      "jailbreak",
+      "platform",
+      "source"
+    ],
+    "origin": "source",
+    "decision": "Giữ một phần",
+    "reason": "Có hai tập regular/jailbreak từ thực tế. Chia và rà họ prompt, loại PII thật nếu xác nhận; đối chiếu phần gốc của jackhhao. Trùng 11.466 nội dung với lát cắt VI/EN ở Nailyk train. Có 18 lượt khớp LLMail Phase 2 trong hai subset cục bộ.",
+    "unit": "prompt",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/TrustAIRLab/in-the-wild-jailbreak-prompts",
+    "revision": "a10aab8eff1c73165a442d4464dce192bd28b9c5",
+    "license": "MIT (thẻ nguồn)",
+    "files": [
+      {
+        "path": "data/raw/eda01/trustairlab/jailbreak_2023_12_25/train-00000-of-00001.parquet",
+        "bytes": 1871641,
+        "digest": "55bbc5e2be771ee16ed67aed4edb5ecef5f44ac69cea317a67e5405c5c6057a4",
+        "digest_type": "sha256",
+        "split": "jailbreak_2023_12_25"
+      },
+      {
+        "path": "data/raw/eda01/trustairlab/regular_2023_12_25/train-00000-of-00001.parquet",
+        "bytes": 12560543,
+        "digest": "23e90010ccbc85574bf46678528cddce5b02abc86d9a047209218af65cb37c68",
+        "digest_type": "sha256",
+        "split": "regular_2023_12_25"
+      }
+    ]
+  },
+  "piguard": {
+    "id": "piguard",
+    "name": "PIGuard",
+    "text": [
+      "prompt"
+    ],
+    "label": "label",
+    "language": "",
+    "group": [],
+    "profile": [
+      "label",
+      "source"
+    ],
+    "origin": "source",
+    "decision": "Tạm giữ để lọc",
+    "reason": "Kiểm theo upstream source; cách ly thành phần BIPIA, InjecAgent và các nguồn đã có. Kiểm license từng nguồn và cả lớp âm khó. Có 276 lượt khớp BIPIA dev/test và MultiJail toàn nguồn, cùng 1.031 nội dung trùng với jackhhao và 546 nội dung trùng với deepset trên các bản train cục bộ.",
+    "unit": "prompt",
+    "status": "local",
+    "url": "https://github.com/leolee99/PIGuard",
+    "revision": "1b5751e88bf7475acbedfc8eda795ce060307c84",
+    "license": "MIT (repo); kiểm license từng thành phần",
+    "files": [
+      {
+        "path": "data/raw/eda01/piguard/datasets/train.json",
+        "bytes": 43398735,
+        "digest": "c237dbe9b972cbd8f55e28d378e819173a59737c",
+        "digest_type": "git-blob-sha1",
+        "split": "train"
+      }
+    ]
+  },
+  "neuralchemy": {
+    "id": "neuralchemy",
+    "name": "Neuralchemy",
+    "text": [
+      "text"
+    ],
+    "label": "label",
+    "language": "",
+    "group": [
+      "group_id"
+    ],
+    "profile": [
+      "label",
+      "category",
+      "source",
+      "augmented"
+    ],
+    "origin": "source",
+    "decision": "Tạm giữ để lọc",
+    "reason": "Có group_id và provenance nhưng là nguồn gộp. Kiểm quyền từng thành phần; giới hạn biến thể cùng mẫu gốc. Có 130 lượt khớp JailbreakBench. So với lát cắt VI/EN của train Nailyk có 3.674 nội dung trùng. Giữ bên staging để đối chiếu nguồn gốc.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/neuralchemy/Prompt-injection-dataset",
+    "revision": "7d70432dfcf47a821612cbf9d34e9d9e3ad20e75",
+    "license": "Apache-2.0 (card); nguồn thành phần có điều khoản khác",
+    "files": [
+      {
+        "path": "data/raw/eda01/neuralchemy/core/train-00000-of-00001.parquet",
+        "bytes": 387456,
+        "digest": "c0724f8e00eebb65c001be9ba94291d1608e5da0374012e53dfd4077c5f92558",
+        "digest_type": "sha256",
+        "split": "train"
+      }
+    ]
+  },
+  "5cd": {
+    "id": "5cd",
+    "name": "5CD Hội thoại TMĐT",
+    "text": [
+      "conversations.value"
+    ],
+    "label": "",
+    "language": "",
+    "group": [
+      "id"
+    ],
+    "profile": [
+      "conversations.from"
+    ],
+    "origin": "",
+    "decision": "Tạm giữ cho TMĐT",
+    "reason": "Đơn vị ứng viên là lượt human/user. Cần làm rõ provenance và gán nhãn; chỉ bổ sung lát cắt TMĐT.",
+    "unit": "lượt human/user; thống kê schema theo hội thoại",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/5CD-AI/Vietnamese-Ecommerce-Multi-turn-Chat",
+    "revision": "d797fca0a49900334b7e726d7e2f70bbcfb03e31",
+    "license": "Apache-2.0",
+    "files": [
+      {
+        "path": "data/raw/eda01/5cd/ecommerce_multiturn.json",
+        "bytes": 8783064,
+        "digest": "1b41ec4a90c3c8ac7932af92da4d9b64b7ff47f4",
+        "digest_type": "git-blob-sha1",
+        "split": "train"
+      }
+    ]
+  },
+  "vi_alpaca": {
+    "id": "vi_alpaca",
+    "name": "BKAI Vi-Alpaca",
+    "text": [
+      "instruction",
+      "input"
+    ],
+    "label": "",
+    "language": "",
+    "group": [],
+    "profile": [],
+    "origin": "",
+    "decision": "Tạm giữ, chờ quyền dùng",
+    "reason": "Giữ instruction với input để rà. Chưa có nhãn injection và chưa xác minh quyền dùng bản phát hành cho fine-tune.",
+    "unit": "instruction ghép input",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/bkai-foundation-models/vi-alpaca",
+    "revision": "77fd8f9466d6354ea4ce48a7bd722cee1bf6f5c5",
+    "license": "Chưa thấy license bản phát hành",
+    "files": [
+      {
+        "path": "data/raw/eda01_vi/vi_alpaca/data/train-00000-of-00001-b0855b79e84114ca.parquet",
+        "bytes": 26279260,
+        "digest": "329f8bbab53602f7153c4480fbf6bd607f07498546644b33e97e6a37d35f71e8",
+        "digest_type": "sha256",
+        "split": "train"
+      }
+    ]
+  },
+  "phoatis": {
+    "id": "phoatis",
+    "name": "VinAI PhoATIS",
+    "text": [
+      "seq.in"
+    ],
+    "label": "intent",
+    "language": "",
+    "group": [],
+    "profile": [
+      "intent"
+    ],
+    "origin": "",
+    "decision": "Đánh giá nội bộ",
+    "reason": "Chỉ nghiên cứu/giáo dục, hạn chế phân phối. Gán lại nhãn cho lát cắt âm du lịch rồi đo nội bộ.",
+    "unit": "seq.in, ghép intent/slot theo vị trí",
+    "status": "local",
+    "url": "https://github.com/VinAIResearch/JointIDSF",
+    "revision": "6576fc3d40fbb8de35c9ad468b37bcbb14e6a9bb",
+    "license": "Chỉ nghiên cứu/giáo dục, cấm phân phối gốc và sửa",
+    "files": [
+      {
+        "path": "data/raw/eda01_vi/phoatis/PhoATIS/syllable-level/train/seq.in.txt",
+        "bytes": 416739,
+        "digest": "8ed04056366f6e73d8620a3cc16bc21c28856d06",
+        "digest_type": "git-blob-sha1",
+        "split": "train",
+        "aligned": [
+          {
+            "path": "data/raw/eda01_vi/phoatis/PhoATIS/syllable-level/train/label.txt",
+            "bytes": 35606,
+            "digest": "8e021989d1ebef5f79bca1370575ea50bc40ea29",
+            "digest_type": "git-blob-sha1",
+            "split": "train"
+          },
+          {
+            "path": "data/raw/eda01_vi/phoatis/PhoATIS/syllable-level/train/seq.out.txt",
+            "bytes": 671542,
+            "digest": "79bcaf447ff7725ac4ba34d942ae790dc2cf9b5d",
+            "digest_type": "git-blob-sha1",
+            "split": "train"
+          }
+        ]
+      },
+      {
+        "path": "data/raw/eda01_vi/phoatis/PhoATIS/syllable-level/dev/seq.in.txt",
+        "bytes": 45301,
+        "digest": "5c5db063c8b4428c71da589c32cf33b929b3e7bf",
+        "digest_type": "git-blob-sha1",
+        "split": "dev",
+        "aligned": [
+          {
+            "path": "data/raw/eda01_vi/phoatis/PhoATIS/syllable-level/dev/label.txt",
+            "bytes": 4090,
+            "digest": "234b8337c5477dc61eab80f162fc4b971262cce8",
+            "digest_type": "git-blob-sha1",
+            "split": "dev"
+          },
+          {
+            "path": "data/raw/eda01_vi/phoatis/PhoATIS/syllable-level/dev/seq.out.txt",
+            "bytes": 72326,
+            "digest": "156d34a10a91dee2a746ece7cb39ba4a500846bb",
+            "digest_type": "git-blob-sha1",
+            "split": "dev"
+          }
+        ]
+      },
+      {
+        "path": "data/raw/eda01_vi/phoatis/PhoATIS/syllable-level/test/seq.in.txt",
+        "bytes": 78207,
+        "digest": "4c4ca45c9ddb84cded74edee341d84cec47f3894",
+        "digest_type": "git-blob-sha1",
+        "split": "test",
+        "aligned": [
+          {
+            "path": "data/raw/eda01_vi/phoatis/PhoATIS/syllable-level/test/label.txt",
+            "bytes": 7243,
+            "digest": "88a12ddc3bc5405a474a105f5bf855740d8d6c4b",
+            "digest_type": "git-blob-sha1",
+            "split": "test"
+          },
+          {
+            "path": "data/raw/eda01_vi/phoatis/PhoATIS/syllable-level/test/seq.out.txt",
+            "bytes": 124649,
+            "digest": "a129f401a1f00214d61b8783f97c3cf2e30542cc",
+            "digest_type": "git-blob-sha1",
+            "split": "test"
+          }
+        ]
+      }
+    ]
+  },
+  "aegis": {
+    "id": "aegis",
+    "name": "NVIDIA Aegis 2.0",
+    "text": [
+      "prompt"
+    ],
+    "label": "prompt_label",
+    "language": "",
+    "group": [],
+    "profile": [
+      "prompt_label",
+      "response_label",
+      "prompt_label_source"
+    ],
+    "origin": "",
+    "decision": "Loại khỏi pilot INPUT",
+    "reason": "Nhãn prompt/response là safety, phù hợp OUTPUT/moderation. Tách yêu cầu unsafe thông thường khỏi hành vi prompt attack.",
+    "unit": "prompt",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/nvidia/Aegis-AI-Content-Safety-Dataset-2.0",
+    "revision": "d86bb8bedff51d25ac834ab7838f1cc61acb7a2c",
+    "license": "CC-BY-4.0",
+    "files": [
+      {
+        "path": "data/raw/eda01/aegis/train.json",
+        "bytes": 22705956,
+        "digest": "154fba82c71d9fa73abd2ca5588a198e693ddc816c83444df180a22f613e02f6",
+        "digest_type": "sha256",
+        "split": "train"
+      },
+      {
+        "path": "data/raw/eda01/aegis/refusals_train.json",
+        "bytes": 2758729,
+        "digest": "ff948d3696c9da94cf2523f5d4ae7f16cad7b3c0fd3cb46a331dad0ed717fbe2",
+        "digest_type": "sha256",
+        "split": "refusals_train"
+      }
+    ]
+  },
+  "beavertails": {
+    "id": "beavertails",
+    "name": "BeaverTails",
+    "text": [
+      "prompt"
+    ],
+    "label": "is_safe",
+    "language": "",
+    "group": [],
+    "profile": [
+      "is_safe"
+    ],
+    "origin": "",
+    "decision": "Loại khỏi pilot INPUT",
+    "reason": "Nhãn là safety theo cặp prompt/response; xem riêng khi làm OUTPUT.",
+    "unit": "prompt",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/PKU-Alignment/BeaverTails",
+    "revision": "8401fe609d288129cc684a9b3be6a93e41cfe678",
+    "license": "CC-BY-NC-4.0",
+    "files": [
+      {
+        "path": "data/raw/eda01/beavertails/round0/330k/train.jsonl.xz",
+        "bytes": 31061396,
+        "digest": "12f04c9200000929ebbc616c29cb53331f6df36e7341d73e4a12cffac0eb1c08",
+        "digest_type": "sha256",
+        "split": "train"
+      }
+    ]
+  },
+  "nemotron": {
+    "id": "nemotron",
+    "name": "NVIDIA Nemotron Agentic IPI",
+    "text": [
+      "injection.injection_text"
+    ],
+    "label": "attack_category",
+    "language": "",
+    "group": [],
+    "profile": [
+      "attack_category",
+      "domain",
+      "injection_vector"
+    ],
+    "origin": "",
+    "decision": "Giữ cho CONTEXT",
+    "reason": "Payload gắn với environment và target tool. Chọn cho CONTEXT khi phân biệt được dữ liệu ngoài với user input.",
+    "unit": "injection.injection_text",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/nvidia/Nemotron-RL-Agentic-Indirect-Prompt-Injection-v1",
+    "revision": "d738d4f361cc38bb4d7a42b9066776dade5332f5",
+    "license": "CC-BY-4.0",
+    "files": [
+      {
+        "path": "data/raw/eda01/nemotron/train.jsonl",
+        "bytes": 11703379,
+        "digest": "3329da17564a7eb287e2730fc7d6956e1f4fe51e8950ac4f110b3c37e78cf3b9",
+        "digest_type": "sha256",
+        "split": "train"
+      }
+    ]
+  },
+  "llmail": {
+    "id": "llmail",
+    "name": "LLMail Phase 1",
+    "text": [
+      "@key"
+    ],
+    "label": "judge_category",
+    "language": "",
+    "group": [],
+    "profile": [
+      "judge_category"
+    ],
+    "origin": "",
+    "decision": "Giữ cho CONTEXT",
+    "reason": "Đây là lượt tấn công trong email. Phân biệt outcome challenge với nhãn injection, lọc theo benchmark Phase 2.",
+    "unit": "nội dung theo khóa gốc @key",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/microsoft/llmail-inject-challenge",
+    "revision": "1063bdf01ec8762b812d5e06ee768a06faa5a6f7",
+    "license": "MIT",
+    "files": [
+      {
+        "path": "data/raw/eda01/llmail/data/labelled_unique_submissions_phase1.json",
+        "bytes": 448194111,
+        "digest": "691dfa1595d2bd0e731069f233bd5448f7af1c0ebd9732bc6f12dd6cee446586",
+        "digest_type": "sha256",
+        "split": "train"
+      }
+    ]
+  },
+  "injecagent": {
+    "id": "injecagent",
+    "name": "InjecAgent",
+    "text": [
+      "Tool Response"
+    ],
+    "label": "Attack Type",
+    "language": "",
+    "group": [],
+    "profile": [
+      "Attack Type"
+    ],
+    "origin": "",
+    "decision": "Giữ làm benchmark",
+    "reason": "Các tệp là test cases và biến thể base/enhanced. Tách khỏi pilot huấn luyện để giữ giá trị kiểm thử.",
+    "unit": "Tool Response",
+    "status": "local",
+    "url": "https://github.com/uiuc-kang-lab/InjecAgent",
+    "revision": "f19c9f2c79a41046eb13c03c51a24c567a8ffa07",
+    "license": "MIT (repo)",
+    "files": [
+      {
+        "path": "data/raw/eda01/injecagent/data/test_cases_dh_base.json",
+        "bytes": 672918,
+        "digest": "976ad4e2108a553a3b885951e8eb119aa91f9445",
+        "digest_type": "git-blob-sha1",
+        "split": "test_cases_dh_base"
+      },
+      {
+        "path": "data/raw/eda01/injecagent/data/test_cases_ds_base.json",
+        "bytes": 765370,
+        "digest": "16f82d8a34349182eba883871333e569bafc6b93",
+        "digest_type": "git-blob-sha1",
+        "split": "test_cases_ds_base"
+      },
+      {
+        "path": "data/raw/eda01/injecagent/data/test_cases_dh_enhanced.json",
+        "bytes": 721878,
+        "digest": "803bd383695faaaeb2a03863aafc83d8b46a7e78",
+        "digest_type": "git-blob-sha1",
+        "split": "test_cases_dh_enhanced"
+      },
+      {
+        "path": "data/raw/eda01/injecagent/data/test_cases_ds_enhanced.json",
+        "bytes": 817594,
+        "digest": "f4580cb98e195d3a77ec92149294cc1bf37c0f5d",
+        "digest_type": "git-blob-sha1",
+        "split": "test_cases_ds_enhanced"
+      }
+    ]
+  },
+  "benchmark_bipia": {
+    "id": "benchmark_bipia",
+    "name": "BIPIA",
+    "text": [
+      "text"
+    ],
+    "label": "label",
+    "language": "",
+    "group": [],
+    "profile": [
+      "label",
+      "task",
+      "position",
+      "attack_category"
+    ],
+    "origin": "",
+    "decision": "Giữ benchmark đã khóa",
+    "reason": "Bản chuẩn hóa FOX của BIPIA dev/test. Giữ benchmark gián tiếp; hai split này nằm trong danh sách đối chiếu.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://github.com/microsoft/BIPIA",
+    "revision": "Bản cục bộ trong manifest FOX; SHA-256 ở mức tệp",
+    "license": "Theo hồ sơ benchmark gốc",
+    "files": [
+      {
+        "path": "data/processed/bipia/dev.jsonl",
+        "split": "dev",
+        "bytes": 544942,
+        "digest_type": "sha256",
+        "digest": "a0591342c35be4fbb53be38d6b222146233a0d1908e086cfb0f06f9412ef5a7a"
+      },
+      {
+        "path": "data/processed/bipia/test.jsonl",
+        "split": "test",
+        "bytes": 744159,
+        "digest_type": "sha256",
+        "digest": "a32d1ee99a1549b530f341c48d09e3a431cf96cb53c7022f671e42f6afbe15a2"
+      }
+    ],
+    "locked": true
+  },
+  "benchmark_jbb": {
+    "id": "benchmark_jbb",
+    "name": "JailbreakBench",
+    "text": [
+      "text"
+    ],
+    "label": "label",
+    "language": "",
+    "group": [],
+    "profile": [
+      "label",
+      "method",
+      "category",
+      "jailbroken"
+    ],
+    "origin": "",
+    "decision": "Giữ benchmark đã khóa",
+    "reason": "Phân biệt các loại nhãn gốc và outcome jailbroken. Giữ bản chuẩn hóa FOX làm test chính cho INPUT tiếng Anh.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://github.com/JailbreakBench/jailbreakbench",
+    "revision": "Bản cục bộ trong manifest FOX; SHA-256 ở mức tệp",
+    "license": "Theo hồ sơ benchmark gốc",
+    "files": [
+      {
+        "path": "data/processed/jbb/test.jsonl",
+        "split": "test",
+        "bytes": 189305,
+        "digest_type": "sha256",
+        "digest": "92357f6869779e8f610c86b30e357146cf4285956f8e975c7d71779c63bec22e"
+      }
+    ],
+    "locked": true
+  },
+  "benchmark_cyberseceval": {
+    "id": "benchmark_cyberseceval",
+    "name": "CyberSecEval",
+    "text": [
+      "user_input"
+    ],
+    "label": "injection_type",
+    "language": "speaking_language",
+    "group": [],
+    "profile": [
+      "injection_type",
+      "speaking_language",
+      "injection_variant",
+      "risk_category"
+    ],
+    "origin": "",
+    "decision": "Giữ benchmark đã khóa",
+    "reason": "Giữ nguyên benchmark. Bản đa ngôn ngữ là bản dịch, cần tính chung họ prompt_id nếu so tiếng Anh và tiếng Việt.",
+    "unit": "user_input",
+    "status": "local",
+    "url": "https://github.com/meta-llama/PurpleLlama",
+    "revision": "Bản cục bộ trong manifest FOX; SHA-256 ở mức tệp",
+    "license": "Theo hồ sơ benchmark gốc",
+    "files": [
+      {
+        "path": "data/raw/cyberseceval/prompt_injection.json",
+        "split": "english",
+        "bytes": 199176,
+        "digest_type": "sha256",
+        "digest": "069e4d5d36f6d19f972a3bbc65df840cc729354f89358a9031aeb44d95b18a9a"
+      },
+      {
+        "path": "data/raw/cyberseceval/prompt_injection_multilingual_machine_translated.json",
+        "split": "multilingual",
+        "bytes": 1067207,
+        "digest_type": "sha256",
+        "digest": "f018adfc7b1f766f98ce4dd4c8e34e97a8a88f402a2b63576652027e02c2a15f"
+      }
+    ],
+    "locked": true
+  },
+  "benchmark_llmail": {
+    "id": "benchmark_llmail",
+    "name": "LLMail Phase 2",
+    "text": [
+      "@mail"
+    ],
+    "label": "",
+    "language": "",
+    "group": [],
+    "profile": [
+      "scenario"
+    ],
+    "origin": "",
+    "decision": "Giữ benchmark đã khóa",
+    "reason": "Giữ mẫu Phase 2 làm benchmark email. Chủ đề hoặc phần thân trùng riêng được ghi nhận ở phép đối chiếu nguồn ngoài.",
+    "unit": "@mail",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/microsoft/llmail-inject-challenge",
+    "revision": "Bản cục bộ trong manifest FOX; SHA-256 ở mức tệp",
+    "license": "Theo hồ sơ benchmark gốc",
+    "files": [
+      {
+        "path": "data/raw/llmail/phase2_sample.jsonl",
+        "split": "phase2_sample",
+        "bytes": 1754808,
+        "digest_type": "sha256",
+        "digest": "fca0bcc2463f4c3765e8c760af324a914962e3467bb028b81c69885d6b7a21d3"
+      }
+    ],
+    "locked": true
+  },
+  "benchmark_multijail": {
+    "id": "benchmark_multijail",
+    "name": "MultiJail",
+    "text": [
+      "en",
+      "vi"
+    ],
+    "label": "",
+    "language": "",
+    "group": [],
+    "profile": [
+      "source"
+    ],
+    "origin": "",
+    "decision": "Giữ benchmark đã khóa",
+    "reason": "Giữ đánh giá an toàn đa ngôn ngữ. Một dòng chứa các bản dịch của cùng seed; không coi nội dung có hại đơn thuần là injection.",
+    "unit": "en vi",
+    "status": "local",
+    "url": "https://github.com/DAMO-NLP-SG/multilingual-safety-for-LLMs",
+    "revision": "Bản cục bộ trong manifest FOX; SHA-256 ở mức tệp",
+    "license": "Theo hồ sơ benchmark gốc",
+    "files": [
+      {
+        "path": "data/raw/multijail/MultiJail.csv",
+        "split": "multilingual",
+        "bytes": 344347,
+        "digest_type": "sha256",
+        "digest": "953132d40b8bf562f20bd9db0a9edf6a3564dc7362bd15a8bb649c8afd128ef4"
+      }
+    ],
+    "locked": true
+  },
+  "benchmark_notinject": {
+    "id": "benchmark_notinject",
+    "name": "NotInject",
+    "text": [
+      "prompt"
+    ],
+    "label": "",
+    "language": "",
+    "group": [],
+    "profile": [
+      "category"
+    ],
+    "origin": "",
+    "decision": "Giữ benchmark đã khóa",
+    "reason": "Giữ để đo gắn cờ nhầm trên hard negatives. Các cấu hình phân theo số từ kích hoạt.",
+    "unit": "prompt",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/leolee99/NotInject",
+    "revision": "Bản cục bộ trong manifest FOX; SHA-256 ở mức tệp",
+    "license": "Theo hồ sơ benchmark gốc",
+    "files": [
+      {
+        "path": "data/raw/notinject/NotInject_one-00000-of-00001.parquet",
+        "split": "one",
+        "bytes": 10859,
+        "digest_type": "sha256",
+        "digest": "5b1d3a8ec341205305efd8c6d2cabeb5ba0f594dd8726b08ee7fde1a46ddc6ec"
+      },
+      {
+        "path": "data/raw/notinject/NotInject_two-00000-of-00001.parquet",
+        "split": "two",
+        "bytes": 11183,
+        "digest_type": "sha256",
+        "digest": "a5a8c1b3b851b0b5acc3b6caf8bfee26d7da631b2967dd31ca90358df8883feb"
+      },
+      {
+        "path": "data/raw/notinject/NotInject_three-00000-of-00001.parquet",
+        "split": "three",
+        "bytes": 13009,
+        "digest_type": "sha256",
+        "digest": "d5c685b123570c092a0f374ba6bdf324b2026d905a2751a243eb2bb360d411a8"
+      }
+    ],
+    "locked": true
+  },
+  "benchmark_openpii": {
+    "id": "benchmark_openpii",
+    "name": "OpenPII VI / C1",
+    "text": [
+      "text"
+    ],
+    "label": "label",
+    "language": "",
+    "group": [],
+    "profile": [
+      "label",
+      "station"
+    ],
+    "origin": "",
+    "decision": "Giữ benchmark đã khóa",
+    "reason": "Bản chuẩn hóa FOX của OpenPII. Giữ cho đánh giá PII; nhãn PII khác nhãn injection.",
+    "unit": "text",
+    "status": "local",
+    "url": "https://huggingface.co/datasets/ai4privacy/pii-masking-openpii-1.5m",
+    "revision": "Bản cục bộ trong manifest FOX; SHA-256 ở mức tệp",
+    "license": "CC-BY-4.0 theo hồ sơ benchmark FOX",
+    "files": [
+      {
+        "path": "data/processed/openpii/test.jsonl",
+        "split": "test",
+        "bytes": 990441,
+        "digest_type": "sha256",
+        "digest": "dfc25f950f1aaf0150e9f1fd26228854b159dec9307ea7a0c8bf176926e376c7"
+      }
+    ],
+    "locked": true
+  }
+}

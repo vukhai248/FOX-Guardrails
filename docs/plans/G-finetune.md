@@ -1,7 +1,11 @@
 # G — Fine-tune model cho FOX-Guard (đóng góp KHMT)
 
-> Viết 09/11/2026 sau C4. Trạng thái: **kế hoạch, chưa làm**. Mọi bộ dữ liệu dưới đây đã kiểm metadata
+> Viết 09/11/2026 sau C4. Trạng thái tại thời điểm viết: **kế hoạch, chưa làm**. Mọi bộ dữ liệu dưới đây đã kiểm metadata
 > (licence, kích thước, gated) qua Hugging Face / GitHub API ngày 09/11; **chưa tải gì**.
+
+**Cập nhật 13/11/2026.** Bước 01 đã tải 19 tệp từ 14 nguồn vào staging cục bộ. [Notebook EDA](../../notebooks/01_eda_data.ipynb) có manifest ghim phiên bản, số liệu từng nguồn, các bộ benchmark đã khóa và lý do các nguồn còn lại chưa được lấy. Chờ chốt đích load của bước 02.
+
+**Cập nhật 14/11/2026.** [EDA chính](../../notebooks/01_eda_data.ipynb) chuyển sang năm bộ có tiếng Việt, lưu gốc ở `data/raw/eda01_vi/`. M1 INPUT dùng tiêu chí nhận diện injection trên prompt tổng quát. TMĐT là một lát cắt đánh giá khi triển khai FOX. SecAI và VI–EN có nhãn nguồn cho M1. GuardSpec cần duyệt ánh xạ đa nhãn. Vi-Alpaca đang chờ xác minh quyền dùng để huấn luyện, còn PhoATIS chỉ dùng nghiên cứu hoặc giáo dục nội bộ theo điều khoản gốc. Cần xử lý một dòng SecAI train trùng LLMail và các giao nhau giữa split nguồn trước khi chọn tập. Dùng bảng gợi ý trong notebook để chốt trường, giữ provenance và quyết định đích load cho bước 02.
 
 ## 1. Vì sao fine-tune
 
@@ -15,8 +19,7 @@ Kết quả C2–C4 (`eval/reports/SUMMARY.md`) cho thấy dùng model có sẵn
 | Trạm OUTPUT chỉ có luật | C3-5, C3-6; vi phạm logic không giảm (11 → 12/84) | luật từ vựng đã chạm giới hạn |
 | E2E | ASR 21,6 → 16,6 %, G4 vs G2 p = 0,121 | classifier yếu ở các kỹ thuật thuyết phục / định dạng |
 
-Đóng góp dự kiến: **(1) bộ dữ liệu prompt injection tiếng Việt cho CSKH thương mại điện tử** (chưa có bộ công khai
-nào — tìm trên HF 09/11 không ra), **(2) model phát hiện injection VI–EN fine-tune có xử lý over-defence**,
+Đóng góp dự kiến: **(1) bộ dữ liệu prompt injection tiếng Việt cho CSKH thương mại điện tử** (cần kiểm độ phủ và quyền dùng của các nguồn công khai, nhất là trạm CONTEXT; xem mục tiếng Việt trong notebook EDA), **(2) model phát hiện injection VI–EN fine-tune có xử lý over-defence**,
 **(3) model kiểm đầu ra**, cùng ablation so với PG2, deberta, PIGuard và luật.
 
 ## 2. Các model ("được đến đâu hay đến đó", theo thứ tự ưu tiên)
